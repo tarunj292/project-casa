@@ -47,10 +47,25 @@ const productSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: []
-  }
+    enum: ['male', 'female', 'unisex', 'others'],
+  },
+
+  // Reference to Brand model
+  brand: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Brand',
+    required: true,
+  },
+
+  // Reference to Category model
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  },
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
 
 module.exports = mongoose.model('Product', productSchema);
+
