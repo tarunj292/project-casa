@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Grid3X3, TrendingUp, ShoppingBag } from 'lucide-react';
+import { Home, Grid3X3, TrendingUp, ShoppingBag, Heart } from 'lucide-react';
 
 const BottomNav: React.FC = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/collection', icon: Grid3X3, label: 'Collection' },
+    { path: '/swipe', icon: Heart, label: 'Swipe' },
     { path: '/trends', icon: TrendingUp, label: 'Trends' },
     { path: '/bag', icon: ShoppingBag, label: 'Bag' },
   ];
