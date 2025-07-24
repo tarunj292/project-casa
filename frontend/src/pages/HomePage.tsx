@@ -571,6 +571,23 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
+      {/* Swipe Products Button */}
+      <div className="px-4 mb-6">
+        <button
+          onClick={() => navigate('/swipe')}
+          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-4 px-6 rounded-2xl transition-all transform hover:scale-105 shadow-lg"
+        >
+          <div className="flex items-center justify-center space-x-3">
+            <span className="text-2xl">💫</span>
+            <div className="text-left">
+              <div className="text-lg font-bold">Discover Products</div>
+              <div className="text-sm opacity-90">Swipe like Tinder!</div>
+            </div>
+            <span className="text-2xl">👉</span>
+          </div>
+        </button>
+      </div>
+
       {/* Quick Test Button */}
       <div className="px-4 mb-6">
         <button
