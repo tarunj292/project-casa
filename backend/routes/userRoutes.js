@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const userController = require('../userController.js');
+const userController = require('../controllers/userController');
 
 // ⭐ CRUD routes for Users
 router.post('/', userController.createUser);        // Create user
