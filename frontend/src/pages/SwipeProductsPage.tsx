@@ -140,7 +140,7 @@ const SwipeProductsPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen relative overflow-hidden pb-32">
+    <div className="bg-gray-900 text-white h-screen relative overflow-hidden">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-20 px-4 py-4 bg-gradient-to-b from-black/50 to-transparent">
         <div className="flex items-center justify-between">
@@ -180,8 +180,8 @@ const SwipeProductsPage: React.FC = () => {
       </div>
 
       {/* Product Cards Stack */}
-      <div className="flex items-center justify-center min-h-screen px-4 pt-16 pb-32">
-        <div className="relative w-full max-w-md h-[650px]">
+      <div className="flex items-center justify-center h-full px-4 pt-16 pb-24">
+        <div className="relative w-full max-w-md h-[600px]">
           {products.map((product, index) => (
             <TinderCard
               ref={childRefs[index]}
@@ -195,7 +195,7 @@ const SwipeProductsPage: React.FC = () => {
             >
               <div className="bg-gray-800 rounded-3xl overflow-hidden shadow-2xl w-full h-full select-none">
                 {/* Product Image */}
-                <div className="relative h-[420px]">
+                <div className="relative h-[380px]">
                   <img
                     src={product.image}
                     alt={product.name}
