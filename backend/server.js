@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
+const brandRoutes = require('./routes/brandRoutes') 
 const productRoutes = require('./routes/productRoutes')
 
 
@@ -9,6 +10,9 @@ const app = express()
 
 app.use(cors());
 app.use(express.json());
+
+// route
+app.use('/api/brands', brandRoutes);
 
 const PORT = process.env.PORT || 5002;
 
