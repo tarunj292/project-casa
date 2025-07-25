@@ -1,0 +1,3152 @@
+[
+  {
+    "id": "user_1",
+    "email": "ipeterson@hotmail.com",
+    "password_hash": "d20c6f1c8a285ed48666e1dfb3bf254126c0506ea5e1e6cb9d2cd42a58e9310f",
+    "oauth_provider": "apple",
+    "oauth_id": "cd617fe5-a3a3-49e6-83d4-9e41a9694566",
+    "display_name": "Holly Gonzalez",
+    "avatar_url": "https://placeimg.com/993/624/any",
+    "age": 32,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -168.179743,
+        -37.468089
+      ]
+    },
+    "interests": [
+      "minimal",
+      "techwear",
+      "casual"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "loose"
+    ],
+    "created_at": "1981-02-28T04:22:03",
+    "updated_at": "2020-08-19T13:10:02",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "ad6b567cf9c26908882bfa8d",
+      "040723c74a803cad25d7fdf3"
+    ],
+    "wishlist_product_ids": [
+      "1d555ebe9afae1a8ffd11fda",
+      "3248849085773ee46be5077f",
+      "dbef1bc82551605a6a526113"
+    ],
+    "last_login": "2016-06-15T15:11:57",
+    "delivery_addresses": {
+      "home": {
+        "address": "89841 Kimberly Springs Suite 688\nAndersonmouth, GA 91311",
+        "pincode": "19715",
+        "phone": "+1-275-230-8069x1873"
+      },
+      "work": {
+        "address": "481 Bolton Ville\nLake Dustin, IL 47119",
+        "pincode": "18905",
+        "phone": "001-402-960-5230x59889"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_2",
+    "email": "jefferymurray@gmail.com",
+    "password_hash": "ec807a62bff5e67ea946675ff840ef813c1b98e4ae80d7bb0c2202503ebe4759",
+    "oauth_provider": "facebook",
+    "oauth_id": "d867e06e-3056-49a6-9396-799572a9c6e7",
+    "display_name": "Jason Swanson",
+    "avatar_url": "https://www.lorempixel.com/572/896",
+    "age": 16,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        65.61368,
+        80.427596
+      ]
+    },
+    "interests": [
+      "minimal",
+      "techwear",
+      "casual"
+    ],
+    "fit_preferences": [
+      "regular",
+      "loose"
+    ],
+    "created_at": "2013-06-25T22:03:34",
+    "updated_at": "2017-08-01T09:11:01",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "b0a483632a72efce2c8a6745",
+      "868495d5f74fcaf321be6bad"
+    ],
+    "wishlist_product_ids": [
+      "3f4ba89fe5e448ee49df78fb",
+      "02d59d4679725619eb0ebbed",
+      "827130ec15856b40dc66939d"
+    ],
+    "last_login": "1975-02-10T21:48:58",
+    "delivery_addresses": {
+      "home": {
+        "address": "375 Brian Hill Suite 166\nEast Gailstad, KY 01828",
+        "pincode": "21766",
+        "phone": "874-712-8909"
+      },
+      "work": {
+        "address": "Unit 5590 Box 8338\nDPO AP 19495",
+        "pincode": "74956",
+        "phone": "001-187-046-3627x0581"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_3",
+    "email": "dalevega@clements.org",
+    "password_hash": "12adb889214e6e52ac3b8153df8a1436d9a9c622976c669049a7d83f9826bbf6",
+    "oauth_provider": "google",
+    "oauth_id": "04ee3bce-7209-4ea8-ab31-1d9bfe78edab",
+    "display_name": "Brianna Sanders",
+    "avatar_url": "https://www.lorempixel.com/562/386",
+    "age": 35,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        36.166278,
+        -5.217578
+      ]
+    },
+    "interests": [
+      "layered",
+      "minimal",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "fitted"
+    ],
+    "created_at": "2007-05-18T04:50:02",
+    "updated_at": "2011-05-22T06:51:17",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "731436c32fe8178d46c7b096",
+      "d1e1b8be42014c70d552a0c0"
+    ],
+    "wishlist_product_ids": [
+      "a25dacc9752b856b73d0358b",
+      "dea7ae1fcbef5fc586968a9d",
+      "f9d7a61a49799918d9ee21ce"
+    ],
+    "last_login": "1983-07-03T15:50:09",
+    "delivery_addresses": {
+      "home": {
+        "address": "6301 Pamela River\nParkhaven, CO 87598",
+        "pincode": "73802",
+        "phone": "170.918.9719"
+      },
+      "work": {
+        "address": "5889 Miller Groves Apt. 572\nSouth Diamond, OK 98630",
+        "pincode": "16829",
+        "phone": "861-619-7378x345"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_4",
+    "email": "christina95@aguilar.com",
+    "password_hash": "0fd28e9b782a502a135d001029b668592d08ec56c12aca904b3d0f232acf2fcd",
+    "oauth_provider": "apple",
+    "oauth_id": "50a89363-9ecd-4450-9e4a-218b373b5e38",
+    "display_name": "Jason White",
+    "avatar_url": "https://placekitten.com/884/1007",
+    "age": 42,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -8.20381,
+        47.948488
+      ]
+    },
+    "interests": [
+      "bold",
+      "casual",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "loose"
+    ],
+    "created_at": "2018-05-24T12:36:02",
+    "updated_at": "2005-01-21T02:31:08",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "dc269f8c4921cd5ee74c41ac",
+      "78ccc3340b854b7620531c8a"
+    ],
+    "wishlist_product_ids": [
+      "c32ab8c6f9c28cbd73bb725d",
+      "1c566d395771142f6c5969d2",
+      "301b3a7d919178087ad4a978"
+    ],
+    "last_login": "1997-06-02T20:02:09",
+    "delivery_addresses": {
+      "home": {
+        "address": "275 Phillips Trace Suite 181\nEast Michael, IL 96821",
+        "pincode": "92203",
+        "phone": "(609)270-1031"
+      },
+      "work": {
+        "address": "Unit 6861 Box 7052\nDPO AA 52390",
+        "pincode": "63918",
+        "phone": "574-627-9010x471"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_5",
+    "email": "joshua75@smith.com",
+    "password_hash": "6cb6e631db637651a18949b0fd8e1ad19131131282f7a2ab9fa95737307fc30d",
+    "oauth_provider": "apple",
+    "oauth_id": "cd727826-3c44-4bd6-b583-844451ec7f46",
+    "display_name": "Debra Hill",
+    "avatar_url": "https://placekitten.com/916/114",
+    "age": 21,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        179.160597,
+        -37.394089
+      ]
+    },
+    "interests": [
+      "casual",
+      "layered",
+      "minimal"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "fitted"
+    ],
+    "created_at": "1993-11-21T01:12:48",
+    "updated_at": "1989-05-08T02:04:21",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "534518c39ca76a2270004299",
+      "01c382c5e0a1b181571b068e"
+    ],
+    "wishlist_product_ids": [
+      "a1f7b1348cbfb7590b40e55d",
+      "25b59bd14b7f8151f7d45cc0",
+      "851ebbe4ef44f003871ed074"
+    ],
+    "last_login": "1986-11-21T04:38:35",
+    "delivery_addresses": {
+      "home": {
+        "address": "0191 Reyes Walk\nEvanland, MD 29614",
+        "pincode": "17467",
+        "phone": "763-292-8819"
+      },
+      "work": {
+        "address": "PSC 4903, Box 9581\nAPO AA 60882",
+        "pincode": "09975",
+        "phone": "860.847.8666"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_6",
+    "email": "fhendricks@dixon.com",
+    "password_hash": "206f88ddebf514b2df4f12ed439f8387b8a278b476d4d81ba0aba73b169a9b22",
+    "oauth_provider": "facebook",
+    "oauth_id": "cbafa64b-3628-4f6b-8310-bd554557dc35",
+    "display_name": "Derek Shelton",
+    "avatar_url": "https://placeimg.com/896/637/any",
+    "age": 29,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -12.243068,
+        -64.867614
+      ]
+    },
+    "interests": [
+      "minimal",
+      "casual",
+      "bold"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "regular"
+    ],
+    "created_at": "2015-03-24T04:02:29",
+    "updated_at": "1990-12-11T13:31:35",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "c45c825ad7015ba7e5005aec",
+      "3cdd1dcb76c543b9ca3a175f"
+    ],
+    "wishlist_product_ids": [
+      "0cb5d62227afec26606b960a",
+      "9266366caeb4bbca2ed21e26",
+      "1e6cceb92baf9172255e9b07"
+    ],
+    "last_login": "2005-12-28T04:00:17",
+    "delivery_addresses": {
+      "home": {
+        "address": "208 Jill Mountains\nHubbardmouth, GA 69090",
+        "pincode": "37677",
+        "phone": "(672)883-4022"
+      },
+      "work": {
+        "address": "2987 Nicholas Flats Apt. 817\nWest Emily, SD 51686",
+        "pincode": "59096",
+        "phone": "853.894.3136x4701"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_7",
+    "email": "allenelliott@gmail.com",
+    "password_hash": "e22cad798a8e4b2e161189260d615074f358e5bf7043d41ca0641ff8a8a4c7c4",
+    "oauth_provider": "apple",
+    "oauth_id": "537f53c9-625e-479a-a7fa-874a4bc536c4",
+    "display_name": "Troy Jones",
+    "avatar_url": "https://placeimg.com/1017/37/any",
+    "age": 44,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -41.055458,
+        70.767452
+      ]
+    },
+    "interests": [
+      "layered",
+      "vintage",
+      "bold"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "1973-12-29T06:25:02",
+    "updated_at": "2021-10-01T16:53:46",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "f682fd601b8a2e11d2241bd8",
+      "629a3c5d0509bf2839837375"
+    ],
+    "wishlist_product_ids": [
+      "0e1592ffe04212e9d63a08ee",
+      "85d7cd0c62d29d1951a1d975",
+      "93e95a371d58d4c53b80ab87"
+    ],
+    "last_login": "2006-04-04T02:19:09",
+    "delivery_addresses": {
+      "home": {
+        "address": "5350 Vanessa Rapid\nWilliamsmouth, TN 85990",
+        "pincode": "62098",
+        "phone": "(757)091-9164x26546"
+      },
+      "work": {
+        "address": "PSC 0993, Box 7572\nAPO AE 55064",
+        "pincode": "98554",
+        "phone": "001-050-022-2200x43227"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_8",
+    "email": "matthew06@yahoo.com",
+    "password_hash": "372fc1ed49e08d2872d3b7a1de9b9a3524db0a6199bee3f50e65bee37a396dcf",
+    "oauth_provider": "google",
+    "oauth_id": "29caadfe-f611-4c6a-b392-271b726646fd",
+    "display_name": "Jill Ramos",
+    "avatar_url": "https://placeimg.com/279/560/any",
+    "age": 31,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        27.461568,
+        67.918692
+      ]
+    },
+    "interests": [
+      "casual",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "2000-02-27T14:40:37",
+    "updated_at": "1978-02-20T22:56:41",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "dd743418c6d36fe21a62d6d8",
+      "0b8839013d04be6a854f1247"
+    ],
+    "wishlist_product_ids": [
+      "7ea6143b4b3f04df2cdb747f",
+      "2993bee74f5a9a77ba1090b3",
+      "991292ebb2f7848d93b94a76"
+    ],
+    "last_login": "1981-09-26T01:25:47",
+    "delivery_addresses": {
+      "home": {
+        "address": "35212 Richard Knoll\nNorth Shawn, UT 56939",
+        "pincode": "41997",
+        "phone": "+1-451-631-4087x9057"
+      },
+      "work": {
+        "address": "48426 Murray Plaza Apt. 527\nAustintown, LA 86594",
+        "pincode": "22236",
+        "phone": "886-440-1789x0330"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_9",
+    "email": "smithregina@johnson.org",
+    "password_hash": "b0011ff80071c069eb04d3b2d55d09483d5f1b832d61e56e8f4fd053046f320e",
+    "oauth_provider": "apple",
+    "oauth_id": "5e3e324c-6f6a-45ae-9f64-aad1cab683d2",
+    "display_name": "Andre Rasmussen",
+    "avatar_url": "https://dummyimage.com/535x212",
+    "age": 21,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        87.861626,
+        -18.655432
+      ]
+    },
+    "interests": [
+      "minimal",
+      "layered",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "loose",
+      "regular"
+    ],
+    "created_at": "1994-05-12T06:37:52",
+    "updated_at": "1988-03-18T07:03:57",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "32402bc7247496b5785ea64b",
+      "f85aa4fc0e0e5e3c6f6beffc"
+    ],
+    "wishlist_product_ids": [
+      "c39ce86f0afb0192bfa2ec5a",
+      "71d5c9d1ea8a9675f4ac3850",
+      "1f152ceb9d2d508b6e775773"
+    ],
+    "last_login": "1983-07-31T14:42:52",
+    "delivery_addresses": {
+      "home": {
+        "address": "92612 Melendez Island Apt. 987\nLongside, MN 36107",
+        "pincode": "11449",
+        "phone": "001-291-670-3999x875"
+      },
+      "work": {
+        "address": "303 Timothy Lock Suite 920\nLake Steven, MO 36104",
+        "pincode": "60952",
+        "phone": "+1-713-500-2784"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_10",
+    "email": "richardsonchristopher@hotmail.com",
+    "password_hash": "5c346c094107d72782309b6cc9c2d2ba70aac474ae705bb4853d63e4a311ae46",
+    "oauth_provider": "facebook",
+    "oauth_id": "2a9cce22-9c9b-4e2f-8f5a-1ca282a753cf",
+    "display_name": "Samantha Shields",
+    "avatar_url": "https://dummyimage.com/456x809",
+    "age": 38,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        179.183578,
+        -4.384267
+      ]
+    },
+    "interests": [
+      "techwear",
+      "bold",
+      "minimal"
+    ],
+    "fit_preferences": [
+      "regular",
+      "fitted"
+    ],
+    "created_at": "2006-12-16T21:21:13",
+    "updated_at": "2015-10-29T22:17:43",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "3421b4e9047ed641c823f012",
+      "ef126d73c1dd724f092e21b9"
+    ],
+    "wishlist_product_ids": [
+      "e4c93488e79d68ca8878fd37",
+      "268b1db84dd49624f1cd840d",
+      "5bd490531974dd464c64d51c"
+    ],
+    "last_login": "2017-11-02T00:14:00",
+    "delivery_addresses": {
+      "home": {
+        "address": "463 Mccall Roads\nRobertville, OH 35713",
+        "pincode": "20753",
+        "phone": "856-350-2532"
+      },
+      "work": {
+        "address": "32603 Thornton Isle\nLake Katrina, NJ 75862",
+        "pincode": "60226",
+        "phone": "+1-802-302-5654x1424"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_11",
+    "email": "buchananchristopher@yahoo.com",
+    "password_hash": "dc2187ee7739af47bd1a1b7cdfb8dea78f7d6a4f6628ede7c3c8b76729e37490",
+    "oauth_provider": "facebook",
+    "oauth_id": "8082ede8-7f36-4f7d-a767-39225e080ec9",
+    "display_name": "Michael Walker",
+    "avatar_url": "https://www.lorempixel.com/826/930",
+    "age": 38,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        136.903942,
+        89.446236
+      ]
+    },
+    "interests": [
+      "bold",
+      "minimal",
+      "casual"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "1974-10-21T23:16:43",
+    "updated_at": "1988-03-04T22:00:20",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "fd8149400d773fbfd5d76456",
+      "78ac78e617119987c7c07894"
+    ],
+    "wishlist_product_ids": [
+      "268c4276c73059a27eeb5998",
+      "1660e33e3953e5b3bac89845",
+      "e64e7fed0fcd292a501be0c5"
+    ],
+    "last_login": "2017-04-20T18:26:47",
+    "delivery_addresses": {
+      "home": {
+        "address": "78458 Adams Fall Suite 712\nNew Andrewmouth, DE 36946",
+        "pincode": "21841",
+        "phone": "(018)232-0067"
+      },
+      "work": {
+        "address": "146 Stevens Canyon Apt. 354\nPort Sandramouth, AR 74999",
+        "pincode": "99404",
+        "phone": "+1-773-717-9169x6172"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_12",
+    "email": "fosterandrea@jackson-beasley.com",
+    "password_hash": "b85ff3d4cb0e207c50f940ba81aa1998bd0a5941cfa22e2761a8e7fb818d17d7",
+    "oauth_provider": "facebook",
+    "oauth_id": "2faee60c-2495-4542-95dd-2252bdbf07d6",
+    "display_name": "Carla Macdonald",
+    "avatar_url": "https://www.lorempixel.com/551/190",
+    "age": 40,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -154.667138,
+        9.560856
+      ]
+    },
+    "interests": [
+      "bold",
+      "layered",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "loose",
+      "fitted"
+    ],
+    "created_at": "2007-09-19T03:06:06",
+    "updated_at": "2006-09-28T17:51:54",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "ae3c79883215dd924de9e8ef",
+      "9b369aff37236b2c7f179aa8"
+    ],
+    "wishlist_product_ids": [
+      "ba6b336106b37417c01dfdcd",
+      "414a506e69b8a8c75e39fe6a",
+      "169d48588e7c70fda1ef4e4f"
+    ],
+    "last_login": "2019-02-02T07:08:31",
+    "delivery_addresses": {
+      "home": {
+        "address": "112 Jeff Lane\nWest Sharon, NY 59471",
+        "pincode": "65127",
+        "phone": "001-074-398-9349x9317"
+      },
+      "work": {
+        "address": "5742 Webb Throughway Suite 811\nPort Justinville, IA 68205",
+        "pincode": "36866",
+        "phone": "001-477-006-4614x5697"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_13",
+    "email": "jessicaanderson@johnson.biz",
+    "password_hash": "758f534ea1a7f60478386247da8866ee6dc6ec31b2df5b83ccddf44cbb5aabc4",
+    "oauth_provider": "apple",
+    "oauth_id": "3007100d-dfb8-4e63-9b57-a983f0ec29c9",
+    "display_name": "Morgan Bryan",
+    "avatar_url": "https://placeimg.com/1008/380/any",
+    "age": 37,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -134.280873,
+        55.39743
+      ]
+    },
+    "interests": [
+      "layered",
+      "vintage",
+      "bold"
+    ],
+    "fit_preferences": [
+      "regular",
+      "fitted"
+    ],
+    "created_at": "2014-04-20T05:20:12",
+    "updated_at": "2009-11-03T02:55:05",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "03ec68b81fc6884617f06eb4",
+      "846d65e6836e3fec662bc3ff"
+    ],
+    "wishlist_product_ids": [
+      "b2f25f90845408ad8bcaf2e6",
+      "c1f4faf8b977913ac5a00d9a",
+      "5663c79f60dffc39fc1dc0f6"
+    ],
+    "last_login": "1974-06-06T10:26:19",
+    "delivery_addresses": {
+      "home": {
+        "address": "6681 Cassandra Station\nSouth Allison, NY 94598",
+        "pincode": "28424",
+        "phone": "001-570-603-9060x39205"
+      },
+      "work": {
+        "address": "1941 Monique Center\nPort William, ID 00783",
+        "pincode": "52141",
+        "phone": "(358)297-2775x164"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_14",
+    "email": "haydenhale@wilkinson-hunt.com",
+    "password_hash": "6ea765c754b40cb84c7a3309fe60a60524756b4c029c538c1095aabe146ef962",
+    "oauth_provider": "facebook",
+    "oauth_id": "35b39f5d-9a13-4b57-9536-03795ecdacea",
+    "display_name": "Mark Singleton",
+    "avatar_url": "https://placeimg.com/726/917/any",
+    "age": 22,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -57.657667,
+        40.512057
+      ]
+    },
+    "interests": [
+      "layered",
+      "casual",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "loose"
+    ],
+    "created_at": "1972-10-24T20:05:19",
+    "updated_at": "1977-09-01T13:49:51",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "8b17f7c4d61ce25ca2c6223a",
+      "8ed6b62c04bfbeb098e26796"
+    ],
+    "wishlist_product_ids": [
+      "1746563deaba773a587fd92f",
+      "df9389d01505872c2b6a3712",
+      "7dc025f2076c422132d314d8"
+    ],
+    "last_login": "2010-12-29T20:58:51",
+    "delivery_addresses": {
+      "home": {
+        "address": "58058 Catherine Neck Apt. 278\nNorth Eric, AK 64010",
+        "pincode": "20357",
+        "phone": "001-578-009-3130x7243"
+      },
+      "work": {
+        "address": "1326 Tran Forge\nWest Leroymouth, OH 27186",
+        "pincode": "91608",
+        "phone": "(141)783-1532x182"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_15",
+    "email": "margaret35@mcfarland.com",
+    "password_hash": "6711e1e51d6b2f898c690022d62d607f0f09467f7cd1bc266c99ffea4674a6dd",
+    "oauth_provider": "google",
+    "oauth_id": "43a83a77-cc73-495f-b205-1dee6d052797",
+    "display_name": "Alison Miller",
+    "avatar_url": "https://dummyimage.com/926x517",
+    "age": 36,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -10.159459,
+        6.552273
+      ]
+    },
+    "interests": [
+      "casual",
+      "vintage",
+      "bold"
+    ],
+    "fit_preferences": [
+      "loose",
+      "fitted"
+    ],
+    "created_at": "2004-05-22T11:21:52",
+    "updated_at": "1999-11-02T02:17:57",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "23119e74190e0df71664d7df",
+      "599bfb560cf73fc070c9bd05"
+    ],
+    "wishlist_product_ids": [
+      "8e8626b68c14be9a6dfdf58f",
+      "e96ea0e5d5f32d916345377a",
+      "30aa02f478df9d8303ca0c7c"
+    ],
+    "last_login": "1975-08-05T17:57:59",
+    "delivery_addresses": {
+      "home": {
+        "address": "Unit 4336 Box 2847\nDPO AP 74623",
+        "pincode": "68830",
+        "phone": "+1-326-170-0030x833"
+      },
+      "work": {
+        "address": "84804 Pamela Club Suite 758\nEast Heather, NM 14378",
+        "pincode": "12266",
+        "phone": "650.127.9100x6436"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_16",
+    "email": "peggy31@fleming.com",
+    "password_hash": "aa7d6738c67468948eb5b47e31f0679f5df65276d6d0013a74e90f0852eb085e",
+    "oauth_provider": "apple",
+    "oauth_id": "f55b59eb-92b8-4855-a3a8-a495e7d180dc",
+    "display_name": "Michael Mason",
+    "avatar_url": "https://www.lorempixel.com/809/129",
+    "age": 16,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -139.555596,
+        -16.21236
+      ]
+    },
+    "interests": [
+      "vintage",
+      "casual",
+      "layered"
+    ],
+    "fit_preferences": [
+      "regular",
+      "loose"
+    ],
+    "created_at": "2002-07-22T11:18:47",
+    "updated_at": "1986-01-05T03:16:15",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "9532c3403a947cb01531270b",
+      "af38894a58f44c937e838cf8"
+    ],
+    "wishlist_product_ids": [
+      "e4433762f62c5eed810e52ca",
+      "7d0d302ae423cc0e4ba1d389",
+      "be031ca016eaae23da2dcb4d"
+    ],
+    "last_login": "2014-04-12T23:11:35",
+    "delivery_addresses": {
+      "home": {
+        "address": "95154 Berry Mill\nLake Charles, NE 96047",
+        "pincode": "09086",
+        "phone": "374-780-5712x1781"
+      },
+      "work": {
+        "address": "1209 Smith Hill Apt. 492\nMaxwellfurt, GA 10097",
+        "pincode": "39632",
+        "phone": "523-514-8767"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_17",
+    "email": "robertgonzalez@orozco-carter.info",
+    "password_hash": "d5b1aa4a7327176c58f60e79f95291756b0a7d5dfc8d6feecedf7ff6cde9b4a9",
+    "oauth_provider": "google",
+    "oauth_id": "6be6643d-585a-4019-90a9-0f0b1b5f77cc",
+    "display_name": "Jessica Dixon",
+    "avatar_url": "https://www.lorempixel.com/272/694",
+    "age": 36,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        105.503352,
+        -30.90969
+      ]
+    },
+    "interests": [
+      "bold",
+      "casual",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "loose"
+    ],
+    "created_at": "1971-03-23T08:33:30",
+    "updated_at": "1975-09-06T12:51:47",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "11e2a3b0394fb8d72423b48c",
+      "cd2d6c099fe420385e27ccbc"
+    ],
+    "wishlist_product_ids": [
+      "c7f7a75c34e9aba6d293f71d",
+      "0697fff61abc6d32d65f4485",
+      "900aa7900e5815b8f68ba993"
+    ],
+    "last_login": "2009-05-21T16:05:18",
+    "delivery_addresses": {
+      "home": {
+        "address": "9976 Ross Points\nWest Dannyhaven, MT 57211",
+        "pincode": "62520",
+        "phone": "(319)437-4089x359"
+      },
+      "work": {
+        "address": "95676 Mills Lodge\nWest Robertborough, WI 45212",
+        "pincode": "84086",
+        "phone": "001-380-134-4321x26452"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_18",
+    "email": "dorisdeleon@lewis.org",
+    "password_hash": "432af6b3dd38df3a5a1647bb6703506c7fe8d5c909bb9dca8ea374746eff1aae",
+    "oauth_provider": "apple",
+    "oauth_id": "3c332c5d-4997-42ad-9a20-344b786817e0",
+    "display_name": "Terry Hampton",
+    "avatar_url": "https://dummyimage.com/358x192",
+    "age": 21,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        91.842649,
+        65.686746
+      ]
+    },
+    "interests": [
+      "minimal",
+      "bold",
+      "casual"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "2004-01-16T11:49:23",
+    "updated_at": "2020-07-22T07:30:11",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "dea0c6d3ccd164cd2cd696e3",
+      "e63fc20ffef266dd9cec0e82"
+    ],
+    "wishlist_product_ids": [
+      "4a48ac6aad306c152eeea5f5",
+      "184e47400f85a226c2767fa1",
+      "4f6dabea45b8f2fd5614205b"
+    ],
+    "last_login": "1992-08-13T03:29:29",
+    "delivery_addresses": {
+      "home": {
+        "address": "84101 Albert Stravenue Suite 582\nSouth Charles, SD 02690",
+        "pincode": "12374",
+        "phone": "+1-439-907-0316x375"
+      },
+      "work": {
+        "address": "USS Kemp\nFPO AE 84380",
+        "pincode": "93777",
+        "phone": "432.703.4935"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_19",
+    "email": "angelathompson@morton.net",
+    "password_hash": "b8d88009cfffa30eb4a27149390b386e3a92e36aeb34e3ac2cb5b98daa07b518",
+    "oauth_provider": "google",
+    "oauth_id": "d451c742-6083-47b4-b3f2-d6d7b7d3f4b3",
+    "display_name": "Karen Yoder",
+    "avatar_url": "https://www.lorempixel.com/86/802",
+    "age": 42,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        19.179663,
+        -36.943966
+      ]
+    },
+    "interests": [
+      "minimal",
+      "casual",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "1973-04-23T13:36:20",
+    "updated_at": "1992-05-31T17:26:19",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "ac9e93d156de5b4a0650fc04",
+      "8150e2a53656f6ead6fc3670"
+    ],
+    "wishlist_product_ids": [
+      "438f27d2bcbf9b59f7a23316",
+      "aa1904b20eb55d2363350ab2",
+      "5403012318725057b2ed5639"
+    ],
+    "last_login": "1978-06-04T18:06:59",
+    "delivery_addresses": {
+      "home": {
+        "address": "PSC 8693, Box 8996\nAPO AA 41978",
+        "pincode": "14954",
+        "phone": "625-819-8432x436"
+      },
+      "work": {
+        "address": "9517 Estrada Points\nMeghanbury, RI 87320",
+        "pincode": "54924",
+        "phone": "792-034-0558"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_20",
+    "email": "martinezerica@yahoo.com",
+    "password_hash": "6ee3166118dfea34ca391ec3c1f258c96b42fe2ba8887385be67da9ee93fe35d",
+    "oauth_provider": "google",
+    "oauth_id": "506767c5-0b45-48d7-8489-6eca4a6d0dfc",
+    "display_name": "Dana Reynolds",
+    "avatar_url": "https://placekitten.com/1000/228",
+    "age": 17,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -79.335458,
+        77.962535
+      ]
+    },
+    "interests": [
+      "casual",
+      "bold",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "loose"
+    ],
+    "created_at": "1997-11-27T01:50:10",
+    "updated_at": "2015-05-22T09:18:21",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "f5facc8e13fe0a9775539bd2",
+      "f7c39f598a123c33620a6da3"
+    ],
+    "wishlist_product_ids": [
+      "48ba14b3b2fa2ff379d146cf",
+      "f274bc0a5c9d88641050a209",
+      "d5c3a7d2a263ba22f7c0833e"
+    ],
+    "last_login": "2003-05-27T12:22:09",
+    "delivery_addresses": {
+      "home": {
+        "address": "778 Miles Cliff\nLake Desireefort, MT 76047",
+        "pincode": "78398",
+        "phone": "(666)281-4351"
+      },
+      "work": {
+        "address": "669 Dixon Path Apt. 686\nNew Michelleside, OH 89007",
+        "pincode": "52826",
+        "phone": "001-407-412-9138x796"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_21",
+    "email": "krussell@gmail.com",
+    "password_hash": "1a295a16554466381f1ef6e6529003a024172971573aab671f7c381395b7ab89",
+    "oauth_provider": "apple",
+    "oauth_id": "83a76613-fdad-4d86-a35c-c6167a20b7c8",
+    "display_name": "Gina Pierce",
+    "avatar_url": "https://placekitten.com/974/712",
+    "age": 33,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        6.820101,
+        30.279836
+      ]
+    },
+    "interests": [
+      "bold",
+      "casual",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "2014-05-24T12:44:40",
+    "updated_at": "2018-08-01T08:49:23",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "f5126c87ee598b4eb439bc1a",
+      "0d2253109aa38f1776ba488f"
+    ],
+    "wishlist_product_ids": [
+      "0156fda74b7a4c5d9e1c9536",
+      "8fe46b80fa69aff57bb71cfb",
+      "64d6eef2d977e8e3e3c325a2"
+    ],
+    "last_login": "2008-12-28T11:50:25",
+    "delivery_addresses": {
+      "home": {
+        "address": "2281 Emily Meadow Suite 030\nRyanview, ME 41777",
+        "pincode": "44020",
+        "phone": "923-794-1612"
+      },
+      "work": {
+        "address": "76070 Allen Corners Suite 959\nNew Jamie, OH 11082",
+        "pincode": "48894",
+        "phone": "+1-195-678-4186x76432"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_22",
+    "email": "gabriellajohnson@torres.com",
+    "password_hash": "cd5b37dac905f225ad28370853abcd047102a4d2818c06a362288b9c57b17048",
+    "oauth_provider": "google",
+    "oauth_id": "b6ba0673-28c7-48f3-b3ef-51517689fc47",
+    "display_name": "Bryan Williams",
+    "avatar_url": "https://dummyimage.com/1x522",
+    "age": 36,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -155.361568,
+        -78.530599
+      ]
+    },
+    "interests": [
+      "layered",
+      "minimal",
+      "bold"
+    ],
+    "fit_preferences": [
+      "loose",
+      "fitted"
+    ],
+    "created_at": "1978-11-29T23:20:21",
+    "updated_at": "2013-07-20T13:12:30",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "419190b31bd8258561a0e398",
+      "628a0f1c3fd1f0f8135eb51e"
+    ],
+    "wishlist_product_ids": [
+      "5e5f7a5b9a41acee01b53f00",
+      "1526892b99bdfac042910fc1",
+      "1d18945c902322fc9058ca5d"
+    ],
+    "last_login": "1988-07-28T00:40:07",
+    "delivery_addresses": {
+      "home": {
+        "address": "2900 Jessica Causeway\nNorth Steventown, ME 58915",
+        "pincode": "18206",
+        "phone": "(047)951-3819x4164"
+      },
+      "work": {
+        "address": "847 Howard Circle\nEast Jennifer, OR 37351",
+        "pincode": "20646",
+        "phone": "+1-366-833-4680x0837"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_23",
+    "email": "hollycampbell@miller.com",
+    "password_hash": "0c724ab5d8dc167d001ad5630c7dd171862979f6b9a7836bc92fa355fa10c1dc",
+    "oauth_provider": "apple",
+    "oauth_id": "b8cb53a6-1dff-4f8e-a70a-f2408944aca3",
+    "display_name": "Patrick Page",
+    "avatar_url": "https://placekitten.com/259/121",
+    "age": 21,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        28.470064,
+        28.494308
+      ]
+    },
+    "interests": [
+      "bold",
+      "layered",
+      "casual"
+    ],
+    "fit_preferences": [
+      "regular",
+      "loose"
+    ],
+    "created_at": "1987-02-03T12:47:47",
+    "updated_at": "1978-07-28T07:19:01",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "8e2eb3a1a073621ca64d5127",
+      "c6d7ca5f355ab48e986aed61"
+    ],
+    "wishlist_product_ids": [
+      "5e7678e85260a4bf1a545718",
+      "507fdfb812d28256ad0a989d",
+      "bc33fb88296411fab009a3c4"
+    ],
+    "last_login": "1998-07-25T12:21:51",
+    "delivery_addresses": {
+      "home": {
+        "address": "919 Rivera Underpass\nKimberlyton, AL 61008",
+        "pincode": "28360",
+        "phone": "355.195.9600"
+      },
+      "work": {
+        "address": "56852 Joel Shore\nBlackshire, HI 18685",
+        "pincode": "68100",
+        "phone": "001-234-412-7111x2280"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_24",
+    "email": "fhernandez@yahoo.com",
+    "password_hash": "4326f34e1575e09dacf4de5c28acd8464a3285b5daca9956a4bbd4ec584f41b8",
+    "oauth_provider": "apple",
+    "oauth_id": "cc24a547-e302-485f-8711-a5ac0f71f09b",
+    "display_name": "Eileen Juarez",
+    "avatar_url": "https://dummyimage.com/105x531",
+    "age": 23,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        26.238366,
+        -81.233806
+      ]
+    },
+    "interests": [
+      "casual",
+      "bold",
+      "layered"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "2010-11-15T08:49:55",
+    "updated_at": "2014-05-08T14:03:55",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "c766b453b0d7e6592b601289",
+      "ec3e678bd52218fff61ebd02"
+    ],
+    "wishlist_product_ids": [
+      "fff4a46d584725ab0c7e35c6",
+      "b6f375f3410b5751a7011ef2",
+      "a9824ab3fe3ba600711b6766"
+    ],
+    "last_login": "2000-10-22T05:30:12",
+    "delivery_addresses": {
+      "home": {
+        "address": "41539 Rebecca Highway\nCarolynhaven, PA 38970",
+        "pincode": "82605",
+        "phone": "(509)697-2345x194"
+      },
+      "work": {
+        "address": "378 Ashley Stream\nNew Matthew, IL 00740",
+        "pincode": "26455",
+        "phone": "+1-540-123-3678x669"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_25",
+    "email": "zbeck@gallagher.com",
+    "password_hash": "164e058020801f31abf8216e26c50a2a536142be964e25f7d6e88f34e5ee4c43",
+    "oauth_provider": "facebook",
+    "oauth_id": "9e7e87b7-2d4a-452f-b060-1cc5a20569af",
+    "display_name": "Juan Tran",
+    "avatar_url": "https://placekitten.com/350/663",
+    "age": 18,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -51.480963,
+        -40.940708
+      ]
+    },
+    "interests": [
+      "minimal",
+      "vintage",
+      "bold"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "regular"
+    ],
+    "created_at": "2008-11-03T06:44:14",
+    "updated_at": "1971-01-15T10:42:16",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "e7dfdcecca5ad49de7688173",
+      "e16916e4a880846d3ace2b0b"
+    ],
+    "wishlist_product_ids": [
+      "a90eb40756f1c4253c3b1e31",
+      "e8b8b2387695877c36afcfed",
+      "2dc4f298a398e0ec3d473f97"
+    ],
+    "last_login": "1975-01-17T13:15:02",
+    "delivery_addresses": {
+      "home": {
+        "address": "25654 Sanchez Fields Suite 030\nEast Steven, AR 21135",
+        "pincode": "57846",
+        "phone": "(764)829-3374x44730"
+      },
+      "work": {
+        "address": "6896 Smith Crescent Apt. 724\nEvansmouth, TN 97382",
+        "pincode": "56146",
+        "phone": "+1-129-941-1809"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_26",
+    "email": "amandapitts@hotmail.com",
+    "password_hash": "92a26e57ace444429f1137f3b9b29621c74740ebcdfcd8a316894544ae269dc3",
+    "oauth_provider": "facebook",
+    "oauth_id": "6bb35e0e-eca9-431e-8631-48bfc05388c2",
+    "display_name": "Erin Wright",
+    "avatar_url": "https://dummyimage.com/329x900",
+    "age": 29,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -1.091744,
+        -8.139998
+      ]
+    },
+    "interests": [
+      "techwear",
+      "vintage",
+      "minimal"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "loose"
+    ],
+    "created_at": "2015-04-30T20:49:12",
+    "updated_at": "1982-09-12T15:05:26",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "9d199db639e734780509bb60",
+      "d7b9e6886183e041bf8cf1fd"
+    ],
+    "wishlist_product_ids": [
+      "48af76b7010a5d7c539c727e",
+      "0d87123b982dbb83a1b5ec7a",
+      "149c8aa6bcfc7ab6a0097513"
+    ],
+    "last_login": "2014-12-10T05:15:57",
+    "delivery_addresses": {
+      "home": {
+        "address": "23042 Tanner Groves\nWest Haileyview, NY 40267",
+        "pincode": "80505",
+        "phone": "(664)893-0974x4287"
+      },
+      "work": {
+        "address": "541 Walls Camp Apt. 811\nNorth Samantha, MN 60242",
+        "pincode": "54975",
+        "phone": "+1-299-531-2330x4698"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_27",
+    "email": "katrina63@hotmail.com",
+    "password_hash": "e92c503f01be2c2473c0d305e323bb2a3eef7cf87474c3852bbbc44a5eede6cd",
+    "oauth_provider": "apple",
+    "oauth_id": "c6b86e8c-4d49-468f-8b9b-f0c44ff39e14",
+    "display_name": "James Gonzales",
+    "avatar_url": "https://www.lorempixel.com/330/401",
+    "age": 30,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        69.985582,
+        -56.102983
+      ]
+    },
+    "interests": [
+      "techwear",
+      "layered",
+      "bold"
+    ],
+    "fit_preferences": [
+      "regular",
+      "oversized"
+    ],
+    "created_at": "2020-09-26T10:53:17",
+    "updated_at": "1981-05-19T16:54:18",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "63559009f4c8bcddbac0e64a",
+      "ef1c1874bd41ed73d5a0b4fb"
+    ],
+    "wishlist_product_ids": [
+      "218b6e329370ff2e851ddf8f",
+      "6575048013580bdd0212e8ee",
+      "aaa59d424db435db46f0e9a0"
+    ],
+    "last_login": "2018-05-28T02:09:56",
+    "delivery_addresses": {
+      "home": {
+        "address": "6187 Collins Lodge\nSouth Craigmouth, GA 61298",
+        "pincode": "44691",
+        "phone": "316-233-8076x2917"
+      },
+      "work": {
+        "address": "300 Amanda Fords\nNew Nicholefurt, LA 14916",
+        "pincode": "54400",
+        "phone": "001-581-211-1947x832"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_28",
+    "email": "mirandawendy@allen-richardson.biz",
+    "password_hash": "8891e06ce5356c0bebeff9ab325ae8b15253b899bad73dd814150e84eb65df06",
+    "oauth_provider": "apple",
+    "oauth_id": "6dc2b40d-c459-44f9-b7aa-737880e182b8",
+    "display_name": "Ruth Franco",
+    "avatar_url": "https://placeimg.com/829/86/any",
+    "age": 34,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        102.187073,
+        -45.428858
+      ]
+    },
+    "interests": [
+      "bold",
+      "casual",
+      "layered"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "1993-04-24T13:48:59",
+    "updated_at": "1970-01-14T10:24:43",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "3b9438f4184f49dc194786a7",
+      "5679b5f05aaba96a7776958a"
+    ],
+    "wishlist_product_ids": [
+      "cb1696f04d830b5ebd46746b",
+      "e23c8900bf3abe229709dc3b",
+      "d61d1574b2efcb4a7815fd44"
+    ],
+    "last_login": "1974-10-28T09:52:23",
+    "delivery_addresses": {
+      "home": {
+        "address": "807 Williams Mountain Suite 453\nYolandabury, ND 72507",
+        "pincode": "94582",
+        "phone": "+1-144-003-8256x691"
+      },
+      "work": {
+        "address": "0937 Griffith Fields Suite 190\nNew Cameronfort, NH 72998",
+        "pincode": "50363",
+        "phone": "612-427-2767x40923"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_29",
+    "email": "sweeneymichael@mcintyre.org",
+    "password_hash": "751758c080a73952687a6ce0927ce5071c7b40576225cef92a7f941fbaf2a0d2",
+    "oauth_provider": "apple",
+    "oauth_id": "8c8b49b0-3f06-4b22-aba2-edb90bb2e9c8",
+    "display_name": "Daniel Hobbs",
+    "avatar_url": "https://placekitten.com/374/530",
+    "age": 34,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -107.273914,
+        -29.282722
+      ]
+    },
+    "interests": [
+      "vintage",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "loose",
+      "fitted"
+    ],
+    "created_at": "2012-08-16T01:15:23",
+    "updated_at": "1971-10-04T21:59:11",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "d073ee1a4ada5466aeb79f24",
+      "ec6352e0a25280db00c3dcb6"
+    ],
+    "wishlist_product_ids": [
+      "176674495cf9ba0694ec4fbf",
+      "61c3864738ba7e259626ab30",
+      "e5fbff21fc8c81a78caa5af2"
+    ],
+    "last_login": "1992-01-06T04:38:57",
+    "delivery_addresses": {
+      "home": {
+        "address": "2758 Michelle Roads\nThomasfort, CA 59441",
+        "pincode": "31287",
+        "phone": "783.850.3413x894"
+      },
+      "work": {
+        "address": "801 Christopher Burgs Apt. 434\nCoreyhaven, MO 82162",
+        "pincode": "08509",
+        "phone": "(396)884-6368x732"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_30",
+    "email": "nanderson@king.com",
+    "password_hash": "67ce1016e2b6c5bb88e43f41fd3cb924bb860fe2375424cc9a52e65248fc2b53",
+    "oauth_provider": "facebook",
+    "oauth_id": "59cc6576-4dfd-463d-85b2-724a77a160be",
+    "display_name": "Richard Mccullough",
+    "avatar_url": "https://placekitten.com/472/750",
+    "age": 40,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        172.227708,
+        -12.219387
+      ]
+    },
+    "interests": [
+      "minimal",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "oversized"
+    ],
+    "created_at": "2000-08-25T23:29:05",
+    "updated_at": "1994-08-21T05:16:44",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "482af6c2a1df84d8445a2a5d",
+      "65ae40fa2dbf7779ca641e55"
+    ],
+    "wishlist_product_ids": [
+      "8a2215d05f1e9cb9c61f1beb",
+      "6faa84fb0e3b418c6a960389",
+      "2c7cda0ea8b4ebcf6904fdae"
+    ],
+    "last_login": "1971-05-16T14:40:53",
+    "delivery_addresses": {
+      "home": {
+        "address": "15171 Payne Cliff Suite 832\nPort Gabrielview, KS 82549",
+        "pincode": "22574",
+        "phone": "001-007-480-1813x6425"
+      },
+      "work": {
+        "address": "250 Madeline Mountain\nWest Kimmouth, AZ 09718",
+        "pincode": "35713",
+        "phone": "864.370.6247x6459"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_31",
+    "email": "randy64@gmail.com",
+    "password_hash": "d2046b087b618c82280d8c299b338e6dec44aa0143b461f6b960228c829e229a",
+    "oauth_provider": "facebook",
+    "oauth_id": "4fc545e8-ce41-4123-a7a1-1b845ab47ac2",
+    "display_name": "Joshua Lawrence",
+    "avatar_url": "https://placeimg.com/642/378/any",
+    "age": 34,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        104.662049,
+        -20.482584
+      ]
+    },
+    "interests": [
+      "vintage",
+      "bold",
+      "casual"
+    ],
+    "fit_preferences": [
+      "regular",
+      "oversized"
+    ],
+    "created_at": "2003-03-05T17:55:01",
+    "updated_at": "2007-05-08T15:33:56",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "310663c73b0e754749b86201",
+      "8830ba2646ce5ada899a7f85"
+    ],
+    "wishlist_product_ids": [
+      "c456c1ac4dd0b3ded6e78fd8",
+      "6400b1e52807c305ef601852",
+      "5f231265c83c4a21bf3bf290"
+    ],
+    "last_login": "1973-12-26T12:13:50",
+    "delivery_addresses": {
+      "home": {
+        "address": "268 Mullins Walks\nVillarrealbury, ME 80655",
+        "pincode": "54351",
+        "phone": "451-617-5769"
+      },
+      "work": {
+        "address": "434 Jeffery Port\nNew Sarahside, NM 95574",
+        "pincode": "29150",
+        "phone": "001-498-850-8700x700"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_32",
+    "email": "terripatel@yahoo.com",
+    "password_hash": "481d0f7119e186dc70c9e6e44421e81dc853575282228dbd0d47c966647713d7",
+    "oauth_provider": "facebook",
+    "oauth_id": "19783397-f56d-44db-886b-7da1f83926f6",
+    "display_name": "Sherri Baker",
+    "avatar_url": "https://placeimg.com/86/17/any",
+    "age": 18,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -67.827918,
+        1.624658
+      ]
+    },
+    "interests": [
+      "casual",
+      "minimal",
+      "bold"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "1979-06-07T19:50:44",
+    "updated_at": "2004-07-03T21:53:07",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "6a3f9165388d7f9113fc9043",
+      "860dcd57219e09e31da79e8a"
+    ],
+    "wishlist_product_ids": [
+      "1a658665fe70537484d565ad",
+      "038b2654e5b2317d4fc7ed35",
+      "127c40a7c662ef649d45108a"
+    ],
+    "last_login": "2007-10-30T21:36:55",
+    "delivery_addresses": {
+      "home": {
+        "address": "66226 Ashley Radial\nSandersburgh, NH 94328",
+        "pincode": "67367",
+        "phone": "(924)673-9989x706"
+      },
+      "work": {
+        "address": "5577 Grant Fort\nArroyoville, HI 47611",
+        "pincode": "46734",
+        "phone": "+1-476-632-1174"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_33",
+    "email": "rosalesstephen@gmail.com",
+    "password_hash": "ca3b6e39a63c4a54f4a63c26d7e37224acc9c4418a02eed5259bb26e842fa648",
+    "oauth_provider": "facebook",
+    "oauth_id": "fca68c1b-5590-4de7-821c-081ce973810b",
+    "display_name": "Melissa Smith",
+    "avatar_url": "https://placeimg.com/99/729/any",
+    "age": 23,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        56.522794,
+        -87.305322
+      ]
+    },
+    "interests": [
+      "layered",
+      "bold",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "regular",
+      "oversized"
+    ],
+    "created_at": "1997-02-26T23:39:37",
+    "updated_at": "1981-10-03T20:55:45",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "df32a05c6b2c8be2ce6c80ae",
+      "7f04ad0ed6e217fb6ff31edc"
+    ],
+    "wishlist_product_ids": [
+      "13772805683935af7755f606",
+      "4f6a2dad512bed8266c66417",
+      "be5858a43eaab10d0cd5a470"
+    ],
+    "last_login": "2004-02-17T04:02:57",
+    "delivery_addresses": {
+      "home": {
+        "address": "71460 Rachael Burgs\nNorth Carlaside, ME 37335",
+        "pincode": "92408",
+        "phone": "+1-401-004-2142x013"
+      },
+      "work": {
+        "address": "870 Strong Spurs Suite 534\nMoonshire, LA 77148",
+        "pincode": "28593",
+        "phone": "860-765-1551"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_34",
+    "email": "brandy89@martin.com",
+    "password_hash": "b9b2bc6d31fb15d8c92a18b400836a044c35204e975846bd419d123d9809c3ca",
+    "oauth_provider": "apple",
+    "oauth_id": "fbc988f5-0d70-4bd6-9f7b-2d9b7d3f535f",
+    "display_name": "Tracie Hernandez",
+    "avatar_url": "https://dummyimage.com/624x224",
+    "age": 28,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        142.117341,
+        -58.864372
+      ]
+    },
+    "interests": [
+      "layered",
+      "minimal",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "loose"
+    ],
+    "created_at": "2016-12-15T11:09:22",
+    "updated_at": "1990-01-18T23:50:36",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "33d6db9e2a4c04f4b5dd3dd3",
+      "dae357d447f27aa6d6aeef50"
+    ],
+    "wishlist_product_ids": [
+      "cf21421042d3fb97cf08c81f",
+      "f9080ebb10436f614ef45b1c",
+      "df7391005727b5d0b2555b61"
+    ],
+    "last_login": "1976-09-30T16:25:08",
+    "delivery_addresses": {
+      "home": {
+        "address": "3664 Keith Fork\nNorth Karen, SC 97332",
+        "pincode": "22152",
+        "phone": "961.579.2421"
+      },
+      "work": {
+        "address": "017 Griffin Wells Suite 772\nDanielfort, TN 40217",
+        "pincode": "80862",
+        "phone": "159-590-8899"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_35",
+    "email": "ejones@thompson-jones.com",
+    "password_hash": "7dfee98ee5bb13120b4c94d1724e592c4a100f5f4e1e543038b06263510787f4",
+    "oauth_provider": "apple",
+    "oauth_id": "e3fa1983-8f21-4f18-90a4-44b819d44568",
+    "display_name": "Paul Hudson",
+    "avatar_url": "https://www.lorempixel.com/303/228",
+    "age": 19,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -22.56921,
+        -59.632867
+      ]
+    },
+    "interests": [
+      "casual",
+      "techwear",
+      "layered"
+    ],
+    "fit_preferences": [
+      "regular",
+      "oversized"
+    ],
+    "created_at": "2019-09-12T12:34:58",
+    "updated_at": "1997-04-15T06:31:31",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "0b67a7ec96b821c53a6c434a",
+      "826a686e2cbc39582622f35d"
+    ],
+    "wishlist_product_ids": [
+      "1aa1c30ad85e2d70600782d4",
+      "1bbf7a1d42129eab5e3e7153",
+      "1ff8f018c84046f89aaf4b29"
+    ],
+    "last_login": "1977-01-25T11:41:03",
+    "delivery_addresses": {
+      "home": {
+        "address": "6279 Dawn Course\nWest Markshire, ID 39168",
+        "pincode": "41576",
+        "phone": "+1-323-513-9818x06794"
+      },
+      "work": {
+        "address": "1060 Peter Crest Suite 897\nLake Jason, VA 02709",
+        "pincode": "68049",
+        "phone": "471-425-4245x4136"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_36",
+    "email": "yellis@barton.net",
+    "password_hash": "c4148dcd3621322a719c5da49a131687414e6bdabe2ad47fb73d0b3f9d2c9327",
+    "oauth_provider": "google",
+    "oauth_id": "3187d139-765c-4e1d-acc6-ecf1f5bcb11d",
+    "display_name": "Julia Donaldson",
+    "avatar_url": "https://placekitten.com/924/697",
+    "age": 31,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        21.699283,
+        -2.281431
+      ]
+    },
+    "interests": [
+      "layered",
+      "vintage",
+      "minimal"
+    ],
+    "fit_preferences": [
+      "loose",
+      "regular"
+    ],
+    "created_at": "2025-02-12T21:54:03",
+    "updated_at": "1974-08-02T14:28:59",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "a3c416bafeee5a5a91bf510f",
+      "0389eaf440dc7683e737956f"
+    ],
+    "wishlist_product_ids": [
+      "916f9482c46bfe8bdb571bae",
+      "0f6c87768664089b526ff67e",
+      "c836a99170f9918f1cd8975b"
+    ],
+    "last_login": "2020-03-19T07:11:32",
+    "delivery_addresses": {
+      "home": {
+        "address": "856 Steele Passage Apt. 841\nWeaverhaven, OR 15846",
+        "pincode": "88051",
+        "phone": "001-944-598-2895x4586"
+      },
+      "work": {
+        "address": "8168 Benson Ferry\nNew Melissafort, OR 05102",
+        "pincode": "27246",
+        "phone": "(866)854-6502x96538"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_37",
+    "email": "bmoore@moore.com",
+    "password_hash": "5ab18a27146aae407e5c76d41120e1b777c2fc819e38b026eba5ec8dc176737a",
+    "oauth_provider": "apple",
+    "oauth_id": "567073ed-9ea5-490e-b764-ecbf80d6c39a",
+    "display_name": "Carol Peterson",
+    "avatar_url": "https://placeimg.com/122/486/any",
+    "age": 20,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        85.917325,
+        -28.196494
+      ]
+    },
+    "interests": [
+      "casual",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "fitted"
+    ],
+    "created_at": "2012-11-06T17:15:17",
+    "updated_at": "2010-10-26T20:03:38",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "c1b6e7d8b88fe2fef59fbeea",
+      "59dcde148f0da8659c5e0068"
+    ],
+    "wishlist_product_ids": [
+      "953ef9d9712f115e60c95e48",
+      "363b020d57b7cccb16872099",
+      "04021e2513de39349d77c291"
+    ],
+    "last_login": "1997-07-30T19:04:52",
+    "delivery_addresses": {
+      "home": {
+        "address": "6705 James Creek\nWilliamsville, ID 81938",
+        "pincode": "50239",
+        "phone": "+1-565-710-7803"
+      },
+      "work": {
+        "address": "9503 Carter Islands\nBakerfort, WA 76927",
+        "pincode": "76368",
+        "phone": "232.110.6534"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_38",
+    "email": "zgeorge@gmail.com",
+    "password_hash": "d4ed36f42f87122067c2b0d7db12f36227585932e482232fdfb53c8044bf01d6",
+    "oauth_provider": "google",
+    "oauth_id": "069395dd-ca7d-403d-b592-aaee02d3eb98",
+    "display_name": "Patrick Adams",
+    "avatar_url": "https://placeimg.com/911/68/any",
+    "age": 37,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -55.562348,
+        -15.986772
+      ]
+    },
+    "interests": [
+      "vintage",
+      "techwear",
+      "layered"
+    ],
+    "fit_preferences": [
+      "loose",
+      "regular"
+    ],
+    "created_at": "2014-04-24T13:04:31",
+    "updated_at": "1987-08-02T02:44:23",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "368adbe0a2a90ed453d3f957",
+      "eeb9016b1191f9ac226a3b95"
+    ],
+    "wishlist_product_ids": [
+      "9ee00f6a2d2796b0cfc6ee42",
+      "601581e44de0c5c92c0d0606",
+      "5299420ee463e9532e22f6f8"
+    ],
+    "last_login": "2003-04-25T11:49:02",
+    "delivery_addresses": {
+      "home": {
+        "address": "6754 Brown Circles\nWest Michael, TX 18077",
+        "pincode": "78236",
+        "phone": "538.733.5848"
+      },
+      "work": {
+        "address": "216 Elizabeth Flats\nAmandaberg, ND 38541",
+        "pincode": "28912",
+        "phone": "894-844-9277x8880"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_39",
+    "email": "kelly46@yahoo.com",
+    "password_hash": "7b1710ff9c4dea8a9e678fa1866e6a662abd6b8d6055fae772baf1edcbcda7a1",
+    "oauth_provider": "apple",
+    "oauth_id": "6aad73dc-f2cd-487d-a3b1-16ee2f86a5b4",
+    "display_name": "Mercedes White",
+    "avatar_url": "https://placekitten.com/393/497",
+    "age": 40,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -58.760953,
+        -27.969877
+      ]
+    },
+    "interests": [
+      "casual",
+      "techwear",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "loose",
+      "regular"
+    ],
+    "created_at": "2024-04-26T11:02:44",
+    "updated_at": "1992-08-04T16:45:23",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "09163798e99d62b7cc865d0e",
+      "be329739448d10a99f7d6bf6"
+    ],
+    "wishlist_product_ids": [
+      "ce12a8bdef5fac855fdd2dc2",
+      "a2ea34d8cea1fb9edb2a8de2",
+      "4550214c0e05f92235486878"
+    ],
+    "last_login": "2002-10-05T08:58:28",
+    "delivery_addresses": {
+      "home": {
+        "address": "006 Matthew Mill\nSanchezstad, MS 91630",
+        "pincode": "73808",
+        "phone": "098-243-7093x5827"
+      },
+      "work": {
+        "address": "1725 Amber Gardens Apt. 852\nTorresside, CA 38092",
+        "pincode": "62652",
+        "phone": "(215)902-9036"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_40",
+    "email": "hammondrebecca@ortiz.biz",
+    "password_hash": "052b0e7b8b0d20d975295b16d3d97a457574e3b428b007da1c341487cdaf5cec",
+    "oauth_provider": "facebook",
+    "oauth_id": "7c9f2a1b-ec5d-4d03-ace3-a6682d8fb598",
+    "display_name": "Robert Mendoza",
+    "avatar_url": "https://placeimg.com/596/870/any",
+    "age": 31,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        139.096762,
+        5.866172
+      ]
+    },
+    "interests": [
+      "layered",
+      "bold",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "regular",
+      "oversized"
+    ],
+    "created_at": "1971-11-28T13:15:29",
+    "updated_at": "2001-06-01T20:45:06",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "4b1f955b0aa4ebb2ac70f526",
+      "ce90ba313efed351d0288694"
+    ],
+    "wishlist_product_ids": [
+      "8f95ba7f6a830a6c5c458f97",
+      "967be970c1ba9e3fc1c7da7d",
+      "0122ec75def51c7d93f91071"
+    ],
+    "last_login": "2018-06-09T12:37:34",
+    "delivery_addresses": {
+      "home": {
+        "address": "USNS Thomas\nFPO AE 09852",
+        "pincode": "56739",
+        "phone": "858-807-4718x53782"
+      },
+      "work": {
+        "address": "045 Bray Forges Suite 289\nHarrisburgh, NC 14873",
+        "pincode": "75681",
+        "phone": "+1-560-077-6223x2318"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_41",
+    "email": "tabitha16@montes.com",
+    "password_hash": "81444bb378333d9176ebc19d19fbf057322257af1059daf2039422c916b44239",
+    "oauth_provider": "facebook",
+    "oauth_id": "08ecec07-0212-4196-a7b0-6f5b64aadfbe",
+    "display_name": "Shannon Deleon",
+    "avatar_url": "https://dummyimage.com/772x1003",
+    "age": 37,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -143.151717,
+        -26.148986
+      ]
+    },
+    "interests": [
+      "casual",
+      "minimal",
+      "layered"
+    ],
+    "fit_preferences": [
+      "loose",
+      "fitted"
+    ],
+    "created_at": "2024-06-14T11:50:16",
+    "updated_at": "2021-09-30T18:52:29",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "1b42a4f3368cf452ba5145fb",
+      "5db152b10a4251c2d9ea0441"
+    ],
+    "wishlist_product_ids": [
+      "7189f9aa4abd758e1fa04b29",
+      "d478db1ffe6aa8c2222f5dea",
+      "e0372ddba9572c2efbde0752"
+    ],
+    "last_login": "2023-05-20T11:02:52",
+    "delivery_addresses": {
+      "home": {
+        "address": "56327 Patterson Summit Suite 810\nEast Stephanieville, TX 16277",
+        "pincode": "76337",
+        "phone": "812-617-7091x88991"
+      },
+      "work": {
+        "address": "140 Thomas Pike\nNorth Vincenthaven, PA 51575",
+        "pincode": "49879",
+        "phone": "658-316-7449"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_42",
+    "email": "adam00@hotmail.com",
+    "password_hash": "1774e80e1697ee58da21a1a5d1f5dcb812c5ae016bc8ff931e5173c5f269de31",
+    "oauth_provider": "apple",
+    "oauth_id": "564bc2d3-e3d7-4349-8d36-dfee4dfba4f3",
+    "display_name": "Jonathan Burns",
+    "avatar_url": "https://dummyimage.com/761x607",
+    "age": 21,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -68.590663,
+        -43.743404
+      ]
+    },
+    "interests": [
+      "bold",
+      "vintage",
+      "casual"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "2002-02-26T20:55:39",
+    "updated_at": "2005-06-20T20:29:01",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "09179734dacdc24acacec7f6",
+      "ae11b584f294c40ff11243c9"
+    ],
+    "wishlist_product_ids": [
+      "65ca43454787994bde329e14",
+      "6b9e33648024ec346ceaec83",
+      "8f47d0231bed7524b12efea9"
+    ],
+    "last_login": "2015-03-07T00:17:46",
+    "delivery_addresses": {
+      "home": {
+        "address": "5939 Cindy Expressway Apt. 147\nSouth Scottmouth, OH 25735",
+        "pincode": "13750",
+        "phone": "8307016209"
+      },
+      "work": {
+        "address": "9168 Burns Station Apt. 745\nHernandezmouth, ND 73482",
+        "pincode": "14886",
+        "phone": "+1-578-019-2372x3219"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_43",
+    "email": "chapmanjoseph@jimenez.com",
+    "password_hash": "246231cbc9b3fdbec4aee6f4c0dd879ef0b9ed7e33bcf6f810ff895e5a4ae269",
+    "oauth_provider": "apple",
+    "oauth_id": "cdc8409d-2955-42a5-b38a-34cebf28f382",
+    "display_name": "Jon Smith",
+    "avatar_url": "https://dummyimage.com/201x495",
+    "age": 20,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -80.834822,
+        64.173114
+      ]
+    },
+    "interests": [
+      "minimal",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "regular",
+      "fitted"
+    ],
+    "created_at": "1984-05-11T18:04:16",
+    "updated_at": "1995-09-03T22:57:48",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "88f659c39be622295843a04e",
+      "5d2443a10cb4ed8468ce40af"
+    ],
+    "wishlist_product_ids": [
+      "c028c939cdf1cd8cb6389762",
+      "6c3d544f0e4f35ffcbb01ce7",
+      "a48056f281bc28283334ee43"
+    ],
+    "last_login": "2013-07-26T10:27:46",
+    "delivery_addresses": {
+      "home": {
+        "address": "48027 Bruce Court Apt. 120\nNorth Ian, ID 40708",
+        "pincode": "33865",
+        "phone": "278-355-0401"
+      },
+      "work": {
+        "address": "530 Christina Cove\nKennedyland, NE 24700",
+        "pincode": "16284",
+        "phone": "+1-196-918-6066x154"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_44",
+    "email": "aimeelewis@haynes-guerrero.org",
+    "password_hash": "2f0dfc29bf1cfa31c76636dc132a0a466ce7997684864ca3155be9dba313bfcc",
+    "oauth_provider": "google",
+    "oauth_id": "691462fe-8655-483d-bc90-433e891be31a",
+    "display_name": "Jesus Burns",
+    "avatar_url": "https://placekitten.com/99/369",
+    "age": 38,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        50.191012,
+        40.179226
+      ]
+    },
+    "interests": [
+      "techwear",
+      "casual",
+      "layered"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "2020-09-03T23:36:45",
+    "updated_at": "1991-06-21T02:33:51",
+    "is_admin": false,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "8be60d1861529d2ba1ccfb4d",
+      "1be5950b91b80f00cdbd8c8d"
+    ],
+    "wishlist_product_ids": [
+      "1cd2b1883e81463103eb7d68",
+      "6ec5630977dcb648f9e21fd6",
+      "c93114b78bc8a9d35507c263"
+    ],
+    "last_login": "2021-10-06T22:36:13",
+    "delivery_addresses": {
+      "home": {
+        "address": "USCGC Woods\nFPO AA 58758",
+        "pincode": "59110",
+        "phone": "(595)737-7265x001"
+      },
+      "work": {
+        "address": "569 Wyatt Greens Suite 122\nWest Amber, SD 13920",
+        "pincode": "47444",
+        "phone": "858.652.5644x530"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_45",
+    "email": "franklinjoel@blevins.com",
+    "password_hash": "f5580fa514c9ff1355a865a491d7ae4cae583ec70b5351100ad6d34356dbe39a",
+    "oauth_provider": "facebook",
+    "oauth_id": "5ac7f32d-022a-4ef6-924a-cbe00a6d7fda",
+    "display_name": "Jessica Rodriguez",
+    "avatar_url": "https://placeimg.com/724/982/any",
+    "age": 43,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -134.221585,
+        -72.68665
+      ]
+    },
+    "interests": [
+      "bold",
+      "minimal",
+      "casual"
+    ],
+    "fit_preferences": [
+      "regular",
+      "loose"
+    ],
+    "created_at": "2011-11-10T08:10:27",
+    "updated_at": "2015-03-12T12:26:37",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "c82dfbbfc72f4e451a34fbbb",
+      "7f659667b13225224fd1312c"
+    ],
+    "wishlist_product_ids": [
+      "61659ae2b1df8bb7f410b577",
+      "ca7c05532ab650c75501931c",
+      "559e265c5514d504c3bac188"
+    ],
+    "last_login": "2007-08-25T18:40:16",
+    "delivery_addresses": {
+      "home": {
+        "address": "1386 Stevens Square\nWalkerview, WV 30597",
+        "pincode": "07422",
+        "phone": "419-738-4914"
+      },
+      "work": {
+        "address": "1408 Amber Isle\nNew Gabriellestad, DC 49039",
+        "pincode": "77651",
+        "phone": "768.222.1202x682"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_46",
+    "email": "nicholscasey@gilbert.com",
+    "password_hash": "349eb24f9039912c4dc3d8cc51d3bf85510fe72ea8c1d45361113f5c9d924ec6",
+    "oauth_provider": "google",
+    "oauth_id": "f11b6e35-f320-4c21-a99a-36ca7e6c68e2",
+    "display_name": "Tony Thomas",
+    "avatar_url": "https://placeimg.com/229/581/any",
+    "age": 17,
+    "gender": "female",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        -134.855617,
+        -85.954554
+      ]
+    },
+    "interests": [
+      "casual",
+      "minimal",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "fitted",
+      "loose"
+    ],
+    "created_at": "1991-07-03T10:34:51",
+    "updated_at": "2005-11-13T12:30:33",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "f09d95a1d9ee733ec0534b9e",
+      "f7a627020e012a9ab92eb0be"
+    ],
+    "wishlist_product_ids": [
+      "3b58f8c02b7abc8abcdc122a",
+      "4d16b6f6f8566c625ecbbf13",
+      "9e8d921ebaa276aca107362a"
+    ],
+    "last_login": "1978-06-16T06:23:34",
+    "delivery_addresses": {
+      "home": {
+        "address": "325 Stevens Unions\nSouth Jason, SC 49939",
+        "pincode": "02956",
+        "phone": "787-591-1123"
+      },
+      "work": {
+        "address": "984 Emily Trail Apt. 012\nLanceport, VT 19784",
+        "pincode": "57052",
+        "phone": "001-183-582-5354x0422"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_47",
+    "email": "thomas24@green-jordan.com",
+    "password_hash": "66bb8dac68c7e34a54618da8671bcf14d600b5670b4ddffda3334259b0582816",
+    "oauth_provider": "google",
+    "oauth_id": "23bc2c31-2d64-410a-be82-840adde74105",
+    "display_name": "Victor Hopkins",
+    "avatar_url": "https://placeimg.com/226/341/any",
+    "age": 22,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        71.004746,
+        -16.825288
+      ]
+    },
+    "interests": [
+      "techwear",
+      "layered",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "loose",
+      "oversized"
+    ],
+    "created_at": "2008-10-26T06:35:25",
+    "updated_at": "2022-08-19T09:15:02",
+    "is_admin": false,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "817c0d0750d519fb5c670f82",
+      "91e87e59c92592b32b7cffd6"
+    ],
+    "wishlist_product_ids": [
+      "919b9d14254779a30cfffee4",
+      "690fcb19ed7cd435f4b6ca06",
+      "2b577f0848b714bc6e899f76"
+    ],
+    "last_login": "2012-01-28T20:01:20",
+    "delivery_addresses": {
+      "home": {
+        "address": "18493 Singh Forges\nAnamouth, CA 64043",
+        "pincode": "22309",
+        "phone": "410-318-4272x1996"
+      },
+      "work": {
+        "address": "260 Jason Station Suite 111\nSmithborough, TX 06619",
+        "pincode": "91394",
+        "phone": "001-844-909-2472"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_48",
+    "email": "perezmadison@hotmail.com",
+    "password_hash": "0294cb4cba49c0f884ee6a2b872d8877c722e6a1285ea847b5e8e82d7d7bbff3",
+    "oauth_provider": "facebook",
+    "oauth_id": "a36df248-3f49-4681-9081-0ecad2ad1b35",
+    "display_name": "Bradley Davis",
+    "avatar_url": "https://dummyimage.com/449x968",
+    "age": 41,
+    "gender": "other",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        139.953866,
+        -41.529766
+      ]
+    },
+    "interests": [
+      "techwear",
+      "bold",
+      "minimal"
+    ],
+    "fit_preferences": [
+      "regular",
+      "fitted"
+    ],
+    "created_at": "2001-04-04T07:40:05",
+    "updated_at": "1981-07-13T14:46:47",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "ff2744baa09f3733a10adb4a",
+      "2e87420ed16c44c2a33a7dcf"
+    ],
+    "wishlist_product_ids": [
+      "dd8ea6ab4c2ecd696ac6eedd",
+      "88b269e744f5b5aeeaede87e",
+      "4a1a62a11e2b02245a7e8a45"
+    ],
+    "last_login": "2003-10-02T18:12:10",
+    "delivery_addresses": {
+      "home": {
+        "address": "1972 Amanda Islands\nMichaelbury, CO 85931",
+        "pincode": "05568",
+        "phone": "(733)529-4284x4357"
+      },
+      "work": {
+        "address": "8715 Green Port Suite 226\nWest Jessica, WY 38712",
+        "pincode": "96670",
+        "phone": "(884)046-5930"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_49",
+    "email": "vanessanguyen@warren.com",
+    "password_hash": "7d56f968f0266ee010b7baed293c784f019a2a5accf0ab15893e326cdf89c533",
+    "oauth_provider": "facebook",
+    "oauth_id": "61c7e9a8-4bf3-41c5-af5f-d722f6367307",
+    "display_name": "Melissa Francis",
+    "avatar_url": "https://dummyimage.com/507x323",
+    "age": 22,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        4.073098,
+        44.281124
+      ]
+    },
+    "interests": [
+      "bold",
+      "layered",
+      "techwear"
+    ],
+    "fit_preferences": [
+      "oversized",
+      "regular"
+    ],
+    "created_at": "1994-12-15T05:37:06",
+    "updated_at": "1971-02-21T15:29:18",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "d4b2e86e44901658af49ba1e",
+      "d5f121b3238917f081ba1111"
+    ],
+    "wishlist_product_ids": [
+      "e832a6633329e50656de7b82",
+      "0e169250e09a48d01cea925f",
+      "8ad499b47bb5c6d27812886b"
+    ],
+    "last_login": "1976-08-03T22:23:45",
+    "delivery_addresses": {
+      "home": {
+        "address": "96057 Thompson Gateway Apt. 748\nBraunburgh, MA 48805",
+        "pincode": "88663",
+        "phone": "001-369-455-5083x95505"
+      },
+      "work": {
+        "address": "406 Maria Overpass\nWest Tracey, NJ 58136",
+        "pincode": "78273",
+        "phone": "+1-379-225-9946"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  },
+  {
+    "id": "user_50",
+    "email": "rogersdavid@yates.org",
+    "password_hash": "394dee4120217d7239ffb87903ec44442841d49c25b1f469dbee349c34dc7b40",
+    "oauth_provider": "facebook",
+    "oauth_id": "43c2359a-7148-4e95-8056-0e7eedca3412",
+    "display_name": "Jeanne Pope",
+    "avatar_url": "https://www.lorempixel.com/1021/35",
+    "age": 37,
+    "gender": "male",
+    "location_geojson": {
+      "type": "Point",
+      "coordinates": [
+        83.16768,
+        21.87319
+      ]
+    },
+    "interests": [
+      "bold",
+      "techwear",
+      "vintage"
+    ],
+    "fit_preferences": [
+      "loose",
+      "regular"
+    ],
+    "created_at": "2023-07-01T17:22:34",
+    "updated_at": "1992-03-01T04:50:37",
+    "is_admin": true,
+    "is_brand_user": false,
+    "followed_brand_ids": [
+      "4175ff8a2958872e4b375655",
+      "9a3c6a86882ffa1b999e5b92"
+    ],
+    "wishlist_product_ids": [
+      "bf314f87f506ae6cd4560321",
+      "4081fdccaba7f4c0dbd2a7db",
+      "87f8cf8e3c1c4a7ddd105e61"
+    ],
+    "last_login": "2002-10-23T17:51:55",
+    "delivery_addresses": {
+      "home": {
+        "address": "9374 Elizabeth River\nLake Natashaside, TX 35171",
+        "pincode": "11003",
+        "phone": "001-626-725-0692x8140"
+      },
+      "work": {
+        "address": "8895 Jacqueline Cliff\nWest Jonathan, ME 07287",
+        "pincode": "57506",
+        "phone": "185.052.1221"
+      }
+    },
+    "payment_methods": {
+      "default": "visa_ending_4242",
+      "cards": [
+        {
+          "type": "Visa",
+          "last4": "4242",
+          "exp": "12/26"
+        }
+      ]
+    }
+  }
+]
