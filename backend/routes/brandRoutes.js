@@ -1,13 +1,15 @@
 // backend/routes/brandRoutes.js
-
 const express = require('express');
 const router = express.Router();
-const { getBrandById, getBrandByName } = require('../controllers/brandController');
+const { getBrandById, getBrandByName, getAllBrands } = require('../controllers/brandController');
 
-// Route to get a brand by its MongoDB ID
+// GET all brands
+router.get('/', getAllBrands);
+
+// GET brand by ID
 router.get('/id/:id', getBrandById);
 
-// Route to get a brand by its name (case-insensitive)
+// GET brand by name
 router.get('/name/:name', getBrandByName);
 
 module.exports = router;
