@@ -1,9 +1,26 @@
 const Product = require('../models/product');
+const mongoose = require('mongoose');
+
+// GET all products
+exports.getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find().populate('brand category');
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 // GET product by ID
 exports.getProductById = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'Invalid product ID' });
+  }
+
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(id).populate('brand category');
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
@@ -11,20 +28,11 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// GET product by category (assuming tags act as categories)
+// GET products by category (uses tag as category)
 exports.getProductByCategory = async (req, res) => {
   try {
-    const products = await Product.find({ tags: req.body.category });
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-// GET all products by category
-exports.getAllProductsByCategory = async (req, res) => {
-  try {
-    const products = await Product.find({ tags: req.body.category });
+    const { category } = req.query;
+    const products = await Product.find({ tags: category });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -34,14 +42,15 @@ exports.getAllProductsByCategory = async (req, res) => {
 // GET all products by brand
 exports.getAllProductsByBrand = async (req, res) => {
   try {
-    const products = await Product.find({ brand_id: req.body.brandId });
+    const { brandId } = req.query;
+    const products = await Product.find({ brand: brandId });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// GET all products by price (e.g., under 1000 or between range)
+// GET products by price range
 exports.getAllProductsByPrice = async (req, res) => {
   const { min, max } = req.query;
   try {
@@ -60,7 +69,8 @@ exports.getAllProductsByPrice = async (req, res) => {
 // GET products by gender
 exports.getProductsByGender = async (req, res) => {
   try {
-    const products = await Product.find({ gender: req.body.gender });
+    const { gender } = req.query;
+    const products = await Product.find({ gender });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -70,7 +80,8 @@ exports.getProductsByGender = async (req, res) => {
 // GET products by tag
 exports.getProductsByTag = async (req, res) => {
   try {
-    const products = await Product.find({ tags: req.body.tag });
+    const { tag } = req.query;
+    const products = await Product.find({ tags: tag });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
