@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+require('../models/brand');     // ✅ registers Brand schema
+require('../models/category');  // ✅ registers Category schema (if needed)
+
+
+// ✅ Add this first
+router.get('/', productController.getAllProducts);
 
 // Get product by ID
 router.get('/:id', productController.getProductById);
