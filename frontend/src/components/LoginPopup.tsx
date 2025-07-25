@@ -1,19 +1,47 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { useUser } from '../contexts/UserContext';
 
 interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onContinue: (phoneNumber: string) => void;
+  onContinue?: (phoneNumber: string) => void;
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
+  const { setUserData } = useUser();
+  const navigate = useNavigate();
 
   const handleContinue = () => {
     if (phoneNumber.trim()) {
-      onContinue(`${countryCode}${phoneNumber}`);
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+      // Simulate checking if user is new (in real app, this would be an API call)
+      const isNewUser = true; // For demo purposes, always treat as new user
+
+      // Update user context
+      setUserData({
+        phoneNumber: fullPhoneNumber,
+        isLoggedIn: true,
+        isNewUser: isNewUser,
+        onboardingData: {}
+      });
+
+      // Close the popup
+      onClose();
+
+      // Call the original onContinue if provided (for backward compatibility)
+      if (onContinue) {
+        onContinue(fullPhoneNumber);
+      }
+
+      // If new user, redirect to onboarding
+      if (isNewUser) {
+        navigate('/onboarding');
+      }
     }
   };
 
@@ -116,7 +144,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
         </button>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes slide-up {
           from {
             transform: translateY(100%);
