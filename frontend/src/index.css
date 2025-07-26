@@ -154,3 +154,37 @@ button:focus, .btn:focus {
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
+
+/* Tinder Card Styles */
+.tinder-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  cursor: grab;
+  user-select: none;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.tinder-card:active {
+  cursor: grabbing;
+}
+
+/* FIX: Removed the 'opacity' property from the rules below.
+  This was causing the "glass effect" by making the cards in the stack
+  semi-transparent and showing through each other.
+*/
+.tinder-card:nth-child(2) {
+  transform: scale(0.95) translateY(10px);
+}
+
+.tinder-card:nth-child(3) {
+  transform: scale(0.9) translateY(20px);
+}
+
+.tinder-card:nth-child(n+4) {
+  transform: scale(0.85) translateY(30px);
+}
