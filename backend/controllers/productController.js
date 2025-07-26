@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
+const Brand = require('../models/brand');
 const mongoose = require('mongoose');
 
 // GET all products
@@ -40,9 +41,20 @@ exports.getProductByCategory = async (req, res) => {
   }
 };
 
-// GET all products by brand
+// ✅ GET all products by brand ID
 exports.getAllProductsByBrand = async (req, res) => {
-  res.json({ success: true });
+  try {
+    const brandId = req.query.id;
+
+    if (!brandId || !mongoose.Types.ObjectId.isValid(brandId)) {
+      return res.status(400).json({ error: 'Valid brand ID is required in query (?id=...)' });
+    }
+
+    const products = await Product.find({ brand: brandId }).populate('brand category');
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 // GET products by price range
