@@ -6,7 +6,7 @@ import OnboardingStep2 from '../components/OnboardingStep2';
 
 const OnboardingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const { updateOnboardingData, completeOnboarding } = useUser();
+  const { userData, updateOnboardingData, completeOnboarding } = useUser();
   const navigate = useNavigate();
 
   const handleStep1Continue = (ageRange: string, styleInterests: string[]) => {
@@ -26,6 +26,8 @@ const OnboardingPage: React.FC = () => {
     navigate('/');
   };
 
+  console.log('User data in onboarding:', userData);
+  
   return (
     <div>
       {currentStep === 1 && (
