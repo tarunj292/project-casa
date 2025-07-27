@@ -13,6 +13,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import SwipeProductsPage from './pages/SwipeProductsPage';
 
+
 function App() {
   return (
     <div className="mobile-container">
