@@ -58,11 +58,11 @@ const productSchema = new mongoose.Schema({
   },
 
   // Reference to Category model
-  category: {
+  category: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
-  },
+  }],
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
