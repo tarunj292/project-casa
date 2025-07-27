@@ -17,11 +17,11 @@ const OnboardingPage: React.FC = () => {
     setCurrentStep(2);
   };
 
-  const handleStep2Continue = (preferredFits: string[]) => {
+  const handleStep2Continue = async (preferredFits: string[]) => {
     updateOnboardingData({
       preferredFits
     });
-    completeOnboarding();
+    await completeOnboarding();
     // Navigate to home page after completing onboarding
     navigate('/');
   };

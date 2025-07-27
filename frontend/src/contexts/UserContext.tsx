@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import axios from 'axios';
 
 export interface UserData {
   phoneNumber?: string;
@@ -15,7 +16,7 @@ interface UserContextType {
   userData: UserData;
   setUserData: (data: UserData) => void;
   updateOnboardingData: (data: Partial<UserData['onboardingData']>) => void;
-  completeOnboarding: () => void;
+  completeOnboarding: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -37,11 +38,37 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }));
   };
 
-  const completeOnboarding = () => {
-    setUserData(prev => ({
-      ...prev,
-      isNewUser: false
-    }));
+  const completeOnboarding = async () => {
+    try {
+      // Prepare user data for backend
+      const userDataForBackend = {
+        phone_number: userData.phoneNumber,
+        email: `${userData.phoneNumber?.replace(/[^0-9]/g, '')}@temp.casa`, // temporary email
+        display_name: `User_${userData.phoneNumber?.slice(-4)}`,
+        interests: userData.onboardingData?.styleInterests || [],
+        ml_preferences: userData.onboardingData?.preferredFits || [],
+        age: userData.onboardingData?.ageRange === 'Gen Z' ? 22 :
+             userData.onboardingData?.ageRange === 'Millennial' ? 30 : 25,
+        last_login: new Date()
+      };
+
+      // Send data to backend
+      const response = await axios.post('http://localhost:5002/api/users', userDataForBackend);
+      console.log('User registered successfully:', response.data);
+
+      // Update local state
+      setUserData(prev => ({
+        ...prev,
+        isNewUser: false
+      }));
+    } catch (error) {
+      console.error('Error registering user:', error);
+      // Still update local state even if backend fails
+      setUserData(prev => ({
+        ...prev,
+        isNewUser: false
+      }));
+    }
   };
 
   return (
