@@ -41,12 +41,17 @@ exports.getProductByCategory = async (req, res) => {
   }
 };
 
-// GET all products by brand
+// ✅ GET all products by brand ID
 exports.getAllProductsByBrand = async (req, res) => {
   try {
-    const { brandId } = req.body
-    const products = await Product.find({brand : brandId})
-    res.json( products );
+    const brandId = req.query.id;
+
+    if (!brandId || !mongoose.Types.ObjectId.isValid(brandId)) {
+      return res.status(400).json({ error: 'Valid brand ID is required in query (?id=...)' });
+    }
+
+    const products = await Product.find({ brand: brandId }).populate('brand category');
+    res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
