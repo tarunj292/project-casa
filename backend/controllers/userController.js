@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-// Create User
+// ✅ Create User
 exports.createUser = async (req, res) => {
   try {
     console.log('Received user data:', req.body);
@@ -14,17 +14,27 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// Get All Users
+// ✅ Get All Users with Optional Filters
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const query = {};
+
+    if (req.query.gender) query.gender = req.query.gender;
+    if (req.query.age) query.age = Number(req.query.age);
+    if (req.query.email) query.email = new RegExp(req.query.email, 'i'); // partial, case-insensitive
+    if (req.query.interests) {
+      const interestsArray = req.query.interests.split(',');
+      query.interests = { $in: interestsArray };
+    }
+
+    const users = await User.find(query);
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Get Single User
+// ✅ Get Single User by ID
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -35,7 +45,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Update User
+// ✅ Update User by ID
 exports.updateUser = async (req, res) => {
   try {
     const updated = await User.findByIdAndUpdate(
@@ -50,7 +60,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// Delete User
+// ✅ Delete User by ID
 exports.deleteUser = async (req, res) => {
   try {
     const deleted = await User.findByIdAndDelete(req.params.id);
@@ -61,9 +71,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-// controllers/otpController.js
-// If you later want to send SMS, you can integrate Twilio or other SMS services.
-
+// ✅ Generate OTP (demo only)
 exports.generateOtp = async (req, res) => {
   try {
     const { phone } = req.body;
@@ -71,20 +79,10 @@ exports.generateOtp = async (req, res) => {
       return res.status(400).json({ error: "Phone number is required" });
     }
 
-    // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
-
-    // 👉 Here you can store OTP in DB or cache (e.g. Redis) against the phone number
-    // For demo we are just returning it in response
-    // Example: await OtpModel.create({ phone, otp, createdAt: new Date() });
-
-    // If you want to send via SMS: use Twilio or other service
-    // await sendSms(phone, `Your OTP is ${otp}`);
-
-    return res.json({ phone, otp }); // 🔥 in production, do NOT send OTP in response!
+    return res.json({ phone, otp }); // ⚠️ Don't expose OTP in prod
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-

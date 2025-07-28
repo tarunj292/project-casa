@@ -22,5 +22,4 @@ const userSchema = new mongoose.Schema({
   delivery_addresses: [{ type: String }],
   payment_methods: [{ type: String }]
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
-
 module.exports = mongoose.model('User', userSchema);
