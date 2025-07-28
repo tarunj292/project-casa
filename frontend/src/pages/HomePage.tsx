@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Heart, User, MapPin, ChevronDown } from 'lucide-react';
+import { Search, Heart, User, MapPin } from 'lucide-react';
+
+interface Brand {
+  _id: string;
+  name: string;
+  logo_url?: string;
+  is_active: boolean;
+  created_at?: string; // Add this to match the backend's `createdAt` field
+}
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedGender, setSelectedGender] = useState<'MAN' | 'WOMAN'>('MAN');
 
-  // Men's clothing categories
+  const [allBrands, setAllBrands] = useState<Brand[]>([]);
+  const [latestBrands, setLatestBrands] = useState<Brand[]>([]); // New state for latest brands
+  const [trendingBrands, setTrendingBrands] = useState<Brand[]>([]); // New state for trending brands
+  const [loadingBrands, setLoadingBrands] = useState(true);
+
+  // --- EXISTING HARDCODED DATA (Keep these for categories, iconic looks, and offers) ---
+  // ... (your menCategories, womenCategories, menIconicLooks, etc., remain here)
   const menCategories = [
     { id: 'oversized', label: 'Oversized T-shirt', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'shirts', label: 'Formal Shirts', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
@@ -18,7 +32,6 @@ const HomePage: React.FC = () => {
     { id: 'shorts', label: 'Shorts', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
 
-  // Women's clothing categories
   const womenCategories = [
     { id: 'dresses', label: 'Dresses', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'tops', label: 'Tops & Blouses', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
@@ -29,47 +42,34 @@ const HomePage: React.FC = () => {
     { id: 'jumpsuits', label: 'Jumpsuits', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'cardigans', label: 'Cardigans', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
-
-  // Get current categories based on selected gender
   const currentCategories = selectedGender === 'MAN' ? menCategories : womenCategories;
 
-  // Men's iconic looks
   const menIconicLooks = [
     { id: 'street-wear', label: 'STREET WEAR', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'old-money', label: 'OLD MONEY', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'casual-chic', label: 'CASUAL CHIC', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
-
-  // Women's iconic looks
   const womenIconicLooks = [
     { id: 'y2k', label: 'Y2K', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'boho-chic', label: 'BOHO CHIC', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'minimalist', label: 'MINIMALIST', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
-
-  // Get current iconic looks based on selected gender
   const currentIconicLooks = selectedGender === 'MAN' ? menIconicLooks : womenIconicLooks;
 
-  // Men's latest drops
-  const menLatestDrops = [
-    { id: 'snitch', brand: 'SNITCH', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-yellow-600' },
-    { id: 'zhms', brand: 'ZHMS', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-gray-800' },
-    { id: 'onemile', brand: 'ON3MILE', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-purple-400' },
-    { id: 'roadster', brand: 'ROADSTER', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-blue-600' },
+  const menOffers = [
+    { id: 'starting', title: 'STARTING', price: '₹499', color: 'bg-green-600', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'flat30', title: 'FLAT', discount: '30%', subtitle: 'OFF', color: 'bg-blue-600', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'buy2get1', title: 'BUY 2 GET 1', subtitle: 'FREE', color: 'bg-red-600', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'under1299', title: 'EVERYTHING UNDER', price: '₹1,299', color: 'bg-purple-600', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
-
-  // Women's latest drops
-  const womenLatestDrops = [
-    { id: 'zara', brand: 'ZARA', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-pink-500' },
-    { id: 'hm', brand: 'H&M', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-red-500' },
-    { id: 'forever21', brand: 'FOREVER 21', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-purple-600' },
-    { id: 'vero-moda', brand: 'VERO MODA', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400', color: 'bg-green-600' },
+  const womenOffers = [
+    { id: 'starting-women', title: 'STARTING', price: '₹399', color: 'bg-pink-600', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'flat40', title: 'FLAT', discount: '40%', subtitle: 'OFF', color: 'bg-purple-600', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'buy3get2', title: 'BUY 3 GET 2', subtitle: 'FREE', color: 'bg-red-600', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'under899', title: 'EVERYTHING UNDER', price: '₹899', color: 'bg-green-600', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
+  const currentOffers = selectedGender === 'MAN' ? menOffers : womenOffers;
 
-  // Get current latest drops based on selected gender
-  const currentLatestDrops = selectedGender === 'MAN' ? menLatestDrops : womenLatestDrops;
-
-  // Carousel data
   const carouselSlides = [
     {
       id: 1,
@@ -112,126 +112,101 @@ const HomePage: React.FC = () => {
     }
   ];
 
-  // Carousel state
+  const searchSuggestions = [
+    'Mini Dress', 'Urban Blazers', 'Tailored trousers',
+    'Street Shorts', 'Chinos', 'Relaxed Joggers'
+  ];
+  // --- END EXISTING HARDCODED DATA ---
+
+  // Carousel state and handlers (unchanged)
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Auto-play functionality
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
-    }, 4000); // Change slide every 4 seconds
-
+    }, 4000);
     return () => clearInterval(interval);
   }, [carouselSlides.length]);
 
-  // Carousel navigation functions
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
+  const goToSlide = (index: number) => setCurrentSlide(index);
+  const handleTouchStart = (e: React.TouchEvent) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX); };
+  const handleTouchMove = (e: React.TouchEvent) => { setTouchEnd(e.targetTouches[0].clientX); };
+  const handleTouchEnd = () => { if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; const isLeftSwipe = distance > 50; const isRightSwipe = distance < -50; if (isLeftSwipe) { nextSlide(); } else if (isRightSwipe) { prevSlide(); } };
+  const handleMouseDown = (e: React.MouseEvent) => { setIsDragging(true); setTouchEnd(null); setTouchStart(e.clientX); };
+  const handleMouseMove = (e: React.MouseEvent) => { if (!isDragging) return; setTouchEnd(e.clientX); };
+  const handleMouseUp = () => { if (!isDragging) return; setIsDragging(false); if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; const isLeftSwipe = distance > 50; const isRightSwipe = distance < -50; if (isLeftSwipe) { nextSlide(); } else if (isRightSwipe) { prevSlide(); } };
+  const handleMouseLeave = () => setIsDragging(false);
+
+  // --- UPDATED BRAND FETCHING LOGIC ---
+  useEffect(() => {
+    const fetchBrands = async () => {
+      setLoadingBrands(true);
+      try {
+        // Fetch all active brands
+        const allRes = await fetch("http://localhost:5002/api/brands");
+        if (!allRes.ok) throw new Error(`HTTP error! status: ${allRes.status}`);
+        const allData: Brand[] = await allRes.json();
+        const activeAllBrands = allData.filter(brand => brand.is_active);
+        setAllBrands(activeAllBrands);
+
+        // Fetch latest brands (using the 'sort=latest' query parameter)
+        const latestRes = await fetch("http://localhost:5002/api/brands?sort=latest");
+        if (!latestRes.ok) throw new Error(`HTTP error! status: ${latestRes.status}`);
+        const latestData: Brand[] = await latestRes.json();
+        // Filter for active brands if your backend doesn't already do it for 'latest' sort
+        const activeLatestBrands = latestData.filter(brand => brand.is_active);
+        setLatestBrands(activeLatestBrands);
+
+        // For trending, for now, we'll just take a slice of all brands.
+        // In a real app, you'd have a separate endpoint or property for trending.
+        setTrendingBrands(activeAllBrands.slice(0, 4)); // Example: first 4 active brands as trending
+
+      } catch (err) {
+        console.error("Error fetching brands:", err);
+        // Optionally, set an error state to display a message to the user
+      } finally {
+        setLoadingBrands(false);
+      }
+    };
+
+    fetchBrands();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // --- DERIVED STATES FOR LATEST DROPS (using the fetched `latestBrands` state) ---
+  const getLatestDropsByGender = (gender: 'MAN' | 'WOMAN') => {
+    // For a real application, you'd likely want to fetch latest brands specifically by gender from the backend.
+    // For now, this will show the overall latest brands fetched, regardless of the selected gender,
+    // as your backend currently provides a general 'latest' sort.
+    // If you need gender-specific latest drops, your Brand model would need a 'gender_affinity' field
+    // and your backend would need to filter by it.
+    // For display, we'll try to find a color, otherwise use a default.
+    return latestBrands.map(brand => {
+      // You could map specific colors to specific brand names if needed, or use a default.
+      // For a more robust solution, your brand model should have a `color` field.
+      const colors = ['bg-yellow-600', 'bg-gray-800', 'bg-purple-400', 'bg-blue-600', 'bg-pink-500', 'bg-red-500', 'bg-green-600'];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)]; // Just for demo
+      return {
+        id: brand._id,
+        brand: brand.name,
+        image: brand.logo_url || 'https://via.placeholder.com/100', // Use logo_url or a placeholder
+        color: randomColor // Assign a color or fetch from brand data if available
+      };
+    });
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  // Touch handlers for swipe functionality
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
-    }
-  };
-
-  // Mouse drag handlers for desktop
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setTouchEnd(null);
-    setTouchStart(e.clientX);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    setTouchEnd(e.clientX);
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  // Men's offers
-  const menOffers = [
-    { id: 'starting', title: 'STARTING', price: '₹499', color: 'bg-green-600', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'flat30', title: 'FLAT', discount: '30%', subtitle: 'OFF', color: 'bg-blue-600', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'buy2get1', title: 'BUY 2 GET 1', subtitle: 'FREE', color: 'bg-red-600', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'under1299', title: 'EVERYTHING UNDER', price: '₹1,299', color: 'bg-purple-600', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
-
-  // Women's offers
-  const womenOffers = [
-    { id: 'starting-women', title: 'STARTING', price: '₹399', color: 'bg-pink-600', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'flat40', title: 'FLAT', discount: '40%', subtitle: 'OFF', color: 'bg-purple-600', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'buy3get2', title: 'BUY 3 GET 2', subtitle: 'FREE', color: 'bg-red-600', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'under899', title: 'EVERYTHING UNDER', price: '₹899', color: 'bg-green-600', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
-
-  // Get current offers based on selected gender
-  const currentOffers = selectedGender === 'MAN' ? menOffers : womenOffers;
-
-  const trendingBrands = [
-    { id: 'souled', name: 'The Souled Store', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'onemile', name: 'ON3MILE', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
-
-  const searchSuggestions = [
-    'Mini Dress', 'Urban Blazers', 'Tailored trousers',
-    'Street Shorts', 'Chinos', 'Relaxed Joggers'
-  ];
+  const currentLatestDropsDynamic = getLatestDropsByGender(selectedGender);
 
   const handleCategoryClick = (categoryId: string) => {
     navigate(`/collection?category=${categoryId}&gender=${selectedGender.toLowerCase()}`);
   };
 
   const handleBrandClick = (brandId: string) => {
-    navigate(`/collection?brand=${brandId}`);
+    navigate(`/brands/${brandId}`); // Assuming you have a route like /brands/:id
   };
 
   const handleOfferClick = (offerId: string) => {
@@ -244,7 +219,6 @@ const HomePage: React.FC = () => {
 
   const handleGenderChange = (gender: 'MAN' | 'WOMAN') => {
     setSelectedGender(gender);
-    // Add a subtle scroll to categories section to show the change
     setTimeout(() => {
       const categoriesSection = document.querySelector('[data-section="categories"]');
       if (categoriesSection) {
@@ -274,8 +248,6 @@ const HomePage: React.FC = () => {
             </button>
           </div>
         </div>
-        
-
       </div>
 
       {/* User Selection */}
@@ -312,7 +284,7 @@ const HomePage: React.FC = () => {
         </button>
       </div>
 
-      {/* Brand Logo */}
+      {/* Brand Logo (Your main app logo, not individual brands) */}
       <div className="text-center py-4">
         <div className="flex items-center justify-center space-x-2">
           <div className="flex space-x-1">
@@ -360,17 +332,15 @@ const HomePage: React.FC = () => {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Carousel slides */}
           <div
             className="flex transition-transform duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {carouselSlides.map((slide, index) => (
+            {carouselSlides.map((slide) => (
               <div
                 key={slide.id}
                 className={`min-w-full h-full relative ${slide.bgColor} flex items-center justify-center`}
               >
-                {/* Brand logo */}
                 <div className="absolute top-4 left-4 z-10">
                   <div className="flex items-center space-x-1">
                     <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
@@ -379,14 +349,10 @@ const HomePage: React.FC = () => {
                     <span className={`text-sm font-bold ${slide.textColor}`}>{slide.brand}</span>
                   </div>
                 </div>
-
-                {/* Main content */}
                 <div className={`text-center z-10 ${slide.textColor}`}>
                   <h2 className="text-4xl font-bold mb-2">{slide.title}</h2>
                   <p className="text-lg font-medium opacity-80">{slide.subtitle}</p>
                 </div>
-
-                {/* Product images */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-30">
                   <div className="grid grid-cols-3 gap-6 w-full max-w-lg px-8">
                     {slide.images.map((image, imgIndex) => (
@@ -403,8 +369,6 @@ const HomePage: React.FC = () => {
               </div>
             ))}
           </div>
-
-          {/* Dots indicator */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {carouselSlides.map((_, index) => (
               <button
@@ -442,8 +406,6 @@ const HomePage: React.FC = () => {
             </button>
           ))}
         </div>
-        
-        {/* Pagination dots */}
         <div className="flex justify-center space-x-2 mt-4">
           <div className="w-2 h-2 bg-white rounded-full"></div>
           <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
@@ -475,32 +437,38 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Latest Drops */}
+      {/* Latest Drops (Uses fetched `latestBrands` data) */}
       <div className="px-4 mb-8">
         <h2 className="text-xl font-bold mb-4">
-          {selectedGender === 'MAN' ? "Men's" : "Women's"} Latest Drops
+          {selectedGender === 'MAN' ? "Man's Latest Brands" : "Women's Latest Brands"}
         </h2>
-        <div className="grid grid-cols-2 gap-3 transition-all duration-500 ease-in-out">
-          {currentLatestDrops.map((drop) => (
-            <button
-              key={drop.id}
-              onClick={() => handleBrandClick(drop.id)}
-              className={`${drop.color} rounded-2xl p-4 h-48 relative overflow-hidden hover:scale-105 transition-transform`}
-            >
-              <div className="absolute bottom-4 left-4">
-                <p className="text-white font-bold text-lg">{drop.brand}</p>
-                <div className="flex items-center mt-2">
-                  <span className="text-white text-sm mr-2">→</span>
+        {loadingBrands ? (
+          <p className="text-gray-400">Loading latest brands...</p>
+        ) : currentLatestDropsDynamic.length === 0 ? (
+          <p className="text-gray-400">No latest brands found.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 transition-all duration-500 ease-in-out">
+            {currentLatestDropsDynamic.map((drop) => (
+              <button
+                key={drop.id}
+                onClick={() => handleBrandClick(drop.id)}
+                className={`${drop.color} rounded-2xl p-4 h-48 relative overflow-hidden hover:scale-105 transition-transform`}
+              >
+                <div className="absolute bottom-4 left-4">
+                  <p className="text-white font-bold text-lg">{drop.brand}</p>
+                  <div className="flex items-center mt-2">
+                    <span className="text-white text-sm mr-2">→</span>
+                  </div>
                 </div>
-              </div>
-              <img
-                src={drop.image}
-                alt={drop.brand}
-                className="absolute right-0 top-0 w-24 h-full object-cover"
-              />
-            </button>
-          ))}
-        </div>
+                <img
+                  src={drop.image}
+                  alt={drop.brand}
+                  className="absolute right-0 top-0 w-24 h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Offers */}
@@ -531,27 +499,66 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Trending Brands */}
+      {/* Trending Brands (Uses fetched `trendingBrands` data) */}
       <div className="px-4 mb-8">
         <h2 className="text-xl font-bold mb-4">Trending Brands</h2>
-        <div className="grid grid-cols-2 gap-3">
-          {trendingBrands.map((brand) => (
-            <button
-              key={brand.id}
-              onClick={() => handleBrandClick(brand.id)}
-              className="bg-gray-800 rounded-2xl overflow-hidden h-48 relative hover:scale-105 transition-transform"
-            >
-              <img
-                src={brand.image}
-                alt={brand.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded">
-                <p className="text-black font-bold text-sm">{brand.name}</p>
-              </div>
-            </button>
-          ))}
-        </div>
+        {loadingBrands ? (
+          <p className="text-gray-400">Loading trending brands...</p>
+        ) : trendingBrands.length === 0 ? (
+          <p className="text-gray-400">No trending brands found.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            {trendingBrands.map((brand) => (
+              <button
+                key={brand._id}
+                onClick={() => handleBrandClick(brand._id)}
+                className="bg-gray-800 rounded-2xl overflow-hidden h-48 relative hover:scale-105 transition-transform"
+              >
+                <img
+                  src={brand.logo_url || 'https://via.placeholder.com/200'}
+                  alt={brand.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded">
+                  <p className="text-black font-bold text-sm">{brand.name}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* All Brands Section */}
+      <div className="px-4 mb-8">
+        <h2 className="text-xl font-bold mb-4">All Brands</h2>
+        {loadingBrands ? (
+          <p className="text-gray-400">Loading all brands...</p>
+        ) : allBrands.length === 0 ? (
+          <p className="text-gray-400">No brands found.</p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {allBrands.map((brand) => (
+              <button
+                key={brand._id}
+                onClick={() => handleBrandClick(brand._id)}
+                className="bg-gray-800 p-3 rounded-lg flex flex-col items-center justify-center text-center hover:bg-gray-700 transition-colors"
+              >
+                {brand.logo_url ? (
+                  <img
+                    src={brand.logo_url}
+                    alt={brand.name}
+                    className="w-16 h-16 object-contain mb-2 rounded-full"
+                  />
+                ) : (
+                  <div className="w-16 h-16 bg-gray-700 flex items-center justify-center rounded-full mb-2">
+                    <span className="text-xs text-gray-300">No Logo</span>
+                  </div>
+                )}
+                <p className="text-sm font-semibold text-white">{brand.name}</p>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* No Clue? Start Here! */}
@@ -588,7 +595,7 @@ const HomePage: React.FC = () => {
         </button>
       </div>
 
-      {/* Quick Test Button */}
+      {/* Quick Test Button (for development/testing) */}
       <div className="px-4 mb-6">
         <button
           onClick={() => navigate('/checkout', {
@@ -622,4 +629,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-

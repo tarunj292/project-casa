@@ -16,11 +16,13 @@ import {
   LogOut
 } from 'lucide-react';
 import LoginPopup from '../components/LoginPopup';
+import { useUser } from '../contexts/UserContext';
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { userData, setUserData } = useUser();
+  const isLoggedIn = userData.isLoggedIn;
 
   const handleBack = () => {
     navigate(-1);
@@ -42,7 +44,11 @@ const ProfilePage: React.FC = () => {
 
   const handleMenuClick = (label: string) => {
     if (label === 'Log Out') {
-      setIsLoggedIn(false);
+      setUserData({
+        isLoggedIn: false,
+        isNewUser: false,
+        onboardingData: {}
+      });
     } else if (!isLoggedIn && ['My Orders', 'Wishlist', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
       setIsLoginPopupOpen(true);
     } else {
@@ -76,7 +82,7 @@ const ProfilePage: React.FC = () => {
 
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
-    setIsLoggedIn(true);
+    // The LoginPopup component now handles user state updates
     setIsLoginPopupOpen(false);
     // Here you would typically make an API call to send OTP
   };
