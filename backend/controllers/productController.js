@@ -94,3 +94,67 @@ exports.getProductsByTag = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.createProduct = async (req, res) => {
+  try {
+    let {
+      name,
+      description,
+      images,
+      price,
+      currency,
+      sizes,
+      fits,
+      tags,
+      gender,
+      brand,
+      category
+    } = req.body;
+
+    // ✅ Handle dynamic brand creation
+    if (typeof brand === 'object' && brand.name) {
+      let existingBrand = await Brand.findOne({ name: brand.name });
+      if (existingBrand) {
+        brand = existingBrand._id;
+      } else {
+        if (!brand.logo_url) {
+          return res.status(400).json({ error: 'Brand logo_url is required for new brands' });
+        }
+        const newBrand = await Brand.create(brand);
+        brand = newBrand._id;
+      }
+    }
+
+    // ✅ Handle dynamic category creation
+    if (typeof category === 'object' && category.name) {
+      let existingCategory = await Category.findOne({ name: category.name });
+      if (existingCategory) {
+        category = existingCategory._id;
+      } else {
+        const newCategory = await Category.create(category);
+        category = newCategory._id;
+      }
+    }
+
+    // ✅ Create and save the product
+    const newProduct = new Product({
+      name,
+      description,
+      images,
+      price,
+      currency,
+      sizes,
+      fits,
+      tags,
+      gender,
+      brand,
+      category
+    });
+
+    const saved = await newProduct.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
