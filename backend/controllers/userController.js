@@ -1,12 +1,15 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 // ✅ Create User
 exports.createUser = async (req, res) => {
   try {
+    console.log('Received user data:', req.body);
     const user = new User(req.body);
     const savedUser = await user.save();
     res.status(201).json(savedUser);
   } catch (err) {
+    console.error('Error creating user:', err.message);
+    console.error('Full error:', err);
     res.status(400).json({ error: err.message });
   }
 };
