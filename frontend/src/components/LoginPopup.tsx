@@ -1,28 +1,49 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
-import OtpInput from './OtpInput';
+import { useUser } from '../contexts/UserContext';
+
 
 interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onContinue: (phoneNumber: string) => void;
+  onContinue?: (phoneNumber: string) => void;
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
-  const [fullPhoneNumber, setFullPhoneNumber] = useState('');
-  const [generatedOtp, setGeneratedOtp] = useState('');
-  const [phoneError, setPhoneError] = useState('');
 
-  const getPhoneNumberLimit = (countryCode: string) => {
-    switch (countryCode) {
-      case '+1': return 10; // US/Canada
-      case '+44': return 11; // UK
-      case '+86': return 11; // China
-      case '+91': return 10; // India
-      default: return 15; // International standard max
+  const { setUserData } = useUser();
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    if (phoneNumber.trim()) {
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+      // Simulate checking if user is new (in real app, this would be an API call)
+      const isNewUser = true; // For demo purposes, always treat as new user
+
+      // Update user context
+      setUserData({
+        phoneNumber: fullPhoneNumber,
+        isLoggedIn: true,
+        isNewUser: isNewUser,
+        onboardingData: {}
+      });
+
+      // Close the popup
+      onClose();
+
+      // Call the original onContinue if provided (for backward compatibility)
+      if (onContinue) {
+        onContinue(fullPhoneNumber);
+      }
+
+      // If new user, redirect to onboarding
+      if (isNewUser) {
+        navigate('/onboarding');
+      }
     }
   };
 
@@ -257,7 +278,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes slide-up {
           from {
             transform: translateY(100%);
