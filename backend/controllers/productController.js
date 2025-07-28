@@ -1,6 +1,6 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
-const Brand = require('../models/brand');
+const Brand = require('../models/brand')
 const mongoose = require('mongoose');
 
 // GET all products
@@ -53,7 +53,7 @@ exports.getAllProductsByBrand = async (req, res) => {
     const products = await Product.find({ brand: brandId }).populate('brand category');
     res.json(products);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
 };
 
