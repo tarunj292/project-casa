@@ -6,6 +6,10 @@ const categorySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  image: {
+    type: String, // This will store the image URL or file path
+    required: true
+  },
   parentCategory: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',

@@ -15,6 +15,7 @@ import SwipeProductsPage from './pages/SwipeProductsPage';
 import AllBrandsPage from './pages/AllBrandsPage';
 
 
+
 function App() {
   return (
     <div className="mobile-container">

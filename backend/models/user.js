@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password_hash: { type: String, required: true },
-  oauth_provider: { type: String },
-  oauth_id: { type: String },
-  display_name: { type: String },
+ const userSchema = new mongoose.Schema({
+   email: { type: String, unique: true, sparse: true },
+   phone_number: { type: String, required: true, unique: true },
+   oauth_provider: { type: String },
+   oauth_id: { type: String },
+   display_name: { type: String },
   avatar_url: { type: String },
   age: { type: Number },
   gender: { type: String, enum: ['male', 'female', 'other'] },
@@ -22,5 +22,4 @@ const userSchema = new mongoose.Schema({
   delivery_addresses: [{ type: String }],
   payment_methods: [{ type: String }]
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
-
 module.exports = mongoose.model('User', userSchema);
