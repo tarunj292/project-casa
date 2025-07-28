@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 // ✅ Create User
 exports.createUser = async (req, res) => {

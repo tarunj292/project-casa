@@ -18,7 +18,7 @@ const getBrandById = async (req, res) => {
 // GET brand by name (case-insensitive search)
 const getBrandByName = async (req, res) => {
   try {
-    const name = req.body;
+    const { name } = req.body;
     const brand = await Brand.findOne({ name });
 
     if (!brand) {
