@@ -15,7 +15,7 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import SwipeProductsPage from './pages/SwipeProductsPage';
 import AllBrandsPage from './pages/AllBrandsPage';
 import OnboardingPage from './pages/OnboardingPage';
-
+import ProductList from './pages/ProductList'
 
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
                 <Route path="swipe" element={<SwipeProductsPage />} />
               </Route>
               <Route path="/brands" element={<AllBrandsPage />} />
+              <Route path="/products" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/search" element={<SearchPage />} />
