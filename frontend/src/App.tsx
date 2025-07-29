@@ -8,6 +8,7 @@ import TrendsPage from './pages/TrendsPage';
 import BagPage from './pages/BagPage';
 import ProductPage from './pages/ProductPage';
 import ProfilePage from './pages/ProfilePage';
+import ManageAccountPage from './pages/ManageAccountPage'; // NEW: Manage Account page
 import SearchPage from './pages/SearchPage';
 import WishlistPage from './pages/WishlistPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -35,6 +36,7 @@ function App() {
               <Route path="/brands" element={<AllBrandsPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/manage-account" element={<ManageAccountPage />} /> {/* NEW: Manage Account route */}
               <Route path="/search" element={<SearchPage />} />
               <Route path="/wishlist" element={<WishlistPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

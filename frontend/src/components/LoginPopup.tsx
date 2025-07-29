@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
+import OtpInput from './OtpInput';
 
 
 interface LoginPopupProps {
@@ -13,39 +14,15 @@ interface LoginPopupProps {
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
+  const [phoneError, setPhoneError] = useState('');
+  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [fullPhoneNumber, setFullPhoneNumber] = useState('');
 
   const { setUserData } = useUser();
   const navigate = useNavigate();
 
-  const handleContinue = () => {
-    if (phoneNumber.trim()) {
-      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
 
-      // Simulate checking if user is new (in real app, this would be an API call)
-      const isNewUser = true; // For demo purposes, always treat as new user
-
-      // Update user context
-      setUserData({
-        phoneNumber: fullPhoneNumber,
-        isLoggedIn: true,
-        isNewUser: isNewUser,
-        onboardingData: {}
-      });
-
-      // Close the popup
-      onClose();
-
-      // Call the original onContinue if provided (for backward compatibility)
-      if (onContinue) {
-        onContinue(fullPhoneNumber);
-      }
-
-      // If new user, redirect to onboarding
-      if (isNewUser) {
-        navigate('/onboarding');
-      }
-    }
-  };
 
   const getMinPhoneLength = (countryCode: string) => {
     switch (countryCode) {
@@ -54,6 +31,16 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
       case '+86': return 11; // China
       case '+91': return 10; // India
       default: return 7; // International minimum
+    }
+  };
+
+  const getPhoneNumberLimit = (countryCode: string) => {
+    switch (countryCode) {
+      case '+1': return 10; // US/Canada
+      case '+44': return 11; // UK (maximum)
+      case '+86': return 11; // China
+      case '+91': return 10; // India
+      default: return 15; // International maximum
     }
   };
 
@@ -81,7 +68,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
     switch (countryCode) {
       case '+91': // India
         if (!phone.match(/^[6-9]\d{9}$/)) {
-          return 'Invalid Indian mobile number (should start with 6-9)';
+          return 'Invalid Indian mobile number (should start with 6, 7, 8, or 9)';
         }
         break;
       case '+1': // US/Canada
@@ -115,7 +102,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
 
   const handleContinue = async () => {
     const validationError = validatePhoneNumber(phoneNumber, countryCode);
-    
+
     if (validationError) {
       setPhoneError(validationError);
       return;
@@ -132,31 +119,101 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
         body: JSON.stringify({ phone: fullPhone }),
       });
 
-      const data = await res.json();
-
+      // Check if response is ok first
       if (res.ok) {
+        const data = await res.json();
         console.log('✅ OTP sent:', data.otp);
         setGeneratedOtp(data.otp);
         setFullPhoneNumber(fullPhone);
         setStep('otp');
         setPhoneError(''); // Clear any errors on success
       } else {
-        console.error('❌ Server error:', data.error);
-        setPhoneError(data.error || 'Failed to send OTP');
+        // Handle non-JSON error responses
+        let errorMessage = 'Failed to send OTP';
+        try {
+          const data = await res.json();
+          errorMessage = data.error || errorMessage;
+        } catch (jsonError) {
+          // If response is not JSON, use status text
+          errorMessage = `Server error: ${res.status} ${res.statusText}`;
+        }
+        console.error('❌ Server error:', errorMessage);
+        setPhoneError(errorMessage);
       }
     } catch (err) {
       console.error('❌ Network error:', err);
-      setPhoneError('Network error. Please try again.');
+      setPhoneError('Network error. Please check if the backend server is running.');
     }
   };
 
-  const handleOtpVerify = (enteredOtp: string) => {
+  /**
+   * OTP VERIFICATION: Handles successful OTP verification and user context update
+   * PERSISTENCE: User data is automatically saved to localStorage via UserContext
+   * USER DETECTION: Checks if user exists in backend to determine if they're new or returning
+   */
+  const handleOtpVerify = async (enteredOtp: string) => {
     console.log('🔍 Verifying OTP:', enteredOtp, 'against', generatedOtp);
-    
+
     if (enteredOtp === generatedOtp.toString()) {
       console.log('✅ OTP verified successfully');
-      onContinue(fullPhoneNumber);
-      handleClose();
+
+      try {
+        // CHECK IF USER EXISTS: Query backend to see if this is a returning user
+        const response = await fetch(`http://localhost:5002/api/users?phone=${encodeURIComponent(fullPhoneNumber)}`);
+        const users = await response.json();
+
+        const existingUser = users.find((user: any) => user.phone === fullPhoneNumber);
+        const isNewUser = !existingUser;
+
+        console.log('User check result:', { existingUser, isNewUser });
+
+        // ENHANCED USER CONTEXT: Update with login status and user detection
+        setUserData({
+          phoneNumber: fullPhoneNumber,
+          name: existingUser?.display_name || undefined,
+          email: existingUser?.email || undefined,
+          isLoggedIn: true,
+          isNewUser: isNewUser,
+          onboardingData: existingUser ? {
+            ageRange: existingUser.age <= 25 ? 'Gen Z (18-25)' : existingUser.age <= 35 ? 'Millennial (26-35)' : 'Other',
+            styleInterests: existingUser.interests || [],
+            preferredFits: existingUser.ml_preferences || []
+          } : {}
+        });
+
+        // Close the popup
+        handleClose();
+
+        // Call the original onContinue if provided (for backward compatibility)
+        if (onContinue) {
+          onContinue(fullPhoneNumber);
+        }
+
+        // SMART NAVIGATION: Only redirect to onboarding if user is new
+        if (isNewUser) {
+          console.log('New user detected - redirecting to onboarding');
+          navigate('/onboarding');
+        } else {
+          console.log('Existing user detected - redirecting to home');
+          navigate('/');
+        }
+
+      } catch (error) {
+        console.error('Error checking user existence:', error);
+        // FALLBACK: If backend check fails, treat as new user
+        setUserData({
+          phoneNumber: fullPhoneNumber,
+          isLoggedIn: true,
+          isNewUser: true,
+          onboardingData: {}
+        });
+
+        handleClose();
+        if (onContinue) {
+          onContinue(fullPhoneNumber);
+        }
+        navigate('/onboarding');
+      }
     } else {
       console.log('❌ Invalid OTP');
       alert('Invalid OTP. Please try again.');
