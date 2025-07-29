@@ -170,7 +170,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
       if (onContinue) {
   onContinue(fullPhoneNumber);
 }
-
+      navigate('/onboarding')
       handleClose();
     } else {
       console.log('❌ Invalid OTP');
