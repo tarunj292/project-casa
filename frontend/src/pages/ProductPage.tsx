@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { ArrowLeft, Heart, Share, Search, ShoppingBag, Shield, RotateCcw, Sparkles, ChevronRight } from 'lucide-react';
@@ -15,6 +15,7 @@ const ProductPage: React.FC = () => {
   const [swipeOffset, setSwipeOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  // const [product, setProduct] = useState();
 
   // Mock product data
   const product = {
