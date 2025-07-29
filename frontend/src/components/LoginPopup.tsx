@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
-
-
+import OtpInput from './OtpInput';
 interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -13,11 +12,14 @@ interface LoginPopupProps {
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+91');
-
+  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [fullPhoneNumber, setFullPhoneNumber] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const { setUserData } = useUser();
   const navigate = useNavigate();
 
-  const handleContinue = () => {
+  const basicHandleContinue = () => {
     if (phoneNumber.trim()) {
       const fullPhoneNumber = `${countryCode}${phoneNumber}`;
 
@@ -44,6 +46,16 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
       if (isNewUser) {
         navigate('/onboarding');
       }
+    }
+  };
+
+  const getPhoneNumberLimit = (countryCode: string) => {
+    switch (countryCode) {
+      case '+1': return 10; // US/Canada
+      case '+44': return 11; // UK
+      case '+86': return 11; // China
+      case '+91': return 10; // India
+      default: return 15; // International standard max
     }
   };
 
@@ -155,7 +167,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
     
     if (enteredOtp === generatedOtp.toString()) {
       console.log('✅ OTP verified successfully');
-      onContinue(fullPhoneNumber);
+      if (onContinue) {
+  onContinue(fullPhoneNumber);
+}
+      navigate('/onboarding')
       handleClose();
     } else {
       console.log('❌ Invalid OTP');
@@ -277,7 +292,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
           )}
         </div>
       </div>
-
       <style>{`
         @keyframes slide-up {
           from {
