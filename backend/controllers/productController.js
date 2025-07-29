@@ -95,6 +95,19 @@ exports.getProductsByTag = async (req, res) => {
   }
 };
 
+exports.search = async (req, res) => {
+  const { query } = req.body
+  console.log(query)
+  try{
+    const result = await Product.find({
+      name: {$regex: query, $options: "i"}
+    })
+    res.json(result)
+  } catch (err) {
+    res.status(500).json({ error: 'Search failed' })
+  }
+}
+
 exports.createProduct = async (req, res) => {
   try {
     let {
