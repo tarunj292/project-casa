@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search } from 'lucide-react';
 import axios from 'axios'
+import {handleSearch} from '../utils/getProducts'
 
 const SearchPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,30 +12,15 @@ const SearchPage: React.FC = () => {
     navigate(-1);
   };
 
-  const handleSearch = async (query: string) => {
-    //search implementation here
-    try{
-      if (query.trim()) {
-        const res = await axios.post(`http://localhost:5002/api/products/search`, {
-          query 
-        });
-        console.log(res.data)
-        navigate('/products', { state: res.data  })
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSearch(searchQuery);
+    handleSearch(searchQuery, navigate);
   };
 
   const handlePopularSearch = (search: string) => {
     //popular search recommendations
     setSearchQuery(search);
-    handleSearch(search);
+    handleSearch(search, navigate);
   };
 
   const handleRecentlyViewedClick = () => {
