@@ -1,1752 +1,1957 @@
 [
   {
-    "email": "user0@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-0",
-    "display_name": "User 0",
-    "avatar_url": "https://placeimg.com/640/480/people?random=0",
-    "age": 25,
-    "gender": "female",
-    "interests": [
-      "casual",
-      "sporty"
-    ],
-    "ml_preferences": [
-      "loose",
-      "fitted"
-    ],
-    "followed_brand_ids": [
-      "f555751f4ef84239bf7393a2",
-      "0d55309fb3c049cda836ee36"
-    ],
-    "wishlist_product_ids": [
-      "93e8d80491ce47dfb0da787f",
-      "d326eeb45b7140ae9fe2509b"
-    ],
-    "last_login": "2024-07-25T10:00:00Z",
-    "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
-    ],
-    "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
-    ]
-  },
-  {
     "email": "user1@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "7874192330",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-1",
-    "display_name": "User 1",
-    "avatar_url": "https://placeimg.com/640/480/people?random=1",
-    "age": 32,
-    "gender": "other",
+    "oauth_id": "535f4125-6750-4afb-a4db-3e0d4d015272",
+    "display_name": "Kiara Das",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+1",
+    "age": 41,
+    "gender": "male",
+    "social_each_godson": "perferendis",
     "interests": [
-      "techwear",
-      "casual"
+      "architecto",
+      "ullam",
+      "officia",
+      "provident"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "veniam",
+      "distinctio",
+      "dolore",
+      "cupiditate"
     ],
+    "created_at": "2025-07-28 11:02:55.772890",
+    "updated_at": "2025-07-28 11:02:55.772902",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "b42d776dbd2b4a97bafc9b1a",
-      "c81380cd2e0f47df8b5998e3"
+      "c32d272d64444d228c7b7e15",
+      "629293e9c01a49348c394673"
     ],
     "wishlist_product_ids": [
-      "0adbc97574924536bf9eb2a3",
-      "c5fd2474c1df416984fee853"
+      "579e3a1c55254dafab6959e3",
+      "6490fd4ba5a44d879a8e604d"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773129",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "34/72\nHegde\nKollam 788264"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user2@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6260447553",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-2",
-    "display_name": "User 2",
-    "avatar_url": "https://placeimg.com/640/480/people?random=2",
-    "age": 26,
-    "gender": "male",
+    "oauth_id": "f7d3e736-a85d-4ea6-b93e-1189c39ae906",
+    "display_name": "Vaibhav Ramesh",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+2",
+    "age": 42,
+    "gender": "female",
+    "social_each_godson": "quas",
     "interests": [
-      "minimal",
-      "sporty"
+      "facilis",
+      "in",
+      "consectetur"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "similique",
+      "magnam",
+      "voluptatibus"
     ],
+    "created_at": "2025-07-28 11:02:55.773168",
+    "updated_at": "2025-07-28 11:02:55.773172",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "0b2a03271de34cb782059f1c",
-      "4f0ff6ff8ba8415697001fd9"
+      "ab225272129d4c0588a4ceff",
+      "74d08247c88a4acd98313893"
     ],
     "wishlist_product_ids": [
-      "659021ddf1634951887c57f2",
-      "826ff8044bf542eebde246df"
+      "a5ac7c0ed04c4dd6acb3d987",
+      "daa2ad15ff52476a90034f59"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773232",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 354\nDalal Nagar\nAnantapuram 829523"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user3@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6303304514",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-3",
-    "display_name": "User 3",
-    "avatar_url": "https://placeimg.com/640/480/people?random=3",
-    "age": 30,
-    "gender": "other",
+    "oauth_id": "41e8f4dc-177d-4709-a0c8-2bd6e1d3f4b1",
+    "display_name": "Akarsh Sachdev",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+3",
+    "age": 36,
+    "gender": "male",
+    "social_each_godson": "necessitatibus",
     "interests": [
-      "sporty",
-      "techwear"
+      "ipsum",
+      "saepe",
+      "tempora",
+      "nemo"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "consequatur"
     ],
+    "created_at": "2025-07-28 11:02:55.773265",
+    "updated_at": "2025-07-28 11:02:55.773269",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "cb52d2f11fe4491eb9705c09",
-      "e35d444620274531a06deb93"
+      "af7227ae4b1742599090b601",
+      "f09b8e18d88c4596a29934ab"
     ],
     "wishlist_product_ids": [
-      "6ab3020979f949d19d3798cb",
-      "bccf8ad8d424463e9d805cad"
+      "2b5805682c5d4079aeb8ca39",
+      "576c079114884041afa6f3d3"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773354",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "68/35\nBala Road, Chandigarh-944772"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user4@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "8228836436",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-4",
-    "display_name": "User 4",
-    "avatar_url": "https://placeimg.com/640/480/people?random=4",
-    "age": 19,
-    "gender": "other",
+    "oauth_id": "fa1a32f2-ac65-476a-ba05-19c01501b5d5",
+    "display_name": "Emir Bansal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+4",
+    "age": 41,
+    "gender": "male",
+    "social_each_godson": "vitae",
     "interests": [
-      "casual",
-      "minimal"
+      "id",
+      "voluptatum"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "quibusdam",
+      "veniam",
+      "atque"
     ],
+    "created_at": "2025-07-28 11:02:55.773385",
+    "updated_at": "2025-07-28 11:02:55.773388",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "5ab468d6cb0544c09fa43331",
-      "3aae6826954c49f8bbc13da9"
+      "6d7a6444582148dbad607282",
+      "f5e993640f214d8e9a4803a4"
     ],
     "wishlist_product_ids": [
-      "8d0e84293b15496abe21644d",
-      "59abb7d6aa444d199fe3a8bd"
+      "92bd8ea413c54f07bc1a8a39",
+      "a7ee33339aae4b2787668d8f"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773454",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "96/728, Venkataraman Path\nKhammam-763717"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user5@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "9361778417",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-5",
-    "display_name": "User 5",
-    "avatar_url": "https://placeimg.com/640/480/people?random=5",
-    "age": 22,
+    "oauth_id": "fd09d7fe-1317-451f-961f-805dce4d4989",
+    "display_name": "Yakshit Rajagopal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+5",
+    "age": 28,
     "gender": "other",
+    "social_each_godson": "sint",
     "interests": [
-      "sporty",
-      "casual"
+      "eveniet"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "officiis",
+      "doloribus"
     ],
+    "created_at": "2025-07-28 11:02:55.773469",
+    "updated_at": "2025-07-28 11:02:55.773473",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "52b992d104d24dd5aabf664d",
-      "aacf4c6fa1444367a15b936f"
+      "01aae6f0ef0149988bdaeb88",
+      "9e8cd0a35d0c4898b5c8e252"
     ],
     "wishlist_product_ids": [
-      "e33969330b6c40de9e59f2c9",
-      "aab57d5a58794bd0a5a878d5"
+      "8de5e4e8b1c24a478905a6a4",
+      "e6c2c483f95c4ead98bffaa5"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773527",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "34\nDhar Zila, Bilaspur-127980"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user6@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "7476865462",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-6",
-    "display_name": "User 6",
-    "avatar_url": "https://placeimg.com/640/480/people?random=6",
-    "age": 23,
-    "gender": "female",
+    "oauth_id": "ff3dde33-a70c-42f2-98d5-7f1297d1cdc7",
+    "display_name": "Zaina Dayal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+6",
+    "age": 45,
+    "gender": "male",
+    "social_each_godson": "tenetur",
     "interests": [
-      "sporty",
-      "techwear"
+      "voluptate",
+      "esse",
+      "ad",
+      "numquam"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "modi",
+      "corrupti",
+      "neque"
     ],
+    "created_at": "2025-07-28 11:02:55.773538",
+    "updated_at": "2025-07-28 11:02:55.773540",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "43e6f0c64fc541a5ae71610c",
-      "6195e860d2dc46728cc501c2"
+      "e65cd9d7eb9443cca1932b66",
+      "0738a0bc3544466592087e1f"
     ],
     "wishlist_product_ids": [
-      "aac51f1daf5548ffb67bc6ef",
-      "3358d8ffae1d407cae432ec1"
+      "97c8787a558e4b658348fe85",
+      "ca49f89d5f914df2ad30b31a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773583",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "16/16\nKonda Road\nMadanapalle-767312"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user7@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-7",
-    "display_name": "User 7",
-    "avatar_url": "https://placeimg.com/640/480/people?random=7",
-    "age": 32,
-    "gender": "other",
+    "phone": "7324645251",
+    "oauth_provider": "facebook",
+    "oauth_id": "40acc60a-da5f-4c89-bfba-f384471786d1",
+    "display_name": "Stuvan Bhardwaj",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+7",
+    "age": 25,
+    "gender": "male",
+    "social_each_godson": "laudantium",
     "interests": [
-      "techwear",
-      "casual"
+      "libero",
+      "modi"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "illo"
     ],
+    "created_at": "2025-07-28 11:02:55.773592",
+    "updated_at": "2025-07-28 11:02:55.773594",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "39564c8db4f44401b9b85990",
-      "e3793f47ce8a4acfa9aaa4aa"
+      "2781d095c6444105856040ee",
+      "9edac323fb354e25b0245dea"
     ],
     "wishlist_product_ids": [
-      "c7f8376fdef44ca6b5b9501c",
-      "462f1476d6c84c61ac4823c0"
+      "ad32ae77122949cf9d534758",
+      "5146ba20c75147a3a7338e9c"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773658",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 55, Koshy Nagar, Naihati 276597"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user8@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "9112913768",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-8",
-    "display_name": "User 8",
-    "avatar_url": "https://placeimg.com/640/480/people?random=8",
-    "age": 33,
-    "gender": "male",
+    "oauth_id": "ed85db0c-1c0e-4d84-9741-943ea7555597",
+    "display_name": "Sumer Dugal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+8",
+    "age": 18,
+    "gender": "female",
+    "social_each_godson": "minima",
     "interests": [
-      "casual",
-      "minimal"
+      "laudantium",
+      "perferendis",
+      "tempore",
+      "sit"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "animi",
+      "culpa"
     ],
+    "created_at": "2025-07-28 11:02:55.773674",
+    "updated_at": "2025-07-28 11:02:55.773676",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "d56d02eba03b48f494d5b429",
-      "ec0a278ffe7d464897c2caf7"
+      "38459e6de782443cb14bc2be",
+      "64e7d57898c3469199f6ba89"
     ],
     "wishlist_product_ids": [
-      "7eff8a70911149ad80a610cb",
-      "3730e24969174f98b4861b27"
+      "86714e94e9ce48a7aa2910d2",
+      "38946acbc73443f8aedcf465"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773728",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 384, Wagle Circle\nSatara-916872"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user9@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6505323589",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-9",
-    "display_name": "User 9",
-    "avatar_url": "https://placeimg.com/640/480/people?random=9",
-    "age": 32,
-    "gender": "female",
+    "oauth_id": "0687c717-7e9f-4208-9ded-6961a1359f46",
+    "display_name": "Sahil Din",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+9",
+    "age": 27,
+    "gender": "other",
+    "social_each_godson": "nisi",
     "interests": [
-      "minimal",
-      "sporty"
+      "veniam",
+      "inventore"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "occaecati",
+      "explicabo",
+      "incidunt",
+      "iusto"
     ],
+    "created_at": "2025-07-28 11:02:55.773739",
+    "updated_at": "2025-07-28 11:02:55.773741",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "6cfee20a8e4743e5b7400fce",
-      "05da09e8baf44b409090581f"
+      "df6580417aa743fcbb853421",
+      "b96596c3f3fd4ac19e9a3b55"
     ],
     "wishlist_product_ids": [
-      "ba025036310348c89488a59f",
-      "108eecd38d5249409cf9a5cf"
+      "4d53020f5a8240c7bd69b3a8",
+      "21123b8262c94dcfb9e9385a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773787",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 380\nBassi\nJorhat-558951"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user10@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-10",
-    "display_name": "User 10",
-    "avatar_url": "https://placeimg.com/640/480/people?random=10",
-    "age": 28,
+    "phone": "8968633204",
+    "oauth_provider": "facebook",
+    "oauth_id": "ac5c1e4c-83a9-4001-907f-4ec4b0916a16",
+    "display_name": "Nitara Lalla",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+10",
+    "age": 41,
     "gender": "other",
+    "social_each_godson": "ipsa",
     "interests": [
-      "casual",
-      "sporty"
+      "saepe"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "officiis"
     ],
+    "created_at": "2025-07-28 11:02:55.773796",
+    "updated_at": "2025-07-28 11:02:55.773798",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "eca35ae29eee4c07a78d1800",
-      "ed8f7cce2f6442eea8494587"
+      "a826bd96311e488b97fdf675",
+      "2ff9251ba7664dadb7574497"
     ],
     "wishlist_product_ids": [
-      "c0d0cf8c1d104935852d037a",
-      "b7a0cb10e6c34e9394be8227"
+      "b6f2bdd1d667471cbf458233",
+      "00b1d3958b83416ab1ce8872"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773861",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "21\nBorde, Muzaffarpur 651109"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user11@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-11",
-    "display_name": "User 11",
-    "avatar_url": "https://placeimg.com/640/480/people?random=11",
-    "age": 35,
-    "gender": "other",
+    "phone": "8580003223",
+    "oauth_provider": "facebook",
+    "oauth_id": "44233fe1-a078-4f77-ba21-f8a53d743845",
+    "display_name": "Misha Chokshi",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+11",
+    "age": 42,
+    "gender": "male",
+    "social_each_godson": "dolorum",
     "interests": [
-      "sporty",
-      "techwear"
+      "quaerat",
+      "voluptate"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "earum",
+      "quam",
+      "iusto"
     ],
+    "created_at": "2025-07-28 11:02:55.773869",
+    "updated_at": "2025-07-28 11:02:55.773871",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "644855e682b64b83b2b42787",
-      "1b3e87c4b1954245a7717eed"
+      "ed7daa0cc5a04c7392e23367",
+      "6e59ce10f4cc4c1d88d7facb"
     ],
     "wishlist_product_ids": [
-      "bbc78cb6989445eebc74380c",
-      "afd05eac37f145a4a2a30342"
+      "9989d9bea3214f92b89ef8cf",
+      "cda35d6bdd004b848a099d6a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.773895",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "29/46\nGarg Chowk, Shahjahanpur-501944"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user12@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6141588132",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-12",
-    "display_name": "User 12",
-    "avatar_url": "https://placeimg.com/640/480/people?random=12",
-    "age": 32,
-    "gender": "female",
+    "oauth_id": "8dce34ef-cad0-4824-9e6d-41565dfa9761",
+    "display_name": "Trisha Balakrishnan",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+12",
+    "age": 23,
+    "gender": "other",
+    "social_each_godson": "facilis",
     "interests": [
-      "techwear",
-      "minimal"
+      "soluta",
+      "officiis",
+      "eos"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "molestiae",
+      "debitis",
+      "eos"
     ],
+    "created_at": "2025-07-28 11:02:55.774041",
+    "updated_at": "2025-07-28 11:02:55.774047",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "982b5dd6760d48cc90556dbf",
-      "ab4b012f1b3541c1be9fd2f6"
+      "b097d120e230422090232be0",
+      "6f9a67782d7d44ae8a12a438"
     ],
     "wishlist_product_ids": [
-      "6c06dc4761354f9da3a29b8b",
-      "027379baa2674d688196f53a"
+      "d199c070ee8f4e0193075d5d",
+      "96a60f5155584f4dadc44184"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774106",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 774, Banik Chowk, Tadipatri-279125"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user13@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-13",
-    "display_name": "User 13",
-    "avatar_url": "https://placeimg.com/640/480/people?random=13",
-    "age": 35,
+    "phone": "7733957425",
+    "oauth_provider": "",
+    "oauth_id": "da200fcd-85bc-44a8-8644-45607c8c24a4",
+    "display_name": "Arhaan Garg",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+13",
+    "age": 41,
     "gender": "other",
+    "social_each_godson": "molestiae",
     "interests": [
-      "minimal",
-      "sporty"
+      "labore",
+      "ratione"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "tenetur",
+      "quia",
+      "aliquid",
+      "maxime"
     ],
+    "created_at": "2025-07-28 11:02:55.774116",
+    "updated_at": "2025-07-28 11:02:55.774118",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "4893b4af97be42c89265c886",
-      "7614b49c787f47ceb9be73aa"
+      "d2463d017d654786abc67fa2",
+      "3e4081639d0b4d73a10336c5"
     ],
     "wishlist_product_ids": [
-      "9e1849db813e4f3a9b55ab97",
-      "88b7b45b7b194372b2eef26a"
+      "e5c0cdec25ab4e00b23ad3ca",
+      "fcaf0f749bf3497d8c2dfec1"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774143",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "16/33, Kulkarni Ganj\nBelgaum 179682"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user14@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-14",
-    "display_name": "User 14",
-    "avatar_url": "https://placeimg.com/640/480/people?random=14",
-    "age": 21,
+    "phone": "7737634843",
+    "oauth_provider": "",
+    "oauth_id": "9faf17bd-af16-4eac-8aae-8fe2e5159517",
+    "display_name": "Pari Choudhary",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+14",
+    "age": 30,
     "gender": "other",
+    "social_each_godson": "corporis",
     "interests": [
-      "casual",
-      "techwear"
+      "est"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "dolorum",
+      "perferendis"
     ],
+    "created_at": "2025-07-28 11:02:55.774150",
+    "updated_at": "2025-07-28 11:02:55.774152",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "5c7d0f9d23234f73a0d199de",
-      "99e01550aef04c9897eb82bc"
+      "ad0b7d8a5b2e4a4c8a8dcf50",
+      "ad237f4ffda94008802a38da"
     ],
     "wishlist_product_ids": [
-      "c16fa514c57c4068b2262b2e",
-      "ad1fcf3560634618a00bd1a1"
+      "6fc02d42164146f79c610286",
+      "67b27f38cde24653a765ea6e"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774176",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "88/18\nSrinivasan Road, Alappuzha-711857"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user15@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "9511750085",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-15",
-    "display_name": "User 15",
-    "avatar_url": "https://placeimg.com/640/480/people?random=15",
-    "age": 21,
-    "gender": "female",
+    "oauth_id": "9aa7a48f-d22e-4de6-9ada-47ed042f1133",
+    "display_name": "Elakshi Chana",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+15",
+    "age": 40,
+    "gender": "other",
+    "social_each_godson": "magni",
     "interests": [
-      "casual",
-      "techwear"
+      "architecto"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "doloribus",
+      "quasi"
     ],
+    "created_at": "2025-07-28 11:02:55.774183",
+    "updated_at": "2025-07-28 11:02:55.774185",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "9dfccf4599924caebc80f097",
-      "86f7749b901f46dcae820bab"
+      "2b984b22055e407c8786e8a7",
+      "3af34171e0e64501a8ab1165"
     ],
     "wishlist_product_ids": [
-      "43d3017170da4b2fbbfbdec3",
-      "9a22b00ffa854cf69a0cc52d"
+      "50c07fb99b5646e497afb9fc",
+      "cfb39411173a4a80a219d8fb"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774208",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 10\nButala Chowk\nDharmavaram 773218"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user16@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "8996926687",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-16",
-    "display_name": "User 16",
-    "avatar_url": "https://placeimg.com/640/480/people?random=16",
-    "age": 28,
-    "gender": "female",
+    "oauth_id": "db52d11f-8029-41ea-9e80-f7c985fe93ea",
+    "display_name": "Ela Barad",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+16",
+    "age": 43,
+    "gender": "male",
+    "social_each_godson": "incidunt",
     "interests": [
-      "sporty",
-      "minimal"
+      "rem",
+      "maiores",
+      "quas",
+      "fugit"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "vel",
+      "magnam",
+      "eum",
+      "non"
     ],
+    "created_at": "2025-07-28 11:02:55.774215",
+    "updated_at": "2025-07-28 11:02:55.774217",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "f076450c662b4ad88510e129",
-      "4ee190d7133a4126ae008651"
+      "b96b24861b714353a94f3079",
+      "065fe375e74b4925b7d49e8f"
     ],
     "wishlist_product_ids": [
-      "680aec28908849ca8e7e17a7",
-      "c5766ed9c554488e903b841d"
+      "12c61cdd153f41b3a3f12458",
+      "3300bb9a33a84275b7a56d4c"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774241",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 38, Dutta Street\nAmroha-076194"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user17@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "7121258461",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-17",
-    "display_name": "User 17",
-    "avatar_url": "https://placeimg.com/640/480/people?random=17",
-    "age": 27,
-    "gender": "other",
+    "oauth_id": "1082516a-80b3-4aa9-82f2-f62e2cabcc45",
+    "display_name": "Neelofar Johal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+17",
+    "age": 22,
+    "gender": "male",
+    "social_each_godson": "distinctio",
     "interests": [
-      "minimal",
-      "sporty"
+      "doloremque",
+      "dicta",
+      "quo",
+      "commodi"
     ],
     "ml_preferences": [
-      "loose",
-      "fitted"
+      "voluptatum",
+      "optio",
+      "quam"
     ],
+    "created_at": "2025-07-28 11:02:55.774248",
+    "updated_at": "2025-07-28 11:02:55.774250",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "e8022ee6b80047bf9b105fde",
-      "4774ae0d1669463985866cb8"
+      "9d7bb9c5378f4384afbb5a4c",
+      "adb712b347ba464b8f84ceb4"
     ],
     "wishlist_product_ids": [
-      "e48de9190c904a428c0ef75d",
-      "750bf0f8e412423287dbb288"
+      "18698aa2e2334fa887d743cd",
+      "0375e78b19f04a3fbf651ab9"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774275",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 058, Madan\nFaridabad-519879"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user18@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-18",
-    "display_name": "User 18",
-    "avatar_url": "https://placeimg.com/640/480/people?random=18",
-    "age": 31,
+    "phone": "7801786786",
+    "oauth_provider": "",
+    "oauth_id": "34a58c9f-74cf-47cf-9ad4-c86f6b0a83d1",
+    "display_name": "Saira Mandal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+18",
+    "age": 41,
     "gender": "female",
+    "social_each_godson": "qui",
     "interests": [
-      "casual",
-      "minimal"
+      "quasi",
+      "minima",
+      "iste",
+      "commodi"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "dolores"
     ],
+    "created_at": "2025-07-28 11:02:55.774281",
+    "updated_at": "2025-07-28 11:02:55.774283",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "b9b3b5ea753f43569c66bc16",
-      "20b67e36e8f84755945db3ff"
+      "01e32fbec3844ac6baf2459b",
+      "e662ec5dc75b4393a5d5a482"
     ],
     "wishlist_product_ids": [
-      "ebf15858aa774900a37189f5",
-      "1154b5761b974eab9b0f1d11"
+      "3ea5666c1db14c20975e954a",
+      "9ef4c4dc7a1644bba6f0f53a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774307",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "846\nEdwin\nKozhikode-470663"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user19@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-19",
-    "display_name": "User 19",
-    "avatar_url": "https://placeimg.com/640/480/people?random=19",
-    "age": 25,
-    "gender": "other",
+    "phone": "6119727999",
+    "oauth_provider": "",
+    "oauth_id": "9b81206e-e415-4597-bb6b-e90c9c80059a",
+    "display_name": "Nayantara Dhawan",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+19",
+    "age": 30,
+    "gender": "male",
+    "social_each_godson": "quasi",
     "interests": [
-      "casual",
-      "sporty"
+      "quas"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "vitae",
+      "ea",
+      "amet",
+      "quis"
     ],
+    "created_at": "2025-07-28 11:02:55.774314",
+    "updated_at": "2025-07-28 11:02:55.774316",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "89cba45a7330404ca5e5e2b8",
-      "0f0d8e5f9dee4b52b1bf765d"
+      "43ff908c3d224e5396043263",
+      "ab8ad4ae2f644b84b016a87f"
     ],
     "wishlist_product_ids": [
-      "e3f3049ad384418abfe6b4cb",
-      "c199abb140da444c9a527f0a"
+      "ecf9926fba7e4dbab3e22ea6",
+      "779ba321a32d47db9bc94eb5"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774341",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "82, Balay Path, Jalandhar 354867"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user20@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-20",
-    "display_name": "User 20",
-    "avatar_url": "https://placeimg.com/640/480/people?random=20",
-    "age": 31,
+    "phone": "9616835787",
+    "oauth_provider": "facebook",
+    "oauth_id": "8019bd39-57d9-4f0e-b628-dbc47c30657e",
+    "display_name": "Alisha Sarna",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+20",
+    "age": 33,
     "gender": "other",
+    "social_each_godson": "quibusdam",
     "interests": [
-      "minimal",
-      "techwear"
+      "animi",
+      "magni",
+      "provident"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "eius",
+      "numquam",
+      "provident",
+      "iusto"
     ],
+    "created_at": "2025-07-28 11:02:55.774348",
+    "updated_at": "2025-07-28 11:02:55.774350",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "01c9464813964af7a65d80b0",
-      "266c0553d36f46eb82334210"
+      "93558e495c114674a382e563",
+      "bea8499439a84517b34440d5"
     ],
     "wishlist_product_ids": [
-      "986021b5da614faf8a5fdd87",
-      "c6adf9d8b7ba4eda8b74ae66"
+      "a7196b2cd63f48eab9f18877",
+      "90a618c90dab4ca6a461611e"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774378",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "973\nGaba Ganj\nAdoni 816181"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user21@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-21",
-    "display_name": "User 21",
-    "avatar_url": "https://placeimg.com/640/480/people?random=21",
-    "age": 29,
-    "gender": "female",
+    "phone": "9373636055",
+    "oauth_provider": "facebook",
+    "oauth_id": "40adaddb-ec28-4451-b370-bb177828083c",
+    "display_name": "Rati Jha",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+21",
+    "age": 32,
+    "gender": "male",
+    "social_each_godson": "ipsa",
     "interests": [
-      "techwear",
-      "minimal"
+      "possimus",
+      "necessitatibus",
+      "quibusdam",
+      "porro"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "error"
     ],
+    "created_at": "2025-07-28 11:02:55.774389",
+    "updated_at": "2025-07-28 11:02:55.774391",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "bccc400a22064d5b97f45ac2",
-      "d4ecf2e3e70e49ddb54dd7d8"
+      "f54cf19c6fde454eb2ea1fea",
+      "373ebb33cb8d424bbcfc9fae"
     ],
     "wishlist_product_ids": [
-      "62c0cb4df5cc47488dfe8261",
-      "a3e63acf631441c8a830bffc"
+      "da6ecfb30f1c4ab5ba2a0b7d",
+      "065211956258461b944cd98a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774454",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "37/50\nBumb\nJodhpur 869733"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user22@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6236547439",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-22",
-    "display_name": "User 22",
-    "avatar_url": "https://placeimg.com/640/480/people?random=22",
-    "age": 29,
+    "oauth_id": "dcfa9872-1d29-46e1-9f78-ba61838bda2d",
+    "display_name": "Advika Deep",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+22",
+    "age": 22,
     "gender": "female",
+    "social_each_godson": "libero",
     "interests": [
-      "casual",
-      "minimal"
+      "distinctio",
+      "quaerat",
+      "autem"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "dolorum",
+      "aliquid"
     ],
+    "created_at": "2025-07-28 11:02:55.774467",
+    "updated_at": "2025-07-28 11:02:55.774469",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "d80bae3c5ec54a2cb26fc502",
-      "8b011a9d1aa5458e9ab31197"
+      "02a36aa290c644419f2e676d",
+      "6ce2c3a97a0546a198a21c7e"
     ],
     "wishlist_product_ids": [
-      "683a40dbd30549d6a1bfe78c",
-      "efa1cb86fe7a4118a8310cb4"
+      "a17b0399696b4a1ab2043d5c",
+      "901986d5a70a44bd993ab91c"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774522",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 230, Thakkar Ganj, Bulandshahr-385267"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user23@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-23",
-    "display_name": "User 23",
-    "avatar_url": "https://placeimg.com/640/480/people?random=23",
-    "age": 21,
-    "gender": "male",
+    "phone": "6734796233",
+    "oauth_provider": "",
+    "oauth_id": "da9d1fd6-e71a-43c2-aaac-bc2c2721384a",
+    "display_name": "Divij Sampath",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+23",
+    "age": 36,
+    "gender": "female",
+    "social_each_godson": "totam",
     "interests": [
-      "casual",
-      "techwear"
+      "itaque",
+      "nisi",
+      "consequuntur",
+      "laboriosam"
     ],
     "ml_preferences": [
-      "loose",
-      "fitted"
+      "dolore",
+      "doloremque",
+      "iusto"
     ],
+    "created_at": "2025-07-28 11:02:55.774530",
+    "updated_at": "2025-07-28 11:02:55.774531",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "6a4f13ff923a458eb70af555",
-      "c6d296f75f154397b631192a"
+      "5b2066018de247c0b6e13d40",
+      "9286fdc04178478dba431ed8"
     ],
     "wishlist_product_ids": [
-      "4829f6b95d4648fb8ec6536b",
-      "74e7eb4cc3e644dca1522fc8"
+      "3724d16cafb545f49239a5b1",
+      "ce465fc6fb664f618dab57dd"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774562",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "861\nBhagat Ganj, Mango-231033"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user24@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6688422350",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-24",
-    "display_name": "User 24",
-    "avatar_url": "https://placeimg.com/640/480/people?random=24",
-    "age": 25,
-    "gender": "female",
+    "oauth_id": "5659c400-3c68-43c9-ae8f-3fb82e100cbb",
+    "display_name": "Rania Thaman",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+24",
+    "age": 44,
+    "gender": "male",
+    "social_each_godson": "reprehenderit",
     "interests": [
-      "minimal",
-      "casual"
+      "nihil",
+      "eligendi"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "quisquam",
+      "laboriosam",
+      "atque",
+      "iure"
     ],
+    "created_at": "2025-07-28 11:02:55.774570",
+    "updated_at": "2025-07-28 11:02:55.774572",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "a91718ca5f6b444e9027a612",
-      "61f1371a839a4b909a4e6c49"
+      "9ca30c9dff9742ca99565253",
+      "923e3f1b22624f65a8cd7d60"
     ],
     "wishlist_product_ids": [
-      "f38f375b239647a3b9cd962a",
-      "c52ffe7995cd495bad2bc4b4"
+      "947fd6d794dd4b76b6b1b3d6",
+      "87ac6b5f2f5740c49219c736"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774603",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "39/01\nSrivastava Road\nDindigul-536769"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user25@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-25",
-    "display_name": "User 25",
-    "avatar_url": "https://placeimg.com/640/480/people?random=25",
-    "age": 31,
-    "gender": "other",
+    "phone": "7939735735",
+    "oauth_provider": "facebook",
+    "oauth_id": "2c3d8b16-a100-45ce-942c-45c8d6bff3cd",
+    "display_name": "Arhaan Sule",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+25",
+    "age": 24,
+    "gender": "male",
+    "social_each_godson": "nihil",
     "interests": [
-      "sporty",
-      "casual"
+      "molestiae",
+      "quis",
+      "ipsam",
+      "sequi"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "repellendus",
+      "omnis",
+      "a",
+      "adipisci"
     ],
+    "created_at": "2025-07-28 11:02:55.774609",
+    "updated_at": "2025-07-28 11:02:55.774611",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "2421fb52d29c4462b5ac8a2e",
-      "e1d162aea84949f19fb4cb4d"
+      "01e16458de1c4ce1802c16c4",
+      "f67a434c115a4928b826f180"
     ],
     "wishlist_product_ids": [
-      "9a27ee8792164cd19f396d61",
-      "ac812c1b247f40dba3eb9d1c"
+      "60275503d4e1485da1172cbf",
+      "9887c200700643e295d1c528"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774641",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 49\nYadav Marg\nJamalpur 989515"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user26@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-26",
-    "display_name": "User 26",
-    "avatar_url": "https://placeimg.com/640/480/people?random=26",
-    "age": 30,
-    "gender": "other",
+    "phone": "8787813529",
+    "oauth_provider": "facebook",
+    "oauth_id": "276fa304-8322-40f4-ac51-3a36375dd222",
+    "display_name": "Dishani Brahmbhatt",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+26",
+    "age": 28,
+    "gender": "female",
+    "social_each_godson": "animi",
     "interests": [
-      "casual",
-      "techwear"
+      "dolore",
+      "repudiandae",
+      "vel"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "accusantium"
     ],
+    "created_at": "2025-07-28 11:02:55.774649",
+    "updated_at": "2025-07-28 11:02:55.774651",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "b790e0a8e3474ce99bc001aa",
-      "c0f452789f2241dbb1280603"
+      "231944e04cdb480e9ec6f5f3",
+      "08257c1567f54b17bed10cc9"
     ],
     "wishlist_product_ids": [
-      "bd1b8412b5124012ac3fc2c1",
-      "7a2bdff04d1140caa868e177"
+      "69b202ba0d434902b2d46b17",
+      "c28f22ab37064bbebb4264fb"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774693",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "477\nEdwin Path\nHaldia-119825"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user27@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-27",
-    "display_name": "User 27",
-    "avatar_url": "https://placeimg.com/640/480/people?random=27",
-    "age": 20,
-    "gender": "male",
+    "phone": "9189428829",
+    "oauth_provider": "",
+    "oauth_id": "ef1441e3-d4c1-43aa-860a-ea926c5d8ba8",
+    "display_name": "Hunar Jaggi",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+27",
+    "age": 37,
+    "gender": "other",
+    "social_each_godson": "nostrum",
     "interests": [
-      "techwear",
-      "casual"
+      "a",
+      "minus",
+      "deserunt",
+      "dolor"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "neque",
+      "maxime"
     ],
+    "created_at": "2025-07-28 11:02:55.774705",
+    "updated_at": "2025-07-28 11:02:55.774708",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "be713b142bfe455fb1de10b8",
-      "83612dd30fe44aaaa79f6d5b"
+      "c8eadf740e394820b7506e13",
+      "b1cd6d4c32d54397818771c8"
     ],
     "wishlist_product_ids": [
-      "553a0867a6c04b23b820afb5",
-      "46bcb61af55c471086c74d67"
+      "4b861659d6364af7912d24fb",
+      "4941989097004f9e92e4853c"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774745",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "92/832\nBehl Road\nKirari Suleman Nagar-417140"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user28@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-28",
-    "display_name": "User 28",
-    "avatar_url": "https://placeimg.com/640/480/people?random=28",
-    "age": 25,
-    "gender": "female",
+    "phone": "8986155625",
+    "oauth_provider": "facebook",
+    "oauth_id": "c8b8e01b-4c96-4d30-85d1-e84ecae624b7",
+    "display_name": "Zeeshan Sagar",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+28",
+    "age": 30,
+    "gender": "male",
+    "social_each_godson": "ipsa",
     "interests": [
-      "sporty",
-      "techwear"
+      "eum"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "sint",
+      "in",
+      "in"
     ],
+    "created_at": "2025-07-28 11:02:55.774753",
+    "updated_at": "2025-07-28 11:02:55.774755",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "748d3100763c4348848b6926",
-      "45d76e9140ce4910a34248e8"
+      "face9e392c184b069d067f1f",
+      "0f27f3f921f242958c080b23"
     ],
     "wishlist_product_ids": [
-      "574e5c9042bb4c338632895d",
-      "7c7c260a66114e5a864fe924"
+      "8163530edf9e4e2f9d3d47e1",
+      "c42fb14347d047ea96e2f0cd"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774782",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "03/884\nBobal\nGurgaon 271591"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user29@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-29",
-    "display_name": "User 29",
-    "avatar_url": "https://placeimg.com/640/480/people?random=29",
-    "age": 25,
-    "gender": "male",
+    "phone": "6949346898",
+    "oauth_provider": "facebook",
+    "oauth_id": "028f96bd-fc74-43f4-8334-2c66ec52e2a1",
+    "display_name": "Anya Chauhan",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+29",
+    "age": 18,
+    "gender": "female",
+    "social_each_godson": "nostrum",
     "interests": [
-      "sporty",
-      "minimal"
+      "in",
+      "consectetur"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "ducimus",
+      "architecto"
     ],
+    "created_at": "2025-07-28 11:02:55.774795",
+    "updated_at": "2025-07-28 11:02:55.774798",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "5e8e0f8992fb481ba955a73f",
-      "977e348f0e614714aa78af9a"
+      "4b69c4af111e4ce3b68ff8a0",
+      "88581eefe6ff45ab8b05e40f"
     ],
     "wishlist_product_ids": [
-      "8c8ed57e7bef402cb4c6466a",
-      "2b42c399c08340f4a2ef5c4a"
+      "b0a1dad6b8ec4ca281ef17c4",
+      "203eceeb64d14205ac4f38af"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774836",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "36, Yogi Chowk, Bhilai 587614"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user30@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-30",
-    "display_name": "User 30",
-    "avatar_url": "https://placeimg.com/640/480/people?random=30",
-    "age": 24,
-    "gender": "other",
+    "phone": "8659231743",
+    "oauth_provider": "",
+    "oauth_id": "3ac52060-360d-40e3-a244-c38f4daaa77a",
+    "display_name": "Nitara Sani",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+30",
+    "age": 44,
+    "gender": "female",
+    "social_each_godson": "provident",
     "interests": [
-      "minimal",
-      "sporty"
+      "sed",
+      "voluptate",
+      "ad",
+      "provident"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "error",
+      "error"
     ],
+    "created_at": "2025-07-28 11:02:55.774845",
+    "updated_at": "2025-07-28 11:02:55.774847",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "936c11f0d858467485afd799",
-      "f8cf7cc6b7804911887c41e0"
+      "f06965d033f646a994e7de15",
+      "ecec101abfff4c628145630e"
     ],
     "wishlist_product_ids": [
-      "310cbd827a3a45e38244cf4e",
-      "7734b19b5ee94dd29ced63bf"
+      "e103c4ec7f4945aa94eb75e5",
+      "b495d3b3124a40abad08f345"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.774902",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "04/612\nBains Chowk\nJehanabad-860806"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user31@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-31",
-    "display_name": "User 31",
-    "avatar_url": "https://placeimg.com/640/480/people?random=31",
-    "age": 24,
-    "gender": "female",
+    "phone": "6595105179",
+    "oauth_provider": "facebook",
+    "oauth_id": "79dae792-df56-4dde-aab9-ee32f7741344",
+    "display_name": "Urvi Sachar",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+31",
+    "age": 25,
+    "gender": "other",
+    "social_each_godson": "nemo",
     "interests": [
-      "minimal",
-      "casual"
+      "iste",
+      "quo"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "voluptates",
+      "nisi",
+      "perferendis"
     ],
+    "created_at": "2025-07-28 11:02:55.774916",
+    "updated_at": "2025-07-28 11:02:55.774918",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "7eff824a804342f6bd6ae393",
-      "b588a1dc7d794e21aa2578cb"
+      "4d3a03b0a43747f2a4e63b17",
+      "a510aac860ab417faea5b062"
     ],
     "wishlist_product_ids": [
-      "a5d55722a81b41e488faa0d9",
-      "d39fea9c909d4ec997052195"
+      "fa50e617f7164d7a9098823b",
+      "91e07168fe144b3c8c22f9e6"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775063",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 28, Rama Circle, Satna 298522"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user32@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-32",
-    "display_name": "User 32",
-    "avatar_url": "https://placeimg.com/640/480/people?random=32",
-    "age": 30,
-    "gender": "female",
+    "phone": "8593645775",
+    "oauth_provider": "facebook",
+    "oauth_id": "7a99ee0a-89d7-4c17-ae26-d10c9b5e2b80",
+    "display_name": "Priyansh Sangha",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+32",
+    "age": 41,
+    "gender": "other",
+    "social_each_godson": "porro",
     "interests": [
-      "techwear",
-      "casual"
+      "nisi",
+      "neque",
+      "quasi",
+      "molestiae"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "quos",
+      "accusamus",
+      "blanditiis"
     ],
+    "created_at": "2025-07-28 11:02:55.775105",
+    "updated_at": "2025-07-28 11:02:55.775109",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "67f7c56dfaec4466ad2a58c9",
-      "905f46fd91be441fb5a5656a"
+      "0c2a5215d5c14e25b54aa6c6",
+      "1e3826e6328c49e5897633b0"
     ],
     "wishlist_product_ids": [
-      "64114e47f2f44930960ef715",
-      "99cc5ca68ccd4ab48b8f6c2b"
+      "896b04fa6efe42e3b4d6c47b",
+      "57b8181493694149bd266689"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775283",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 99\nDara Ganj\nRaurkela Industrial Township-165890"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user33@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-33",
-    "display_name": "User 33",
-    "avatar_url": "https://placeimg.com/640/480/people?random=33",
-    "age": 28,
-    "gender": "male",
+    "phone": "6813034354",
+    "oauth_provider": "facebook",
+    "oauth_id": "450b5318-5c9b-4845-ab20-d9a7c71cf991",
+    "display_name": "Vanya Gour",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+33",
+    "age": 38,
+    "gender": "other",
+    "social_each_godson": "sunt",
     "interests": [
-      "minimal",
-      "techwear"
+      "nostrum"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "perspiciatis",
+      "ex",
+      "sunt"
     ],
+    "created_at": "2025-07-28 11:02:55.775309",
+    "updated_at": "2025-07-28 11:02:55.775311",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "4406fc7c7f0d40b586ff4ff7",
-      "74376b53f39f421191c39b55"
+      "bafe333fc50349519a2875c2",
+      "338e2adcab804a58b55a682b"
     ],
     "wishlist_product_ids": [
-      "0ff8cc0279564c0497863cd8",
-      "29be1395ccb1473aa41bd3ec"
+      "6c40839a42ec49c7a3fbf95a",
+      "dd656c6fad5f46aeba7faead"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775349",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "811\nGoel\nVijayanagaram-355496"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user34@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-34",
-    "display_name": "User 34",
-    "avatar_url": "https://placeimg.com/640/480/people?random=34",
-    "age": 20,
+    "phone": "8584877935",
+    "oauth_provider": "facebook",
+    "oauth_id": "cb5a244f-ec41-4cd5-bdeb-5be60957231f",
+    "display_name": "Advika Das",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+34",
+    "age": 39,
     "gender": "other",
+    "social_each_godson": "mollitia",
     "interests": [
-      "techwear",
-      "sporty"
+      "tenetur"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "itaque"
     ],
+    "created_at": "2025-07-28 11:02:55.775358",
+    "updated_at": "2025-07-28 11:02:55.775360",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "93c153b28b184d8c81c5b694",
-      "dcd6cbf655a5466488c12dcf"
+      "4e6048aa4603411fa4f8c144",
+      "b5b8f5342ac343b1be727be8"
     ],
     "wishlist_product_ids": [
-      "8142febb1c8a428aab6129dc",
-      "ef5cfc0dd6c449e2b694e2f2"
+      "7ebc06c05f2d4b1db5705014",
+      "a94f81a54d8546d0bfbb262a"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775408",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 909, Taneja Marg, Surat 999620"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user35@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-35",
-    "display_name": "User 35",
-    "avatar_url": "https://placeimg.com/640/480/people?random=35",
-    "age": 19,
-    "gender": "other",
+    "phone": "6363492305",
+    "oauth_provider": "",
+    "oauth_id": "0d46846f-0ff4-43f7-93ba-6d08a23e0c00",
+    "display_name": "Ritvik Doctor",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+35",
+    "age": 33,
+    "gender": "male",
+    "social_each_godson": "voluptate",
     "interests": [
-      "sporty",
-      "techwear"
+      "id",
+      "error"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "optio",
+      "autem",
+      "praesentium"
     ],
+    "created_at": "2025-07-28 11:02:55.775421",
+    "updated_at": "2025-07-28 11:02:55.775424",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "5f4d653271874f099be59ef6",
-      "1386a8ba239e49cf850711e7"
+      "91970979e2304a3aa0b3ee58",
+      "9f628c454201456d8ad569f8"
     ],
     "wishlist_product_ids": [
-      "2888bc93825c44d4811da358",
-      "62fde596fe4d462abd57e946"
+      "8166e9ffdd674495a7e31897",
+      "39e9f64e15d3483dacd4c113"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775467",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 036\nBuch Street\nTiruppur-794862"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user36@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-36",
-    "display_name": "User 36",
-    "avatar_url": "https://placeimg.com/640/480/people?random=36",
-    "age": 20,
-    "gender": "male",
+    "phone": "6415009344",
+    "oauth_provider": "",
+    "oauth_id": "1c6b4a0b-87ed-4c20-bedc-64c425a4bad2",
+    "display_name": "Divij D\u2019Alia",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+36",
+    "age": 44,
+    "gender": "female",
+    "social_each_godson": "tenetur",
     "interests": [
-      "sporty",
-      "techwear"
+      "dolorum",
+      "amet"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "ipsa",
+      "aliquid",
+      "culpa",
+      "laborum"
     ],
+    "created_at": "2025-07-28 11:02:55.775475",
+    "updated_at": "2025-07-28 11:02:55.775477",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "66c5fa30c2784377a21a66b1",
-      "33e61b805b41446183f0236a"
+      "26c39985668f4de6894b3b72",
+      "0e64572b5aad4358aa0f93a3"
     ],
     "wishlist_product_ids": [
-      "d8ab39443ed94e069bb280c5",
-      "e3215deef6804ce0a60bc4dd"
+      "0a74efa97cfc40e3a9374c2a",
+      "123f7540d5014b98a139d8b2"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775515",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "83/16\nHalder Ganj, Shahjahanpur-271154"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user37@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-37",
-    "display_name": "User 37",
-    "avatar_url": "https://placeimg.com/640/480/people?random=37",
-    "age": 33,
-    "gender": "female",
+    "phone": "8679064287",
+    "oauth_provider": "",
+    "oauth_id": "5e235a0b-bbbb-4db2-ada8-38cedae7adde",
+    "display_name": "Vivaan Khanna",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+37",
+    "age": 28,
+    "gender": "other",
+    "social_each_godson": "itaque",
     "interests": [
-      "casual",
-      "techwear"
+      "a",
+      "pariatur",
+      "excepturi",
+      "in"
     ],
     "ml_preferences": [
-      "loose",
-      "oversized"
+      "est"
     ],
+    "created_at": "2025-07-28 11:02:55.775526",
+    "updated_at": "2025-07-28 11:02:55.775528",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "e84a06934523471e98e3b628",
-      "ea208a190a0d4ce3bf8d04df"
+      "06c9a60206fb4838926f4429",
+      "4dbdad14fb7a412c88f4b309"
     ],
     "wishlist_product_ids": [
-      "b0f0392c5d09442bb6bc6be0",
-      "967339232a0546e4ae37a5d7"
+      "12e4d621a68f42af943bb8c2",
+      "0638a53eb3f3446994d21e2b"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775579",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "01\nBhatia Ganj, Dibrugarh-248915"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user38@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6223084557",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-38",
-    "display_name": "User 38",
-    "avatar_url": "https://placeimg.com/640/480/people?random=38",
-    "age": 32,
+    "oauth_id": "9ce3658e-4593-43ed-a1cf-4000677cb471",
+    "display_name": "Kabir Andra",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+38",
+    "age": 22,
     "gender": "male",
+    "social_each_godson": "earum",
     "interests": [
-      "minimal",
-      "casual"
+      "quaerat",
+      "minus",
+      "fugiat",
+      "vero"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "aliquid",
+      "architecto"
     ],
+    "created_at": "2025-07-28 11:02:55.775590",
+    "updated_at": "2025-07-28 11:02:55.775594",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "6b40c8a2605d4d388bcb6264",
-      "fa277fb9dd364fff99a78218"
+      "4e336fafa759409a8e076e0a",
+      "d8ea7adaeaa246bfb5b56c42"
     ],
     "wishlist_product_ids": [
-      "b458f6c92b5045bc925697b4",
-      "ca7c9649239b4276b7172e78"
+      "4dcd2f7070024288b5557495",
+      "ec55a5f458c547999be6c739"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775645",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 803, Chadha Zila, Bhiwani 586205"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user39@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-39",
-    "display_name": "User 39",
-    "avatar_url": "https://placeimg.com/640/480/people?random=39",
-    "age": 26,
+    "phone": "7614084172",
+    "oauth_provider": "facebook",
+    "oauth_id": "4369c547-870e-4f82-ba62-c60dbf5a2f29",
+    "display_name": "Lakshay Joshi",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+39",
+    "age": 32,
     "gender": "other",
+    "social_each_godson": "saepe",
     "interests": [
-      "techwear",
-      "minimal"
+      "eum",
+      "nulla"
     ],
     "ml_preferences": [
-      "oversized",
-      "fitted"
+      "impedit"
     ],
+    "created_at": "2025-07-28 11:02:55.775653",
+    "updated_at": "2025-07-28 11:02:55.775655",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "8a9b337dc7414702a147b40c",
-      "6656948b1f3c4ba9905a6af3"
+      "7e42c56e87ae4923a05c71e1",
+      "d12d496fd4f14d739da8497b"
     ],
     "wishlist_product_ids": [
-      "83da04f839d5499894be7c29",
-      "0c4536aeb6f44e1581ac4834"
+      "a37d7a68652d4e59bfeebcfa",
+      "399696b6666b4d8d9246bdf3"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775703",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 77\nDe Zila, Anand 559267"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user40@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-40",
-    "display_name": "User 40",
-    "avatar_url": "https://placeimg.com/640/480/people?random=40",
-    "age": 25,
-    "gender": "female",
+    "phone": "6268037603",
+    "oauth_provider": "facebook",
+    "oauth_id": "e5c5215d-28a6-4d76-af73-60f9278a3fe5",
+    "display_name": "Farhan Zachariah",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+40",
+    "age": 21,
+    "gender": "other",
+    "social_each_godson": "corrupti",
     "interests": [
-      "techwear",
-      "sporty"
+      "iure",
+      "velit",
+      "voluptate"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "temporibus",
+      "ab",
+      "pariatur",
+      "corporis"
     ],
+    "created_at": "2025-07-28 11:02:55.775714",
+    "updated_at": "2025-07-28 11:02:55.775716",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "0e00332472c547f296a957a5",
-      "cd72d7f6f5f8433bae8577c8"
+      "7c088f91397a4f709d860ef1",
+      "b35bbec871554eddb7c9ad5b"
     ],
     "wishlist_product_ids": [
-      "fad541cdde5e4d6abd20e9a7",
-      "b1b321aa7d964bcb9c95fa56"
+      "aa33238cbedd4885bf372bdc",
+      "f928e6f6a2344a7d9b4f4165"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775752",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "79\nVora Ganj\nKirari Suleman Nagar-294840"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "credit_card"
     ]
   },
   {
     "email": "user41@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-41",
-    "display_name": "User 41",
-    "avatar_url": "https://placeimg.com/640/480/people?random=41",
-    "age": 18,
-    "gender": "male",
+    "phone": "8880223650",
+    "oauth_provider": "facebook",
+    "oauth_id": "44763089-c82e-481e-9bbe-f43ea334e168",
+    "display_name": "Anya Lal",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+41",
+    "age": 38,
+    "gender": "other",
+    "social_each_godson": "magnam",
     "interests": [
-      "casual",
-      "sporty"
+      "ad",
+      "odit",
+      "libero",
+      "quisquam"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "qui"
     ],
+    "created_at": "2025-07-28 11:02:55.775760",
+    "updated_at": "2025-07-28 11:02:55.775761",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "90341a9c3e914d15ba69ce68",
-      "b0a217f565f341af8e8404ce"
+      "379aa9c040464638857df750",
+      "685537c8659b4a21aa69a113"
     ],
     "wishlist_product_ids": [
-      "ac17f5b5eec548e68373f36d",
-      "f7755393f3854156a1b275d7"
+      "817bb45a9b4e4c44b25800ba",
+      "e720d459dc464fa5bb5e4d12"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775787",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "88\nBera Street, Saharanpur-787413"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user42@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-42",
-    "display_name": "User 42",
-    "avatar_url": "https://placeimg.com/640/480/people?random=42",
-    "age": 23,
+    "phone": "8176328572",
+    "oauth_provider": "facebook",
+    "oauth_id": "9412f8fe-770a-4f97-b6d9-52f1d8518d9b",
+    "display_name": "Dishani Mann",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+42",
+    "age": 42,
     "gender": "male",
+    "social_each_godson": "nemo",
     "interests": [
-      "casual",
-      "techwear"
+      "commodi",
+      "occaecati",
+      "vero",
+      "aspernatur"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "placeat",
+      "neque",
+      "officiis",
+      "recusandae"
     ],
+    "created_at": "2025-07-28 11:02:55.775809",
+    "updated_at": "2025-07-28 11:02:55.775812",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "f40790ee08414ec68098700b",
-      "07023d32f0d74ac3831dbd1d"
+      "0b6f2ec45cbc4a5cacdf4f5f",
+      "ecc039130ac14c4d92fa9ef5"
     ],
     "wishlist_product_ids": [
-      "4e0cc1b5a6644cc38c74a602",
-      "44a99af1a0e941b4aece86f3"
+      "5dea32ccf803434ca46be84e",
+      "cbff408f1aba46c09e0d65c8"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775857",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "73/917, Master Street, Dehri-015972"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user43@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "7362657584",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-43",
-    "display_name": "User 43",
-    "avatar_url": "https://placeimg.com/640/480/people?random=43",
-    "age": 24,
-    "gender": "female",
+    "oauth_id": "e23f5782-c4a3-4bd1-a64c-8f6fe1ec973e",
+    "display_name": "Myra Dara",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+43",
+    "age": 20,
+    "gender": "other",
+    "social_each_godson": "perferendis",
     "interests": [
-      "minimal",
-      "sporty"
+      "ipsa"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "neque",
+      "fugit"
     ],
+    "created_at": "2025-07-28 11:02:55.775869",
+    "updated_at": "2025-07-28 11:02:55.775872",
+    "is_admin": false,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "3d6b6f008c2949db8b469219",
-      "660db83b1e5e4c2a85e754c0"
+      "5927ed053a7d41ad980a39f1",
+      "ba3cc0dd59ec48819cfc5d41"
     ],
     "wishlist_product_ids": [
-      "5f247b77051c443b9f0ec905",
-      "6cb45d25f75b4e958116a44b"
+      "a0a63580c2014330b52c77cb",
+      "788969764896468884e27b3f"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775942",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 744, Bhatnagar Marg, Kozhikode-119611"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user44@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "8696774490",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-44",
-    "display_name": "User 44",
-    "avatar_url": "https://placeimg.com/640/480/people?random=44",
-    "age": 21,
+    "oauth_id": "3b72e788-03a8-4098-bb73-3a7e1dd51bbe",
+    "display_name": "Parinaaz Bhatt",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+44",
+    "age": 29,
     "gender": "other",
+    "social_each_godson": "autem",
     "interests": [
-      "casual",
-      "techwear"
+      "distinctio",
+      "repellat",
+      "ullam"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "distinctio"
     ],
+    "created_at": "2025-07-28 11:02:55.775951",
+    "updated_at": "2025-07-28 11:02:55.775952",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "16426a1f68324f8394527b75",
-      "87605960fd694355b675ad6b"
+      "7a6100f0e86c47d3998307e2",
+      "1afeee89382e4b99b779d1e1"
     ],
     "wishlist_product_ids": [
-      "d29436b6813c47e9a4cfcc08",
-      "0855bd9a512242dd805e0a3d"
+      "7ff939879c7c409f9d52bdb4",
+      "82efdd2aa8bf457381c58078"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.775977",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 21, Seth Chowk, Guna 029065"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user45@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "9947847461",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-45",
-    "display_name": "User 45",
-    "avatar_url": "https://placeimg.com/640/480/people?random=45",
-    "age": 22,
+    "oauth_id": "f64fcce4-5bf7-4eb8-a482-1d26416daa78",
+    "display_name": "Nehmat Wali",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+45",
+    "age": 44,
     "gender": "other",
+    "social_each_godson": "rem",
     "interests": [
-      "casual",
-      "sporty"
+      "officiis",
+      "assumenda",
+      "maiores"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "provident"
     ],
+    "created_at": "2025-07-28 11:02:55.775984",
+    "updated_at": "2025-07-28 11:02:55.775986",
+    "is_admin": true,
+    "is_brand_user": false,
     "followed_brand_ids": [
-      "6cd8eed5d2bc4361b4bba761",
-      "d884dbbcaa0d46eeb5b29b24"
+      "b767e2f859d94bb6a439412c",
+      "5ba70f92e4fb4641b74741ab"
     ],
     "wishlist_product_ids": [
-      "56029745aeba4fd8be9d9296",
-      "272a0536ce784a4d87e13217"
+      "e423d6e30d724b75858e3e44",
+      "34b58b87fa944459a86d6259"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.776024",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 305, Bahl Circle\nPimpri-Chinchwad-658083"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user46@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-46",
-    "display_name": "User 46",
-    "avatar_url": "https://placeimg.com/640/480/people?random=46",
-    "age": 22,
-    "gender": "male",
+    "phone": "6678471393",
+    "oauth_provider": "",
+    "oauth_id": "91539bf6-05f8-47ed-9de5-7eeb64e3eb66",
+    "display_name": "Uthkarsh Iyer",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+46",
+    "age": 33,
+    "gender": "female",
+    "social_each_godson": "recusandae",
     "interests": [
-      "sporty",
-      "casual"
+      "ex",
+      "nisi"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "voluptatibus",
+      "inventore"
     ],
+    "created_at": "2025-07-28 11:02:55.776032",
+    "updated_at": "2025-07-28 11:02:55.776034",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "3c841071f4ec4f7bbf1ba889",
-      "47bbd342fe6a460ead9bda11"
+      "93fd0d7ac2164451be5e7a06",
+      "a4e46d9288c84114abc69cf3"
     ],
     "wishlist_product_ids": [
-      "736b88dab25744a482f9e983",
-      "7b284d233197414b805acd75"
+      "744b98d7eeff42be9ec506e7",
+      "67203cbddd894c03b921ca0f"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.776069",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "88, Bava Road\nRamagundam-892662"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
     ]
   },
   {
     "email": "user47@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "6518304329",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-47",
-    "display_name": "User 47",
-    "avatar_url": "https://placeimg.com/640/480/people?random=47",
-    "age": 25,
-    "gender": "female",
+    "oauth_id": "4c54ca7d-c432-4d6f-91c6-edf258081214",
+    "display_name": "Nishith Shere",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+47",
+    "age": 39,
+    "gender": "male",
+    "social_each_godson": "ut",
     "interests": [
-      "sporty",
-      "techwear"
+      "voluptatem",
+      "distinctio"
     ],
     "ml_preferences": [
-      "oversized",
-      "loose"
+      "rerum",
+      "at",
+      "reiciendis"
     ],
+    "created_at": "2025-07-28 11:02:55.776076",
+    "updated_at": "2025-07-28 11:02:55.776077",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "8cb83449ab0b44f9a3e43f91",
-      "7e3c043fb176449691b32bfa"
+      "4c468e1011ec40778856440b",
+      "27de4fa3596b480586ef3a83"
     ],
     "wishlist_product_ids": [
-      "41a302c1c3ea40c6adcd4d78",
-      "9c4eb4702c4846a3843f9dc9"
+      "b64363e9b71248b2a29f8542",
+      "856319e9377742e9931eb755"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.776111",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "26/681\nSawhney Path, Mau-170091"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user48@example.com",
-    "password_hash": "hashed_password_123",
+    "phone": "7434464289",
     "oauth_provider": "google",
-    "oauth_id": "oauthid-48",
-    "display_name": "User 48",
-    "avatar_url": "https://placeimg.com/640/480/people?random=48",
-    "age": 19,
-    "gender": "female",
+    "oauth_id": "ade578df-e98c-4cf9-ab22-9a8e3ee7d175",
+    "display_name": "Arhaan Bahl",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+48",
+    "age": 31,
+    "gender": "male",
+    "social_each_godson": "numquam",
     "interests": [
-      "techwear",
-      "sporty"
+      "nam",
+      "veritatis"
     ],
     "ml_preferences": [
-      "fitted",
-      "oversized"
+      "velit"
     ],
+    "created_at": "2025-07-28 11:02:55.776123",
+    "updated_at": "2025-07-28 11:02:55.776126",
+    "is_admin": false,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "0725bbd50096427293db8d91",
-      "cb90142b5422419e86f4f91a"
+      "1b46a08d8d93401e807114ac",
+      "b0cd0641b77b49e9b860e9ae"
     ],
     "wishlist_product_ids": [
-      "be6a3357d4b341d696d38948",
-      "e888f4b9fd4a4de6866ccbbc"
+      "990051149fcf4fae926ae746",
+      "980e0f766093406d9bb0e482"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.776174",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "H.No. 886\nJayaraman Street\nPimpri-Chinchwad 029292"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "netbanking"
     ]
   },
   {
     "email": "user49@example.com",
-    "password_hash": "hashed_password_123",
-    "oauth_provider": "google",
-    "oauth_id": "oauthid-49",
-    "display_name": "User 49",
-    "avatar_url": "https://placeimg.com/640/480/people?random=49",
-    "age": 26,
-    "gender": "male",
+    "phone": "8278230301",
+    "oauth_provider": "facebook",
+    "oauth_id": "21d34c32-6cbb-4ad9-8c8c-90148df48de3",
+    "display_name": "Kaira Sarraf",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+49",
+    "age": 39,
+    "gender": "other",
+    "social_each_godson": "corrupti",
     "interests": [
-      "minimal",
-      "casual"
+      "maxime",
+      "adipisci",
+      "quae"
     ],
     "ml_preferences": [
-      "fitted",
-      "loose"
+      "eveniet",
+      "aspernatur",
+      "ad"
     ],
+    "created_at": "2025-07-28 11:02:55.776181",
+    "updated_at": "2025-07-28 11:02:55.776183",
+    "is_admin": true,
+    "is_brand_user": true,
     "followed_brand_ids": [
-      "dd4999b5e3aa46e6823a667f",
-      "477813edfce14732a1bcc5f4"
+      "aa73a9c315504312a8fcc65c",
+      "c4f4292452f4447dbf881b5d"
     ],
     "wishlist_product_ids": [
-      "86df9cfc251e44dc9000df1f",
-      "92efce91e07d4ac087b4b462"
+      "8b83c22a31b5435292be042c",
+      "34e6d818e1754fa3b3a53630"
     ],
-    "last_login": "2024-07-25T10:00:00Z",
+    "last_login": "2025-07-28 11:02:55.776246",
     "delivery_addresses": [
-      "123 Main St, New York, NY",
-      "456 Secondary Rd, Los Angeles, CA"
+      "09, Dass Street\nRanchi-055249"
     ],
     "payment_methods": [
-      "visa_ending_1234",
-      "mastercard_ending_5678"
+      "upi"
+    ]
+  },
+  {
+    "email": "user50@example.com",
+    "phone": "7252043899",
+    "oauth_provider": "google",
+    "oauth_id": "a74f73a7-27ab-4dc5-8b33-1639755b0982",
+    "display_name": "Keya Babu",
+    "avatar_url": "https://dummyimage.com/640x480/000/fff.png&text=User+50",
+    "age": 32,
+    "gender": "other",
+    "social_each_godson": "aut",
+    "interests": [
+      "consectetur"
+    ],
+    "ml_preferences": [
+      "ratione"
+    ],
+    "created_at": "2025-07-28 11:02:55.776261",
+    "updated_at": "2025-07-28 11:02:55.776264",
+    "is_admin": true,
+    "is_brand_user": true,
+    "followed_brand_ids": [
+      "0846513a8e854c71b207bf78",
+      "8f6e0ceca907403392698735"
+    ],
+    "wishlist_product_ids": [
+      "e83d5992e9ce41c196377c5c",
+      "fbf136689f1646148ce0a726"
+    ],
+    "last_login": "2025-07-28 11:02:55.776314",
+    "delivery_addresses": [
+      "H.No. 22\nBansal Nagar, Tumkur 893655"
+    ],
+    "payment_methods": [
+      "netbanking"
     ]
   }
 ]

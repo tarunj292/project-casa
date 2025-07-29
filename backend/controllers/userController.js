@@ -8,6 +8,8 @@ exports.createUser = async (req, res) => {
     const savedUser = await user.save();
     res.status(201).json(savedUser);
   } catch (err) {
+     if (err.code === 11000 && err.keyValue?.email) 
+      return res.status(409).json({ error: "Email already exists" });
     console.error('Error creating user:', err.message);
     console.error('Full error:', err);
     res.status(400).json({ error: err.message });

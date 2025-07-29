@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, sparse: true },
-  phone: { type: String, required: true, unique: true },
+  email: { type: String, unique: true, sparse: true,  match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'] },
+  phone: { type: String, required: true, unique: true,  match: [/^[6-9]\d{9}$/, 'Please enter a valid 10-digit Indian phone number']},
   oauth_provider: { type: String },
   oauth_id: { type: String },
   display_name: { type: String },
