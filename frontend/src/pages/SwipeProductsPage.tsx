@@ -322,13 +322,17 @@ function Deck() {
 
 
       {/* Card Deck - Centered */}
-      <div className="flex-1 flex items-center justify-center w-full overflow-hidden px-4">
-        <div className="w-full max-w-sm h-[670px] relative">
+      <div
+        className="flex-1 flex items-center justify-center w-full overflow-hidden px-4 select-none"
+        style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+        onDragStart={(e) => e.preventDefault()}
+      >
+        <div className="w-full max-w-sm h-[670px] relative select-none" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
           {props.map(({ x, y, rot, scale }, i) => (
             <animated.div className="absolute w-full h-full will-change-transform flex items-center justify-center" key={i} style={{ x, y }}>
               <animated.div
                 {...bind(i)}
-                className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl shadow-2xl touch-none"
+                className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl shadow-2xl touch-none select-none"
                 style={{ transform: interpolate([rot, scale], trans) }}
               >
                 <div className="relative w-full h-full rounded-2xl overflow-hidden">
@@ -356,11 +360,13 @@ function Deck() {
 
                   <img
                     src={cards[i].images && cards[i].images.length > 0 ? cards[i].images[0] : 'https://via.placeholder.com/400x600?text=No+Image'}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover select-none pointer-events-none"
                     alt={cards[i].name}
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
                   />
 
-                  <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white">
+                  <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white select-none pointer-events-none">
                     <div className="flex items-baseline space-x-2">
                       <p className="text-2xl font-bold">
                         ₹{cards[i].price && cards[i].price.$numberDecimal
