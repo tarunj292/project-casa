@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, User, MapPin } from 'lucide-react';
+import { Search, Heart, User, MapPin } from 'lucide-react';
+import { handleSearch } from '../utils/getProducts';
 
 interface Brand {
   _id: string;
@@ -113,8 +114,9 @@ const HomePage: React.FC = () => {
   ];
 
   const searchSuggestions = [
+    'Green Nature T-Shirt',
     'Mini Dress', 'Urban Blazers', 'Tailored trousers',
-    'Street Shorts', 'Chinos', 'Relaxed Joggers'
+    'Street Shorts', 'Chinos', 'Relaxed Joggers', 'Hoodie'
   ];
   // --- END EXISTING HARDCODED DATA ---
 
@@ -214,7 +216,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleSearchSuggestion = (suggestion: string) => {
-    navigate(`/collection?search=${encodeURIComponent(suggestion)}`);
+    handleSearch(suggestion, navigate)
   };
 
   const handleGenderChange = (gender: 'MAN' | 'WOMAN') => {
