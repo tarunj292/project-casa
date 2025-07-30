@@ -3,12 +3,41 @@ const Category = require('../models/category');
 const Brand = require('../models/brand')
 const mongoose = require('mongoose');
 
-// GET all products
+// GET all products with pagination support and exclusion
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('brand category');
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50; // Default to 50 if no limit specified
+    const skip = (page - 1) * limit;
+
+    // Parse exclude parameter (comma-separated product IDs)
+    const excludeParam = req.query.exclude;
+    let excludeIds = [];
+
+    if (excludeParam) {
+      excludeIds = excludeParam.split(',').filter(id => mongoose.Types.ObjectId.isValid(id));
+      console.log(`🚫 Excluding ${excludeIds.length} products:`, excludeIds.slice(0, 3), excludeIds.length > 3 ? '...' : '');
+    }
+
+    console.log(`📦 Fetching products - Page: ${page}, Limit: ${limit}, Skip: ${skip}, Excluding: ${excludeIds.length} products`);
+
+    // Build query with exclusions
+    const query = {
+      is_active: true,
+      ...(excludeIds.length > 0 && { _id: { $nin: excludeIds } })
+    };
+
+    const products = await Product.find(query)
+      .populate('brand category')
+      .skip(skip)
+      .limit(limit)
+      .sort({ created_at: -1 }); // Sort by newest first
+
+    console.log(`✅ Found ${products.length} products for page ${page} (excluded ${excludeIds.length})`);
+
     res.json(products);
   } catch (err) {
+    console.error('❌ Error fetching products:', err);
     res.status(500).json({ error: err.message });
   }
 };

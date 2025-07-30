@@ -12,7 +12,7 @@ const BottomNav: React.FC = () => {
   ];
 
   return (
-    <div className="bottom-nav fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 px-4 py-2">
+    <div className="bottom-nav fixed bottom-0 left-0 z-50 right-0 bg-gray-900 border-t border-gray-800 px-4 py-2">
       <div className="flex justify-around items-center">
         {navItems.map(({ path, icon: Icon, label }) => (
           <NavLink

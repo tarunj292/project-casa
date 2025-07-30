@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
 
 import { ArrowLeft, Heart, Share, Search, ShoppingBag, Shield, RotateCcw, Sparkles, ChevronRight } from 'lucide-react';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string>('L');
   const [activeTab, setActiveTab] = useState<'SPECIFICATION' | 'DESCRIPTION'>('SPECIFICATION');
 
@@ -16,6 +20,9 @@ const ProductPage: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   // const [product, setProduct] = useState();
+
+  // Check if product is in wishlist
+  const isFavorite = isInWishlist(id || '1');
 
   // Mock product data
   const product = {
@@ -66,21 +73,34 @@ const ProductPage: React.FC = () => {
     });
   };
 
-  const handleAddToBag = () => {
+  const handleAddToBag = async () => {
     if (!selectedSize) {
       console.error('Please select a size');
       return;
     }
-    console.log('Add to Bag clicked for product:', product.id, { size: selectedSize });
-    // Add to cart logic here
-    navigate('/bag');
+
+    try {
+      console.log('🛒 Adding to bag:', product.name, { size: selectedSize });
+      await addToCart(product.id, 1, selectedSize);
+      console.log('✅ Product added to bag successfully');
+      navigate('/bag');
+    } catch (error) {
+      console.error('❌ Error adding to bag:', error);
+    }
   };
 
-  const handleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    console.log('Favorite toggled:', !isFavorite);
-    // Navigate to wishlist page
-    navigate('/wishlist');
+  const handleFavorite = async () => {
+    try {
+      if (isFavorite) {
+        await removeFromWishlist(product.id);
+        console.log('✅ Product removed from wishlist');
+      } else {
+        await addToWishlist(product.id, 'medium', `Added from product page on ${new Date().toLocaleDateString()}`);
+        console.log('✅ Product added to wishlist');
+      }
+    } catch (error) {
+      console.error('❌ Error toggling wishlist:', error);
+    }
   };
 
   // Swipe handlers
