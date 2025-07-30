@@ -17,6 +17,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import SwipeProductsPage from './pages/SwipeProductsPage';
 import AllBrandsPage from './pages/AllBrandsPage';
+import BrandPage from './pages/BrandPage';
 import OnboardingPage from './pages/OnboardingPage';
 import ProductList from './pages/ProductList'
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="swipe" element={<SwipeProductsPage />} />
               </Route>
               <Route path="/brands" element={<AllBrandsPage />} />
+              <Route path="/brands/:brandId" element={<BrandPage />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/profile" element={<ProfilePage />} />

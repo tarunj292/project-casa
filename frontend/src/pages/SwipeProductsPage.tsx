@@ -62,7 +62,7 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
     >
       <motion.div
-        className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl shadow-2xl touch-none select-none cursor-grab"
+        className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl touch-none select-none cursor-grab"
         style={{ x, rotate, scale }}
         drag="x"
         onDragEnd={handleDragEnd}

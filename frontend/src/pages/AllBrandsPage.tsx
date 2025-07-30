@@ -1,5 +1,6 @@
 // src/pages/AllBrandsPage.tsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Brand {
   _id: string;
@@ -10,6 +11,7 @@ interface Brand {
 }
 
 const AllBrandsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,11 @@ const AllBrandsPage: React.FC = () => {
       ) : (
         <div className="grid grid-cols-2 gap-4">
           {brands.map((brand) => (
-            <div key={brand._id} className="bg-gray-800 p-4 rounded-lg">
+            <button
+              key={brand._id}
+              onClick={() => navigate(`/brands/${brand._id}`)}
+              className="bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors text-left"
+            >
               <h2 className="text-lg font-semibold">{brand.name}</h2>
               {brand.logo_url && (
                 <img
@@ -53,7 +59,7 @@ const AllBrandsPage: React.FC = () => {
                   Created: {new Date(brand.created_at).toLocaleDateString()}
                 </p>
               )}
-            </div>
+            </button>
           ))}
         </div>
       )}
