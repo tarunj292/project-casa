@@ -32,17 +32,9 @@ const HomePage: React.FC = () => {
     { id: 'shorts', label: 'Shorts', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
   ];
 
-  const womenCategories = [
-    { id: 'dresses', label: 'Dresses', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'tops', label: 'Tops & Blouses', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'skirts', label: 'Skirts', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jeans-women', label: 'Jeans', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'blazers', label: 'Blazers', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'coords-women', label: 'Co-ords', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jumpsuits', label: 'Jumpsuits', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'cardigans', label: 'Cardigans', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
+  const womenCategories = 
   const currentCategories = selectedGender === 'MAN' ? menCategories : womenCategories;
+  
 
   const menIconicLooks = [
     { id: 'street-wear', label: 'STREET WEAR', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },

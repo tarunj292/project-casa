@@ -18,5 +18,36 @@
   {
     "logo_url": ["https://dummyimage.com/500x500/000/fff.png&text=Brand+5"],
     "brand": "Odd Not Even"
+  },
+  {
+    "logo_url": ["https://diamondlady.in/cdn/shop/files/apple-touch-icon.png?v=1652284540&width=140"],
+    "brand": "Diamond Lady"
+  },
+  {
+    "logo_url": ["https://ashtag.in/cdn/shop/files/Logo-01_1.png?v=1613557355&width=300"],
+    "brand": "Ashtag"
+  },
+  {
+    "logo_url": ["https://rangita.com/cdn/shop/files/Rangita_Logo-01_1.webp?height=60&v=1714210117"],
+    "brand": "Rangita"
+  },
+  {
+    "logo_url": ["https://supervintage.in/cdn/shop/files/SUPERVINTAGE_copy.png?v=1747293061&width=360"],
+    "brand": "Supervintage"
+  },
+  {
+    "logo_url": ["https://www.buyhautesauce.com/cdn/shop/files/haute_sauce_logo_310x.jpg?v=1678088848"],
+    "brand": "Haute Sauce"
+  },
+  {
+    "logo_url": ["https://buysohi.com/cdn/shop/files/BLNCE_daily_pos…5-48e3-b391-fbcba9306185_60x@2x.webp?v=1660725750"],
+    "brand": "Sohi"
+  },
+  {
+    "logo_url": ["https://play-lh.googleusercontent.com/gbOku-JAebw8k5_WCHsCedn8OcfCX5SSnMtUlhIULtJaWPbfPJ_nmQxie7RJGCSStlMl=w480-h960-rw"],
+    "brand": "Salty"
   }
+
+
+  
 ]

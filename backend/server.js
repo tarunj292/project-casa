@@ -5,7 +5,8 @@ require('dotenv').config();
 
 const brandRoutes = require('./routes/brandRoutes');
 const productRoutes = require('./routes/productRoutes');
-const userRoutes = require('./routes/userRoutes'); // disable if error
+const userRoutes = require('./routes/userRoutes'); 
+const categoryRoutes = require('./routes/category'); // disable if error
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/products', productRoutes)
+app.use('/api/categories', categoryRoutes);
 
 // Default route
 app.get("/", (req, res) => {
