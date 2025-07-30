@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Heart, User, MapPin } from 'lucide-react';
 import LoginPopup from './LoginPopup';
+import { useUser } from '../contexts/UserContext';
 
 const TopBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { userData } = useUser();
+  const isLoggedIn = userData.isLoggedIn;
 
   const isProductPage = location.pathname.startsWith('/product/');
   const showBackButton = isProductPage;
@@ -34,7 +36,7 @@ const TopBar: React.FC = () => {
 
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
-    setIsLoggedIn(true);
+    // The LoginPopup component now handles user state updates
     setIsLoginPopupOpen(false);
     // Here you would typically make an API call to send OTP
   };

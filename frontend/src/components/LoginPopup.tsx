@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { useUser } from '../contexts/UserContext';
 import OtpInput from './OtpInput';
-
 interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onContinue: (phoneNumber: string) => void;
+  onContinue?: (phoneNumber: string) => void;
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) => {
@@ -15,6 +16,38 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
   const [fullPhoneNumber, setFullPhoneNumber] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const { setUserData } = useUser();
+  const navigate = useNavigate();
+
+  const basicHandleContinue = () => {
+    if (phoneNumber.trim()) {
+      const fullPhoneNumber = `${countryCode}${phoneNumber}`;
+
+      // Simulate checking if user is new (in real app, this would be an API call)
+      const isNewUser = true; // For demo purposes, always treat as new user
+
+      // Update user context
+      setUserData({
+        phoneNumber: fullPhoneNumber,
+        isLoggedIn: true,
+        isNewUser: isNewUser,
+        onboardingData: {}
+      });
+
+      // Close the popup
+      onClose();
+
+      // Call the original onContinue if provided (for backward compatibility)
+      if (onContinue) {
+        onContinue(fullPhoneNumber);
+      }
+
+      // If new user, redirect to onboarding
+      if (isNewUser) {
+        navigate('/onboarding');
+      }
+    }
+  };
 
   const getPhoneNumberLimit = (countryCode: string) => {
     switch (countryCode) {
@@ -134,7 +167,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
     
     if (enteredOtp === generatedOtp.toString()) {
       console.log('✅ OTP verified successfully');
-      onContinue(fullPhoneNumber);
+      if (onContinue) {
+  onContinue(fullPhoneNumber);
+}
+      navigate('/onboarding')
       handleClose();
     } else {
       console.log('❌ Invalid OTP');
@@ -256,7 +292,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
           )}
         </div>
       </div>
-
       <style>{`
         @keyframes slide-up {
           from {

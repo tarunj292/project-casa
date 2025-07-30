@@ -18,7 +18,7 @@ const getBrandById = async (req, res) => {
 // GET brand by name (case-insensitive search)
 const getBrandByName = async (req, res) => {
   try {
-    const name = req.body;
+    const { name } = req.body;
     const brand = await Brand.findOne({ name });
 
     if (!brand) {
@@ -29,8 +29,19 @@ const getBrandByName = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+// GET all brands
+const getAllBrands = async (req, res) => {
+  try {
+    const brands = await Brand.find(); // fetch all documents from Brand collection
+    res.json(brands);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 
 module.exports = {
   getBrandById,
-  getBrandByName
+  getBrandByName,
+  getAllBrands
 };
