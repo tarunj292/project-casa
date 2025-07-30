@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSprings, animated, to as interpolate } from '@react-spring/web';
 import { useDrag } from 'react-use-gesture';
-import { ArrowLeft, Heart } from 'lucide-react';
-import { useWishlist } from '../contexts/WishlistContext';
+import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
 import fetchProducts from '../utils/fetchProductforSwipe'
 
 // Product interface to match backend data
@@ -49,7 +49,7 @@ const trans = (r: number, s: number) => `perspective(1500px) rotateX(5deg) rotat
 
 function Deck() {
   const navigate = useNavigate();
-  const { addToWishlist } = useWishlist();
+  const { addToCart } = useCart();
 
   // State to keep track of cards that have been swiped away
   const [goneCards, setGoneCards] = useState<Set<number>>(new Set());
@@ -59,8 +59,8 @@ function Deck() {
   const [loading, setLoading] = useState(true);
   // State to track if we're loading more products
   const [loadingMore, setLoadingMore] = useState(false);
-  // State to track wishlist
-  const [wishlist, setWishlist] = useState<Product[]>([]);
+  // State to track products added to cart (for UI feedback)
+  const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
   // Ref to track the history of swiped cards for the undo feature
   const swipedHistory = useRef<SwipeHistoryItem[]>([]);
   // Pagination state
@@ -171,14 +171,20 @@ function Deck() {
       console.log(`👆 Card ${index} swiped ${swipeDirection} (${triggerReason}: velocity=${velocity.toFixed(2)}, distance=${Math.abs(mx).toFixed(0)}px)`);
       console.log(`📊 Gone set now has ${goneCards.size + 1} cards out of ${cards.length} total`);
 
-      // If swiped right, add to wishlist
+      // If swiped right, add to cart/bag
       if (dir === 1) {
         const product = cards[index];
-        if (product && !wishlist.find(item => item._id === product._id)) {
-          setWishlist(prev => [...prev, product]);
-          // Add to backend wishlist using context
-          addToWishlist(product._id, 'medium', `Added via swipe on ${new Date().toLocaleDateString()}`).catch(error => {
-            console.error('Failed to add to wishlist:', error);
+        if (product && !addedToCart.has(product._id)) {
+          setAddedToCart(prev => new Set([...prev, product._id]));
+          // Add to backend cart using context (default size M, quantity 1)
+          addToCart(product._id, 1, 'M').catch(error => {
+            console.error('Failed to add to cart:', error);
+            // Remove from local state if backend fails
+            setAddedToCart(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(product._id);
+              return newSet;
+            });
           });
         }
       }
@@ -233,8 +239,8 @@ function Deck() {
     navigate('/');
   };
 
-  const handleViewWishlist = () => {
-    navigate('/wishlist');
+  const handleViewBag = () => {
+    navigate('/bag');
   };
 
   const remainingCards = useMemo(() => cards.length - goneCards.size, [cards.length, goneCards.size]);
@@ -292,13 +298,13 @@ function Deck() {
             </p>
           </div>
           <button
-            onClick={handleViewWishlist}
+            onClick={handleViewBag}
             className="p-2 bg-gray-800/80 backdrop-blur-sm rounded-full relative hover:bg-gray-700 transition-colors"
           >
-            <Heart size={20} />
-            {wishlist.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {wishlist.length}
+            <ShoppingBag size={20} />
+            {addedToCart.size > 0 && (
+              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {addedToCart.size}
               </span>
             )}
           </button>
@@ -322,13 +328,17 @@ function Deck() {
 
 
       {/* Card Deck - Centered */}
-      <div className="flex-1 flex items-center justify-center w-full overflow-hidden px-4">
-        <div className="w-full max-w-sm h-[670px] relative">
+      <div
+        className="flex-1 flex items-center justify-center w-full overflow-hidden px-4 select-none"
+        style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+        onDragStart={(e) => e.preventDefault()}
+      >
+        <div className="w-full max-w-sm h-[670px] relative select-none" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
           {props.map(({ x, y, rot, scale }, i) => (
             <animated.div className="absolute w-full h-full will-change-transform flex items-center justify-center" key={i} style={{ x, y }}>
               <animated.div
                 {...bind(i)}
-                className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl shadow-2xl touch-none"
+                className="bg-zinc-800 w-full h-full max-w-[300px] sm:max-w-full max-h-[670px] will-change-transform rounded-2xl shadow-2xl touch-none select-none"
                 style={{ transform: interpolate([rot, scale], trans) }}
               >
                 <div className="relative w-full h-full rounded-2xl overflow-hidden">
@@ -356,11 +366,13 @@ function Deck() {
 
                   <img
                     src={cards[i].images && cards[i].images.length > 0 ? cards[i].images[0] : 'https://via.placeholder.com/400x600?text=No+Image'}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover select-none pointer-events-none"
                     alt={cards[i].name}
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
                   />
 
-                  <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white">
+                  <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white select-none pointer-events-none">
                     <div className="flex items-baseline space-x-2">
                       <p className="text-2xl font-bold">
                         ₹{cards[i].price && cards[i].price.$numberDecimal

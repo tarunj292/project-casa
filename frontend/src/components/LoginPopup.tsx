@@ -159,13 +159,26 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onContinue }) 
 
       try {
         // CHECK IF USER EXISTS: Query backend to see if this is a returning user
+        console.log('🔍 Checking user existence for phone:', fullPhoneNumber);
         const response = await fetch(`http://localhost:5002/api/users?phone=${encodeURIComponent(fullPhoneNumber)}`);
         const users = await response.json();
+
+        console.log('📞 API Response:', {
+          url: `http://localhost:5002/api/users?phone=${encodeURIComponent(fullPhoneNumber)}`,
+          responseStatus: response.status,
+          usersCount: users.length,
+          users: users
+        });
 
         const existingUser = users.find((user: any) => user.phone === fullPhoneNumber);
         const isNewUser = !existingUser;
 
-        console.log('User check result:', { existingUser, isNewUser });
+        console.log('User check result:', {
+          fullPhoneNumber,
+          existingUser,
+          isNewUser,
+          userPhones: users.map((u: any) => u.phone)
+        });
 
         // ENHANCED USER CONTEXT: Update with login status and user detection
         setUserData({

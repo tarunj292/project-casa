@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
 
-import { ArrowLeft, Heart, Share, Search, ShoppingBag, Shield, RotateCcw, Sparkles, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Share, Search, ShoppingBag, Shield, RotateCcw, Sparkles, ChevronRight } from 'lucide-react';
 
 const ProductPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,8 +19,7 @@ const ProductPage: React.FC = () => {
   const [startX, setStartX] = useState(0);
   // const [product, setProduct] = useState();
 
-  // Check if product is in wishlist
-  const isFavorite = isInWishlist(id || '1');
+
 
   // Mock product data
   const product = {
@@ -89,19 +86,7 @@ const ProductPage: React.FC = () => {
     }
   };
 
-  const handleFavorite = async () => {
-    try {
-      if (isFavorite) {
-        await removeFromWishlist(product.id);
-        console.log('✅ Product removed from wishlist');
-      } else {
-        await addToWishlist(product.id, 'medium', `Added from product page on ${new Date().toLocaleDateString()}`);
-        console.log('✅ Product added to wishlist');
-      }
-    } catch (error) {
-      console.error('❌ Error toggling wishlist:', error);
-    }
-  };
+
 
   // Swipe handlers
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -214,12 +199,6 @@ const ProductPage: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4">
             <Search className="w-6 h-6 text-white" />
-            <button
-              onClick={handleFavorite}
-              className="p-1 hover:bg-gray-800 rounded-full transition-colors"
-            >
-              <Heart className={`w-6 h-6 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-white'}`} />
-            </button>
             <ShoppingBag className="w-6 h-6 text-white" />
           </div>
         </div>
@@ -237,9 +216,7 @@ const ProductPage: React.FC = () => {
             <div className="absolute bottom-4 right-4 z-10 bg-black bg-opacity-60 text-white p-2 rounded-full">
               <Share className="w-5 h-5" />
             </div>
-            <div className="absolute top-4 right-4 z-10 bg-black bg-opacity-60 text-white p-2 rounded-full">
-              <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-white'}`} />
-            </div>
+
             <img
               src={product.images[currentImageIndex]}
               alt={product.name}

@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
   const baseMenuItems: MenuItem[] = [
     { icon: Package, label: 'My Orders', hasChevron: false },
     { icon: HelpCircle, label: 'Help & Query', hasChevron: false },
-    { icon: Heart, label: 'Wishlist', hasChevron: false },
+
     { icon: Users, label: 'Refer & Earn', hasChevron: false },
     { icon: Palette, label: 'Appearance', hasChevron: true },
     { icon: User, label: 'Manage Account', hasChevron: true },
@@ -68,7 +68,7 @@ const ProfilePage: React.FC = () => {
   const handleMenuClick = (label: string) => {
     if (label === 'Log Out') {
       handleLogout();
-    } else if (!isLoggedIn && ['My Orders', 'Wishlist', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
+    } else if (!isLoggedIn && ['My Orders', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
       // AUTHENTICATION REQUIRED: Show login popup for protected features
       setIsLoginPopupOpen(true);
     } else {
@@ -77,9 +77,7 @@ const ProfilePage: React.FC = () => {
         case 'My Orders':
           navigate('/order-success'); // Placeholder - shows order success page
           break;
-        case 'Wishlist':
-          navigate('/wishlist');
-          break;
+
         case 'Manage Account':
           navigate('/manage-account'); // NEW: Navigate to manage account page
           break;

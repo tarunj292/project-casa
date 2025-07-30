@@ -212,7 +212,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       });
 
       const result = await response.json();
-      
+
       if (result.success) {
         setCart(result.data.cart);
         console.log('✅ Product removed from cart. Total items:', result.data.cart.totalItems);

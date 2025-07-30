@@ -22,9 +22,7 @@ const TopBar: React.FC = () => {
     navigate('/search');
   };
 
-  const handleWishlist = () => {
-    navigate('/wishlist');
-  };
+
 
   const handleProfile = () => {
     navigate('/profile');
@@ -65,9 +63,7 @@ const TopBar: React.FC = () => {
           <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors">
             <Search size={20} onClick={handleSearch} />
           </button>
-          <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors relative">
-            <Heart size={20} onClick={handleWishlist} />
-          </button>
+
           <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors">
             <User size={20} onClick={handleProfile} />
           </button>
