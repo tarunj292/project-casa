@@ -1,54 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Heart, ShoppingBag } from 'lucide-react';
+import { useUser } from '../contexts/UserContext';
+import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
 
-interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  price: string;
-  originalPrice?: string;
-  discount?: string;
-  image: string;
-  category?: string;
-  description?: string;
+interface WishlistItem {
+  _id: string;
+  product: {
+    _id: string;
+    name: string;
+    images: string[];
+    price: {
+      $numberDecimal: string;
+    };
+    currency: string;
+    brand: string | {
+      _id: string;
+      name: string;
+      logo_url?: string;
+    };
+    description?: string;
+    tags: string[];
+  };
+  addedAt: string;
+  priority: string;
+  notes?: string;
 }
 
 const WishlistPage: React.FC = () => {
   const navigate = useNavigate();
-  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { userData } = useUser();
+  const { addToCart } = useCart();
+  const { wishlist, loading: isLoading, error, removeFromWishlist, fetchWishlist } = useWishlist();
 
-  // Sample wishlist items (in a real app, this would come from a state management solution or localStorage)
+  // Helper function to safely get brand name
+  const getBrandName = (brand: string | { _id: string; name: string; logo_url?: string }): string => {
+    if (typeof brand === 'string') {
+      return brand;
+    }
+    if (typeof brand === 'object' && brand && 'name' in brand) {
+      return brand.name;
+    }
+    return 'Unknown Brand';
+  };
+
+  // Load wishlist on component mount
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      const sampleWishlistItems: Product[] = [
-        {
-          id: '1',
-          name: 'Cropped Hoodie Set',
-          brand: 'Street Dreams',
-          price: '₹1,899',
-          originalPrice: '₹2,799',
-          discount: '32% OFF',
-          image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400',
-          category: 'Hoodies'
-        },
-        {
-          id: '3',
-          name: 'Denim Jacket',
-          brand: 'Classic Wear',
-          price: '₹2,499',
-          originalPrice: '₹3,999',
-          discount: '38% OFF',
-          image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400',
-          category: 'Jackets'
-        }
-      ];
-
-      setWishlistItems(sampleWishlistItems);
-      setIsLoading(false);
-    }, 1000);
+    fetchWishlist();
   }, []);
 
   const handleBack = () => {
@@ -59,18 +58,35 @@ const WishlistPage: React.FC = () => {
     navigate('/');
   };
 
-  const handleRemoveItem = (id: string) => {
-    setWishlistItems(prev => prev.filter(item => item.id !== id));
+  const handleRemoveItem = async (productId: string) => {
+    try {
+      await removeFromWishlist(productId);
+      console.log('✅ Product removed from wishlist');
+    } catch (error) {
+      console.error('❌ Error removing from wishlist:', error);
+    }
   };
 
-  const handleViewProduct = (id: string) => {
-    navigate(`/product/${id}`);
+  const handleViewProduct = (productId: string) => {
+    navigate(`/product/${productId}`);
   };
 
-  const handleAddToBag = (product: Product) => {
-    // In a real app, this would add the product to the cart
-    console.log('Adding to bag:', product);
-    navigate('/bag');
+  const handleAddToBag = async (item: WishlistItem) => {
+    try {
+      console.log('🛒 Adding to bag:', item.product.name);
+
+      // Add to cart with default size M and quantity 1
+      await addToCart(item.product._id, 1, 'M');
+
+      // Show success message (you could add a toast notification here)
+      console.log('✅ Product added to bag successfully');
+
+      // Navigate to bag page to show the added item
+      navigate('/bag');
+    } catch (error) {
+      console.error('❌ Failed to add to bag:', error);
+      // You could show an error toast here
+    }
   };
 
   return (
@@ -103,57 +119,91 @@ const WishlistPage: React.FC = () => {
       {/* Title */}
       <div className="px-4 py-6">
         <h1 className="text-2xl font-bold">WISHLIST</h1>
-        {wishlistItems.length > 0 && (
-          <p className="text-gray-400 text-sm mt-1">{wishlistItems.length} item{wishlistItems.length !== 1 ? 's' : ''}</p>
+        {wishlist.items.length > 0 && (
+          <p className="text-gray-400 text-sm mt-1">{wishlist.items.length} item{wishlist.items.length !== 1 ? 's' : ''}</p>
         )}
       </div>
 
       {/* Loading State */}
       {isLoading && (
         <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading your wishlist...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !isLoading && (
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div className="text-center">
+            <div className="text-red-400 text-6xl mb-4">⚠️</div>
+            <p className="text-white text-lg mb-2">Failed to load wishlist</p>
+            <p className="text-gray-400 text-sm mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
         </div>
       )}
 
       {/* Wishlist Items */}
-      {!isLoading && wishlistItems.length > 0 && (
+      {!isLoading && !error && wishlist.items.length > 0 && (
         <div className="flex-1 px-4">
           <div className="grid grid-cols-2 gap-4 mb-6">
-            {wishlistItems.map((item) => (
-              <div key={item.id} className="bg-gray-800 rounded-2xl overflow-hidden">
+            {wishlist.items.map((item) => (
+              <div key={item._id} className="bg-gray-800 rounded-2xl overflow-hidden">
                 <div className="relative">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.product.images && item.product.images.length > 0
+                      ? item.product.images[0]
+                      : 'https://via.placeholder.com/200x200?text=No+Image'}
+                    alt={item.product.name}
                     className="w-full h-48 object-cover"
                   />
                   <button
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => handleRemoveItem(item.product._id)}
                     className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition-colors"
                   >
                     <X size={16} className="text-white" />
                   </button>
-                  {item.discount && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
-                      {item.discount}
-                    </div>
-                  )}
+                  <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold">
+                    {item.priority.toUpperCase()}
+                  </div>
                 </div>
 
                 <div className="p-3">
-                  <h3 className="font-semibold text-sm mb-1 line-clamp-2">{item.name}</h3>
-                  <p className="text-gray-400 text-xs mb-2">{item.brand}</p>
+                  <h3 className="font-semibold text-sm mb-1 line-clamp-2">{item.product.name}</h3>
+                  <p className="text-gray-400 text-xs mb-2">{getBrandName(item.product.brand)}</p>
 
-                  <div className="flex items-center space-x-2 mb-3">
-                    <span className="font-bold text-white">{item.price}</span>
-                    {item.originalPrice && (
-                      <span className="text-gray-500 line-through text-sm">{item.originalPrice}</span>
-                    )}
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="font-bold text-white">
+                      ₹{parseFloat(item.product.price.$numberDecimal).toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-gray-500 text-xs">{item.product.currency}</span>
                   </div>
+
+                  {item.product.tags && item.product.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {item.product.tags.slice(0, 2).map((tag, index) => (
+                        <span key={index} className="text-xs bg-gray-700 px-2 py-1 rounded">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <p className="text-xs text-gray-500 mb-3">
+                    Added: {new Date(item.addedAt).toLocaleDateString()}
+                  </p>
 
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleViewProduct(item.id)}
+                      onClick={() => handleViewProduct(item.product._id)}
                       className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                     >
                       View
@@ -184,7 +234,7 @@ const WishlistPage: React.FC = () => {
       )}
 
       {/* Empty State */}
-      {!isLoading && wishlistItems.length === 0 && (
+      {!isLoading && !error && wishlist.items.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
         <div className="relative mb-8">
           {/* Glass bowl with hearts */}

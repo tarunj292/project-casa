@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
+import { CartProvider } from './contexts/CartContext';
+import { WishlistProvider } from './contexts/WishlistContext';
 import NavShell from './components/NavShell';
 import HomePage from './pages/HomePage';
 import CollectionPage from './pages/CollectionPage';
@@ -23,7 +25,9 @@ function App() {
   return (
     <div className="mobile-container">
       <UserProvider>
-        <Router>
+        <WishlistProvider>
+          <CartProvider>
+            <Router>
           <div className="min-h-screen bg-gray-900 text-white mobile-scroll">
             <Routes>
               <Route path="/" element={<NavShell />}>
@@ -44,7 +48,9 @@ function App() {
               <Route path="/onboarding" element={<OnboardingPage />} />
             </Routes>
           </div>
-        </Router>
+            </Router>
+          </CartProvider>
+        </WishlistProvider>
       </UserProvider>
     </div>
   );
