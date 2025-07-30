@@ -1,11 +1,13 @@
+// backend/routes/wishlistRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const {
-  userAddProduct,
-  removeProductFromWishlist
-} = require('../controllers/wishlistController');
+const wishlistController = require('../controllers/wishlistController');
 
-router.post('/add', userAddProduct);
-router.put('/remove', removeProductFromWishlist);
+// Add product to wishlist
+router.post('/add', wishlistController.userAddProduct);
+
+// Remove product from wishlist
+router.post('/remove', wishlistController.removeProductFromWishlist);
 
 module.exports = router;

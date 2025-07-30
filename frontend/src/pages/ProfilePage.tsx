@@ -21,14 +21,24 @@ import { useUser } from '../contexts/UserContext';
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const { userData, setUserData } = useUser();
+  // ENHANCED USER CONTEXT: Now uses logout function and displays collected user details
+  const { userData, logout } = useUser();
   const isLoggedIn = userData.isLoggedIn;
 
+  // NAVIGATION FIX: Always go to home page instead of browser back
   const handleBack = () => {
-    navigate(-1);
+    navigate('/'); // Always navigate to home page
   };
 
-  const menuItems = [
+  // MENU ITEM TYPE: Define the structure for menu items with optional logout flag
+  type MenuItem = {
+    icon: any;
+    label: string;
+    hasChevron: boolean;
+    isLogout?: boolean; // Optional property for logout styling
+  };
+
+  const baseMenuItems: MenuItem[] = [
     { icon: Package, label: 'My Orders', hasChevron: false },
     { icon: HelpCircle, label: 'Help & Query', hasChevron: false },
     { icon: Heart, label: 'Wishlist', hasChevron: false },
@@ -39,26 +49,39 @@ const ProfilePage: React.FC = () => {
     { icon: Gift, label: 'My Offers', hasChevron: true },
     { icon: FileText, label: 'Terms & Conditions', hasChevron: true },
     { icon: Shield, label: 'Privacy Policy', hasChevron: true },
-    { icon: LogOut, label: 'Log Out', hasChevron: true, isLogout: true },
   ];
+
+  // CONDITIONAL MENU: Add logout option only when user is logged in
+  const menuItems: MenuItem[] = isLoggedIn
+    ? [...baseMenuItems, { icon: LogOut, label: 'Log Out', hasChevron: true, isLogout: true }]
+    : baseMenuItems;
+
+  /**
+   * IMPROVED LOGOUT: Uses centralized logout function from UserContext
+   * This ensures proper cleanup of both state and localStorage
+   */
+  const handleLogout = () => {
+    logout(); // Clears both React state and localStorage
+    console.log('User logged out successfully');
+  };
 
   const handleMenuClick = (label: string) => {
     if (label === 'Log Out') {
-      setUserData({
-        isLoggedIn: false,
-        isNewUser: false,
-        onboardingData: {}
-      });
+      handleLogout();
     } else if (!isLoggedIn && ['My Orders', 'Wishlist', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
+      // AUTHENTICATION REQUIRED: Show login popup for protected features
       setIsLoginPopupOpen(true);
     } else {
-      // Navigate to appropriate pages
+      // NAVIGATION: Navigate to appropriate pages
       switch (label) {
         case 'My Orders':
           navigate('/order-success'); // Placeholder - shows order success page
           break;
         case 'Wishlist':
           navigate('/wishlist');
+          break;
+        case 'Manage Account':
+          navigate('/manage-account'); // NEW: Navigate to manage account page
           break;
         case 'Help & Query':
           navigate('/search'); // Placeholder - redirect to search
@@ -113,7 +136,20 @@ const ProfilePage: React.FC = () => {
           <div className="relative z-10">
             {isLoggedIn ? (
               <>
-                <h2 className="text-2xl font-bold mb-1">vinvin</h2>
+                {/* ENHANCED USER DISPLAY: Shows collected name from onboarding */}
+                <h2 className="text-2xl font-bold mb-1">
+                  {userData.name || `User ${userData.phoneNumber?.slice(-4)}` || 'User'}
+                </h2>
+                {/* PHONE NUMBER DISPLAY: Always show phone number */}
+                <p className="text-gray-300 text-sm mb-1">
+                  {userData.phoneNumber || 'No phone number'}
+                </p>
+                {/* EMAIL DISPLAY: Show collected email if available */}
+                {userData.email && (
+                  <p className="text-gray-300 text-sm mb-1">
+                    {userData.email}
+                  </p>
+                )}
                 <p className="text-gray-300 text-sm mb-4">Lvl 00</p>
 
                 <div className="mb-4">

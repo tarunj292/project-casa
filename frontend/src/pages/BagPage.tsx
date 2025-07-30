@@ -1,78 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Minus, Trash2 } from 'lucide-react';
-
-interface BagItem {
-  id: string;
-  name: string;
-  brand: string;
-  price: string;
-  image: string;
-  size: string;
-  quantity: number;
-}
+import { useCart } from '../contexts/CartContext';
 
 const BagPage: React.FC = () => {
   const navigate = useNavigate();
-  const [bagItems, setBagItems] = useState<BagItem[]>([
-    {
-      id: '1',
-      name: 'Bunny Time Hoodie',
-      brand: 'Bonkers Corner',
-      price: '₹1,899',
-      image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=200',
-      size: 'L',
-      quantity: 1
-    },
-    {
-      id: '2',
-      name: 'Oversized T-Shirt',
-      brand: 'Aesthetic Bodies',
-      price: '₹899',
-      image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=200',
-      size: 'M',
-      quantity: 2
-    }
-  ]);
+  const { cart, loading, error, updateQuantity, removeFromCart, fetchCart } = useCart();
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const getBrandName = (brand: string | { _id: string; name: string; logo_url?: string }): string => {
+    if (typeof brand === 'string') return brand;
+    if (brand && typeof brand === 'object' && 'name' in brand) return brand.name;
+    return 'Unknown Brand';
+  };
 
   const handleStartShopping = () => navigate('/');
 
-  const handleQuantityChange = (id: string, change: number) => {
-    setBagItems(items =>
-      items.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
+  const handleQuantityChange = async (productId: string, size: string, change: number) => {
+    try {
+      const currentItem = cart.items.find(item =>
+        item.product._id === productId && item.size === size
+      );
+      if (currentItem) {
+        const newQuantity = Math.max(1, currentItem.quantity + change);
+        await updateQuantity(productId, size, newQuantity);
+      }
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
+    }
   };
 
-  const handleRemoveItem = (id: string) => {
-    setBagItems(items => items.filter(item => item.id !== id));
+  const handleRemoveItem = async (productId: string, size: string) => {
+    try {
+      await removeFromCart(productId, size);
+    } catch (error) {
+      console.error('Failed to remove item:', error);
+    }
   };
 
   const handleCheckout = () => {
-    const total = bagItems.reduce((sum, item) =>
-      sum + (parseInt(item.price.replace('₹', '').replace(',', '')) * item.quantity), 0
-    );
+    const total = cart.items.reduce((sum, item) => {
+      const price = parseFloat(item?.priceAtAdd?.$numberDecimal || '0');
+      return sum + price * item.quantity;
+    }, 0);
+
     navigate('/checkout', {
       state: {
-        bagItems,
+        cartItems: cart.items,
         total,
         directBuy: false
       }
     });
   };
 
-  const totalAmount = bagItems.reduce((sum, item) =>
-    sum + (parseInt(item.price.replace('₹', '').replace(',', '')) * item.quantity), 0
-  );
-
-  const isEmpty = bagItems.length === 0;
+  const isEmpty = cart.items.length === 0;
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-      {/* Header */}
       <div className="px-4 py-4 border-b border-gray-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -86,14 +73,32 @@ const BagPage: React.FC = () => {
             className="p-2 hover:bg-gray-800 rounded-full transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </button>
         </div>
       </div>
 
       {/* Content */}
-      {isEmpty ? (
+      {loading ? (
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
+          <p className="text-white text-lg">Loading your bag...</p>
+        </div>
+      ) : error ? (
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+          <div className="text-red-400 text-6xl mb-4">⚠️</div>
+          <p className="text-white text-lg mb-4">Failed to load bag</p>
+          <p className="text-gray-400 text-sm mb-4">{error}</p>
+          <button
+            onClick={fetchCart}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      ) : isEmpty ? (
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
           <div className="relative mb-8">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -110,7 +115,8 @@ const BagPage: React.FC = () => {
             </div>
             <div className="relative z-10 w-20 h-20 bg-gray-700 rounded-2xl flex items-center justify-center">
               <svg className="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
               </svg>
               <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
                 <div className="text-xs text-gray-400">☹</div>
@@ -129,31 +135,46 @@ const BagPage: React.FC = () => {
       ) : (
         <div className="flex-1 px-4 py-6">
           <div className="space-y-4 mb-6">
-            {bagItems.map(item => (
-              <div key={item.id} className="bg-gray-800 rounded-lg p-4">
+            {cart.items.map((item) => (
+              <div key={`${item.product._id}-${item.size}`} className="bg-gray-800 rounded-lg p-4">
                 <div className="flex items-start space-x-4">
-                  <img src={item.image} alt={item.name} className="w-20 h-20 rounded-lg object-cover" />
+                  <img
+                    src={item.product.images?.[0] || 'https://via.placeholder.com/80x80?text=No+Image'}
+                    alt={item.product.name}
+                    className="w-20 h-20 rounded-lg object-cover"
+                  />
                   <div className="flex-1">
-                    <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-400">{item.brand}</p>
+                    <h3 className="font-medium text-white">{item.product.name}</h3>
+                    <p className="text-sm text-gray-400">{getBrandName(item.product.brand)}</p>
                     <p className="text-sm text-gray-400">Size: {item.size}</p>
-                    <p className="text-lg font-bold mt-1">{item.price}</p>
+                    <p className="text-lg font-bold text-white mt-1">
+                      ₹{parseFloat(item.priceAtAdd?.$numberDecimal || '0').toLocaleString('en-IN')}
+                    </p>
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {item.product.tags.slice(0, 2).map((tag, index) => (
+                        <span key={index} className="text-xs bg-gray-700 px-2 py-1 rounded">{tag}</span>
+                      ))}
+                    </div>
                   </div>
                   <div className="flex flex-col items-end space-y-2">
-                    <button onClick={() => handleRemoveItem(item.id)} className="p-1 text-red-400 hover:text-red-300">
+                    <button
+                      onClick={() => handleRemoveItem(item.product._id, item.size)}
+                      className="p-1 text-red-400 hover:text-red-300"
+                      title="Remove from cart"
+                    >
                       <Trash2 size={16} />
                     </button>
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => handleQuantityChange(item.id, -1)}
-                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-gray-600"
+                        onClick={() => handleQuantityChange(item.product._id, item.size, -1)}
+                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
                       >
                         <Minus size={14} />
                       </button>
                       <span className="w-8 text-center">{item.quantity}</span>
                       <button
-                        onClick={() => handleQuantityChange(item.id, 1)}
-                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-gray-600"
+                        onClick={() => handleQuantityChange(item.product._id, item.size, 1)}
+                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
                       >
                         <Plus size={14} />
                       </button>
@@ -166,11 +187,16 @@ const BagPage: React.FC = () => {
         </div>
       )}
 
-      {!isEmpty && (
+      {!isEmpty && !loading && (
         <div className="px-4 py-4 bg-gray-800 border-t border-gray-700">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-bold">Total: ₹{totalAmount.toLocaleString('en-IN')}</span>
-            <span className="text-sm text-gray-400">{bagItems.length} item{bagItems.length > 1 ? 's' : ''}</span>
+            <span className="text-lg font-bold text-white">
+              Total: ₹{cart.items.reduce((sum, item) => {
+                const price = parseFloat(item?.priceAtAdd?.$numberDecimal || '0');
+                return sum + price * item.quantity;
+              }, 0).toLocaleString('en-IN')}
+            </span>
+            <span className="text-sm text-gray-400">{cart.totalItems} item{cart.totalItems > 1 ? 's' : ''}</span>
           </div>
           <button
             onClick={handleCheckout}

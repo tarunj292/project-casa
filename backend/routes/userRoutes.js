@@ -10,6 +10,7 @@ router.get('/', userController.getUsers);
 router.get('/:id', userController.getUserById);
 router.put('/:id', userController.updateUser);
 router.delete('/:id', userController.deleteUser);
+router.delete('/delete-by-phone', userController.deleteUserByPhone); // NEW: Delete by phone number
 router.post('/generate-otp', userController.generateOtp);
 
 module.exports = router;
