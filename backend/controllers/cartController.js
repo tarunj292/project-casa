@@ -1,6 +1,51 @@
 const Cart = require('../models/cart');
 const Product = require('../models/product');
 
+// Helper function to clean up duplicate items in cart
+const cleanupDuplicateItems = async (cart) => {
+  const uniqueItems = [];
+  const seenItems = new Map();
+
+  cart.items.forEach(item => {
+    const key = `${item.product._id || item.product}-${item.size}`;
+
+    if (seenItems.has(key)) {
+      // Merge quantities for duplicate items
+      const existingItem = seenItems.get(key);
+      existingItem.quantity += item.quantity;
+      console.log(`🧹 Merging duplicate item: ${key}, total quantity: ${existingItem.quantity}`);
+    } else {
+      seenItems.set(key, {
+        product: item.product,
+        quantity: item.quantity,
+        size: item.size,
+        priceAtAdd: item.priceAtAdd
+      });
+      uniqueItems.push(item);
+    }
+  });
+
+  // If we found duplicates, rebuild the items array
+  if (seenItems.size < cart.items.length) {
+    console.log(`🧹 Found duplicates: ${cart.items.length} -> ${seenItems.size} unique items`);
+    cart.items = [];
+
+    seenItems.forEach((itemData, key) => {
+      cart.items.push({
+        product: itemData.product,
+        quantity: itemData.quantity,
+        size: itemData.size,
+        priceAtAdd: itemData.priceAtAdd
+      });
+    });
+
+    await cart.save();
+    console.log(`✅ Cart cleaned up and saved`);
+  }
+
+  return cart;
+};
+
 /**
  * GET CART
  * Retrieve user's cart by phone number
@@ -18,9 +63,9 @@ const getCart = async (req, res) => {
     }
     
     console.log(`📦 Fetching cart for phone: ${phone}`);
-    
-    const cart = await Cart.findByPhone(phone);
-    
+
+    let cart = await Cart.findByPhone(phone);
+
     if (!cart) {
       // Return empty cart structure
       return res.json({
@@ -36,7 +81,10 @@ const getCart = async (req, res) => {
         message: 'Cart is empty'
       });
     }
-    
+
+    // Clean up any duplicate items
+    cart = await cleanupDuplicateItems(cart);
+
     console.log(`✅ Cart found with ${cart.items.length} items`);
     
     res.json({
@@ -137,16 +185,16 @@ const addToCart = async (req, res) => {
 const updateCartItem = async (req, res) => {
   try {
     const { phone, productId, size, quantity } = req.body;
-    
+
     if (!phone || !productId || !size || quantity === undefined) {
       return res.status(400).json({
         success: false,
         error: 'Phone, product ID, size, and quantity are required'
       });
     }
-    
+
     console.log(`📝 Updating cart item ${productId} (${size}) to quantity ${quantity} for phone: ${phone}`);
-    
+
     const cart = await Cart.findByPhone(phone);
     if (!cart) {
       return res.status(404).json({
@@ -154,7 +202,7 @@ const updateCartItem = async (req, res) => {
         error: 'Cart not found'
       });
     }
-    
+
     await cart.updateQuantity(productId, size, parseInt(quantity));
     
     // Fetch updated cart

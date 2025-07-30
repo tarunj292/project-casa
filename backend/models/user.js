@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   is_admin: { type: Boolean, default: false },
   is_brand_user: { type: Boolean, default: false },
   followed_brand_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Brand' }],
-  wishlist_product_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+
   last_login: { type: Date },
   delivery_addresses: [{ type: String }],
   payment_methods: [{ type: String }]

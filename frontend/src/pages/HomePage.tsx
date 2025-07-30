@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Heart, User, MapPin } from 'lucide-react';
+import { Search, User, MapPin } from 'lucide-react';
 
 interface Brand {
   _id: string;
@@ -240,9 +240,7 @@ const HomePage: React.FC = () => {
             <button onClick={() => navigate('/search')} className="p-1">
               <Search size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>
-            <button onClick={() => navigate('/wishlist')} className="p-1">
-              <Heart size={20} className="text-white hover:text-red-400 transition-colors" />
-            </button>
+
             <button onClick={() => navigate('/profile')} className="p-1">
               <User size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>

@@ -45,6 +45,8 @@ const BagPage: React.FC = () => {
   const handleRemoveItem = async (productId: string, size: string) => {
     try {
       await removeFromCart(productId, size);
+      // Refresh cart to ensure UI is updated
+      await fetchCart();
     } catch (error) {
       console.error('Failed to remove item:', error);
     }
@@ -73,14 +75,7 @@ const BagPage: React.FC = () => {
             </button>
             <h1 className="text-xl font-bold">Your Bag</h1>
           </div>
-          <button
-            onClick={() => navigate('/wishlist')}
-            className="p-2 hover:bg-gray-800 rounded-full transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </button>
+
         </div>
       </div>
 
@@ -150,8 +145,8 @@ const BagPage: React.FC = () => {
         /* Cart Items */
         <div className="flex-1 px-4 py-6">
           <div className="space-y-4 mb-6">
-            {cart.items.map((item) => (
-              <div key={`${item.product._id}-${item.size}`} className="bg-gray-800 rounded-lg p-4">
+            {cart.items.map((item, index) => (
+              <div key={`${item.product._id}-${item.size}-${index}`} className="bg-gray-800 rounded-lg p-4">
                 <div className="flex items-start space-x-4">
                   <img
                     src={item.product.images && item.product.images.length > 0

@@ -64,8 +64,7 @@ const TrendsPage: React.FC = () => {
       }
       return newSet;
     });
-    // Navigate to wishlist page
-    navigate('/wishlist');
+    // Just toggle the like state (no navigation needed)
   };
 
   const handleGenderChange = (gender: 'M' | 'W') => {
@@ -90,9 +89,7 @@ const TrendsPage: React.FC = () => {
             <button onClick={() => navigate('/search')} className="p-1">
               <Search size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>
-            <button onClick={() => navigate('/wishlist')} className="p-1">
-              <Heart size={20} className="text-white hover:text-red-400 transition-colors" />
-            </button>
+
             <button onClick={() => navigate('/profile')} className="p-1">
               <User size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>
@@ -186,22 +183,7 @@ const TrendsPage: React.FC = () => {
                 <div className="absolute top-2 left-2 bg-gray-900 bg-opacity-80 text-white px-2 py-1 rounded text-xs font-bold">
                   {product.badge}
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleLikeToggle(product.id);
-                  }}
-                  className="absolute top-2 right-2 p-1 bg-gray-900 bg-opacity-50 rounded-full hover:bg-opacity-70 transition-colors"
-                >
-                  <Heart
-                    size={16}
-                    className={`transition-colors ${
-                      likedProducts.has(product.id)
-                        ? 'text-red-500 fill-red-500'
-                        : 'text-white'
-                    }`}
-                  />
-                </button>
+
               </div>
               <div className="p-3">
                 <h3 className="font-bold text-sm text-white mb-1">{product.brand}</h3>

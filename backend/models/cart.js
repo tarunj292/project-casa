@@ -86,10 +86,11 @@ cartSchema.pre('save', function(next) {
 
 // Instance methods
 cartSchema.methods.addItem = function(productId, quantity = 1, size = 'M', price) {
-  const existingItemIndex = this.items.findIndex(
-    item => item.product.toString() === productId.toString() && item.size === size
-  );
-  
+  const existingItemIndex = this.items.findIndex(item => {
+    const itemProductId = item.product._id ? item.product._id.toString() : item.product.toString();
+    return itemProductId === productId.toString() && item.size === size;
+  });
+
   if (existingItemIndex > -1) {
     // Update existing item quantity
     this.items[existingItemIndex].quantity += quantity;
@@ -102,31 +103,34 @@ cartSchema.methods.addItem = function(productId, quantity = 1, size = 'M', price
       priceAtAdd: price
     });
   }
-  
+
   return this.save();
 };
 
 cartSchema.methods.removeItem = function(productId, size = null) {
   if (size) {
     // Remove specific size
-    this.items = this.items.filter(
-      item => !(item.product.toString() === productId.toString() && item.size === size)
-    );
+    this.items = this.items.filter(item => {
+      const itemProductId = item.product._id ? item.product._id.toString() : item.product.toString();
+      return !(itemProductId === productId.toString() && item.size === size);
+    });
   } else {
     // Remove all instances of product
-    this.items = this.items.filter(
-      item => item.product.toString() !== productId.toString()
-    );
+    this.items = this.items.filter(item => {
+      const itemProductId = item.product._id ? item.product._id.toString() : item.product.toString();
+      return itemProductId !== productId.toString();
+    });
   }
-  
+
   return this.save();
 };
 
 cartSchema.methods.updateQuantity = function(productId, size, newQuantity) {
-  const item = this.items.find(
-    item => item.product.toString() === productId.toString() && item.size === size
-  );
-  
+  const item = this.items.find(item => {
+    const itemProductId = item.product._id ? item.product._id.toString() : item.product.toString();
+    return itemProductId === productId.toString() && item.size === size;
+  });
+
   if (item) {
     if (newQuantity <= 0) {
       return this.removeItem(productId, size);
@@ -135,7 +139,7 @@ cartSchema.methods.updateQuantity = function(productId, size, newQuantity) {
       return this.save();
     }
   }
-  
+
   throw new Error('Item not found in cart');
 };
 
