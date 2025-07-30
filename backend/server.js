@@ -10,23 +10,27 @@ const categoryRoutes = require('./routes/category'); // disable if error
 
 const app = express();
 
-// Middlewares
+// ✅ Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// ✅ Import your routes
+const userRoutes = require('../routes/userRoutes.js'); // ✅ path is correct if file is in backend/routes/
+
+// ✅ Use the routes
 app.use('/api/users', userRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/products', productRoutes)
 app.use('/api/categories', categoryRoutes);
 
-// Default route
+// ✅ Default route
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-// DB Connection and server start
+// ✅ DB Connection and Server start
 const PORT = process.env.PORT || 5002;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
