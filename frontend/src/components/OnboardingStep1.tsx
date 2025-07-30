@@ -1,3 +1,15 @@
+/**
+ * ONBOARDING STEP 1: Age Range and Style Interests Collection
+ *
+ * THEME UPDATE: Changed from purple/orange gradient to consistent gray theme
+ * PROGRESS UPDATE: Updated progress indicators to reflect new 4-step flow
+ *
+ * Changes made:
+ * - Background: purple gradient → gray-900 (consistent with app theme)
+ * - Buttons: purple/orange → gray color scheme
+ * - Progress: Updated to show step 2 of 4 (after UserDetailsStep)
+ * - Icons: Added gray-400 color for better visual hierarchy
+ */
 import React, { useState } from 'react';
 import { User } from 'lucide-react';
 
@@ -45,28 +57,29 @@ const OnboardingStep1: React.FC<OnboardingStep1Props> = ({ onContinue }) => {
 
   const canContinue = selectedAgeRange && selectedStyleInterests.length >= 3;
 
+  // THEME CONSISTENCY: Changed from purple gradient to gray-900 background
   return (
-    <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-orange-600 min-h-screen text-white flex flex-col">
+    <div className="bg-gray-900 min-h-screen text-white flex flex-col">
       {/* Header */}
       <div className="flex-1 px-6 py-8">
-        {/* Logo and Progress */}
+        {/* UPDATED PROGRESS: Now shows step 2 of 4 (after UserDetailsStep) */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-2 tracking-wider">CASA</h1>
           <div className="flex justify-center space-x-2 mb-8">
-            <div className="w-3 h-3 bg-white rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
+            <div className="w-3 h-3 bg-white rounded-full"></div> {/* UserDetails completed */}
+            <div className="w-3 h-3 bg-white rounded-full"></div> {/* Current step */}
+            <div className="w-3 h-3 bg-white/30 rounded-full"></div> {/* Preferences step */}
+            <div className="w-3 h-3 bg-white/30 rounded-full"></div> {/* Success step */}
           </div>
           <h2 className="text-2xl font-bold mb-2">Tell us about you</h2>
-          <p className="text-white/80">Help us personalize your feed</p>
+          <p className="text-gray-400">Help us personalize your feed</p>
         </div>
 
         {/* Age Range Section */}
         <div className="mb-8">
           <div className="flex items-center mb-4">
-            <User size={20} className="mr-2" />
+            {/* VISUAL IMPROVEMENT: Added gray-400 color to icon for better hierarchy */}
+            <User size={20} className="mr-2 text-gray-400" />
             <span className="font-medium">Age Range</span>
           </div>
           <div className="space-y-3">
@@ -74,10 +87,10 @@ const OnboardingStep1: React.FC<OnboardingStep1Props> = ({ onContinue }) => {
               <button
                 key={range}
                 onClick={() => setSelectedAgeRange(range)}
-                className={`w-full p-4 rounded-xl text-left font-medium transition-all ${
+                className={`w-full p-4 rounded-xl text-left font-medium transition-all border-2 ${
                   selectedAgeRange === range
-                    ? 'bg-white/20 border-2 border-white/40'
-                    : 'bg-black/30 border-2 border-transparent hover:bg-black/40'
+                    ? 'bg-gray-700 border-gray-600 text-white' // Selected state
+                    : 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-gray-300' // Default state
                 }`}
               >
                 {range}
@@ -96,17 +109,17 @@ const OnboardingStep1: React.FC<OnboardingStep1Props> = ({ onContinue }) => {
               <button
                 key={interest}
                 onClick={() => handleStyleInterestToggle(interest)}
-                className={`p-4 rounded-xl font-medium transition-all ${
+                className={`p-4 rounded-xl font-medium transition-all border-2 ${
                   selectedStyleInterests.includes(interest)
-                    ? 'bg-white/20 border-2 border-white/40'
-                    : 'bg-black/30 border-2 border-transparent hover:bg-black/40'
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-gray-300'
                 }`}
               >
                 {interest}
               </button>
             ))}
           </div>
-          <p className="text-sm text-white/60 mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             {selectedStyleInterests.length}/5 selected
           </p>
         </div>
@@ -119,7 +132,7 @@ const OnboardingStep1: React.FC<OnboardingStep1Props> = ({ onContinue }) => {
           disabled={!canContinue}
           className={`w-full py-4 rounded-xl font-semibold text-lg transition-all ${
             canContinue
-              ? 'bg-purple-600 hover:bg-purple-700 text-white'
+              ? 'bg-gray-300 text-gray-900 hover:bg-white active:scale-95'
               : 'bg-gray-600 text-gray-400 cursor-not-allowed'
           }`}
         >

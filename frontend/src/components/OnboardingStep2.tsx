@@ -1,3 +1,15 @@
+/**
+ * ONBOARDING STEP 2: Preferred Fits Collection
+ *
+ * THEME UPDATE: Changed from purple/orange gradient to consistent gray theme
+ * PROGRESS UPDATE: Updated progress indicators to reflect new 4-step flow
+ *
+ * Changes made:
+ * - Background: purple gradient → gray-900 (consistent with app theme)
+ * - Buttons: purple/orange → gray color scheme matching other components
+ * - Progress: Updated to show step 3 of 4 (final onboarding step)
+ * - Icons: Added gray-400 color for visual consistency
+ */
 import React, { useState } from 'react';
 import { Shirt } from 'lucide-react';
 
@@ -35,28 +47,28 @@ const OnboardingStep2: React.FC<OnboardingStep2Props> = ({ onContinue }) => {
 
   const canContinue = selectedFits.length > 0;
 
+  // THEME CONSISTENCY: Changed from purple gradient to gray-900 background
   return (
-    <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-orange-600 min-h-screen text-white flex flex-col">
+    <div className="bg-gray-900 min-h-screen text-white flex flex-col">
       {/* Header */}
       <div className="flex-1 px-6 py-8">
-        {/* Logo and Progress */}
+        {/* UPDATED PROGRESS: Now shows step 3 of 4 (final onboarding step) */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-2 tracking-wider">CASA</h1>
           <div className="flex justify-center space-x-2 mb-8">
-            <div className="w-3 h-3 bg-white rounded-full"></div>
-            <div className="w-3 h-3 bg-white rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
-            <div className="w-3 h-3 bg-white/30 rounded-full"></div>
+            <div className="w-3 h-3 bg-white rounded-full"></div> {/* UserDetails completed */}
+            <div className="w-3 h-3 bg-white rounded-full"></div> {/* Age/Interests completed */}
+            <div className="w-3 h-3 bg-white rounded-full"></div> {/* Current step */}
+            <div className="w-3 h-3 bg-white/30 rounded-full"></div> {/* Success step */}
           </div>
           <h2 className="text-2xl font-bold mb-2">Your Style Preferences</h2>
-          <p className="text-white/80">What fits do you love?</p>
+          <p className="text-gray-400">What fits do you love?</p>
         </div>
 
         {/* Preferred Fits Section */}
         <div className="mb-8">
           <div className="flex items-center mb-6">
-            <Shirt size={20} className="mr-2" />
+            <Shirt size={20} className="mr-2 text-gray-400" />
             <span className="font-medium">Preferred Fits</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -64,10 +76,10 @@ const OnboardingStep2: React.FC<OnboardingStep2Props> = ({ onContinue }) => {
               <button
                 key={fit}
                 onClick={() => handleFitToggle(fit)}
-                className={`p-6 rounded-xl font-medium text-lg transition-all ${
+                className={`p-6 rounded-xl font-medium text-lg transition-all border-2 ${
                   selectedFits.includes(fit)
-                    ? 'bg-white/20 border-2 border-white/40'
-                    : 'bg-black/30 border-2 border-transparent hover:bg-black/40'
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-gray-300'
                 }`}
               >
                 {fit}
@@ -75,7 +87,7 @@ const OnboardingStep2: React.FC<OnboardingStep2Props> = ({ onContinue }) => {
             ))}
           </div>
           {selectedFits.length > 0 && (
-            <p className="text-sm text-white/60 mt-4">
+            <p className="text-sm text-gray-400 mt-4">
               {selectedFits.length} fit{selectedFits.length !== 1 ? 's' : ''} selected
             </p>
           )}
@@ -89,7 +101,7 @@ const OnboardingStep2: React.FC<OnboardingStep2Props> = ({ onContinue }) => {
           disabled={!canContinue}
           className={`w-full py-4 rounded-xl font-semibold text-lg transition-all ${
             canContinue
-              ? 'bg-purple-600 hover:bg-purple-700 text-white'
+              ? 'bg-gray-300 text-gray-900 hover:bg-white active:scale-95'
               : 'bg-gray-600 text-gray-400 cursor-not-allowed'
           }`}
         >
