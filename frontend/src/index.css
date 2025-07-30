@@ -188,3 +188,7 @@ button:focus, .btn:focus {
 .tinder-card:nth-child(n+4) {
   transform: scale(0.85) translateY(30px);
 }
+
+.black-text{
+  color: black
+}

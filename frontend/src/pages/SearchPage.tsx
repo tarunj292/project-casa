@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search } from 'lucide-react';
+import axios from 'axios'
+import {handleSearch} from '../utils/getProducts'
 
 const SearchPage: React.FC = () => {
   const navigate = useNavigate();
@@ -10,20 +12,15 @@ const SearchPage: React.FC = () => {
     navigate(-1);
   };
 
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      navigate(`/collection?search=${encodeURIComponent(query)}`);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSearch(searchQuery);
+    handleSearch(searchQuery, navigate);
   };
 
   const handlePopularSearch = (search: string) => {
+    //popular search recommendations
     setSearchQuery(search);
-    handleSearch(search);
+    handleSearch(search, navigate);
   };
 
   const handleRecentlyViewedClick = () => {

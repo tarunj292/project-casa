@@ -23,6 +23,8 @@ router.get('/tag', productController.getProductsByTag);
 // Get products by price range using query params ?min=100&max=1000
 router.get('/price', productController.getAllProductsByPrice);
 
+router.post('/search', productController.search)
+
 // Get product by ID
 router.get('/:id', productController.getProductById);
 
