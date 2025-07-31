@@ -59,11 +59,17 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// GET products by category (uses tag as category)
+// GET products by category (uses category ObjectId)
 exports.getProductByCategory = async (req, res) => {
   try {
     const { category } = req.query;
-    const products = await Product.find({ tags: category });
+    if (!category) {
+      return res.status(400).json({ error: 'Category id is required as ?category=' });
+    }
+    // Find products where the category array contains the given category id
+    const products = await Product.find({ category: category, is_active: true })
+      .populate('brand')
+      .populate('category');
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });

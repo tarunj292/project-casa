@@ -48,6 +48,7 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order-success" element={<OrderSuccessPage />} />
               <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/products/:categoryId" element={<ProductsPage />} />
               <Route path="/products" element={<ProductsPage />} />
             </Routes>
           </div>

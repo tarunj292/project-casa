@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Heart, User, MapPin } from 'lucide-react';
+import axios from 'axios';
 
 interface Brand {
   _id: string;
@@ -8,6 +9,21 @@ interface Brand {
   logo_url?: string;
   is_active: boolean;
   created_at?: string; // Add this to match the backend's `createdAt` field
+}
+interface Category {
+  _id: string;
+  name: string;
+  image: string;
+  parentCategory?: string | null;  // <-- ADD THIS LINE
+}
+interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  price: string;
+  images: string[];
+  selectedSize: string;
+  quantity: number;
 }
 
 const HomePage: React.FC = () => {
@@ -18,30 +34,10 @@ const HomePage: React.FC = () => {
   const [latestBrands, setLatestBrands] = useState<Brand[]>([]); // New state for latest brands
   const [trendingBrands, setTrendingBrands] = useState<Brand[]>([]); // New state for trending brands
   const [loadingBrands, setLoadingBrands] = useState(true);
+  const [womenCategories, setWomenCategories] = useState<Category[]>([]);
+  const [menCategories, setMenCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  // --- EXISTING HARDCODED DATA (Keep these for categories, iconic looks, and offers) ---
-  // ... (your menCategories, womenCategories, menIconicLooks, etc., remain here)
-  const menCategories = [
-    { id: 'oversized', label: 'Oversized T-shirt', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'shirts', label: 'Formal Shirts', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jeans', label: 'Jeans', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'cargos', label: 'Cargos & Parachutes', image: 'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'hoodies', label: 'Hoodies', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jackets', label: 'Jackets', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'coords', label: 'Co-ords', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'shorts', label: 'Shorts', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
-
-  const womenCategories = [
-    { id: 'dresses', label: 'Dresses', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'tops', label: 'Tops & Blouses', image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'skirts', label: 'Skirts', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jeans-women', label: 'Jeans', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'blazers', label: 'Blazers', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'coords-women', label: 'Co-ords', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'jumpsuits', label: 'Jumpsuits', image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=400' },
-    { id: 'cardigans', label: 'Cardigans', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
-  ];
   const currentCategories = selectedGender === 'MAN' ? menCategories : womenCategories;
 
   const menIconicLooks = [
@@ -131,6 +127,8 @@ const HomePage: React.FC = () => {
     return () => clearInterval(interval);
   }, [carouselSlides.length]);
 
+  
+
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselSlides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
   const goToSlide = (index: number) => setCurrentSlide(index);
@@ -175,7 +173,24 @@ const HomePage: React.FC = () => {
     };
 
     fetchBrands();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
+  useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:5002/api/categories');
+      const data = response.data;
+
+      // Only take categories where parentCategory is null (top level categories)
+      const topCategories = data.filter((cat: Category) => cat.parentCategory === null);
+      setWomenCategories(topCategories);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
+  fetchCategories();
+}, []);
+ // Empty dependency array means this runs once on mount
 
   // --- DERIVED STATES FOR LATEST DROPS (using the fetched `latestBrands` state) ---
   const getLatestDropsByGender = (gender: 'MAN' | 'WOMAN') => {
@@ -201,9 +216,19 @@ const HomePage: React.FC = () => {
 
   const currentLatestDropsDynamic = getLatestDropsByGender(selectedGender);
 
-  const handleCategoryClick = (categoryId: string) => {
-    navigate(`/collection?category=${categoryId}&gender=${selectedGender.toLowerCase()}`);
-  };
+ const handleCategoryClick = async (categoryId: string) => {
+  try {
+    const res = await fetch(`http://localhost:5002/api/products/category?category=${categoryId}`);
+    if (!res.ok) throw new Error('Failed to fetch products');
+    let products = await res.json();
+    console.log('Fetched products for category', categoryId, products);
+    // Map _id to id for frontend rendering
+    products = products.map((p: any) => ({ ...p, id: p._id }));
+    setProducts(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+};
 
   const handleBrandClick = (brandId: string) => {
     navigate(`/brands/${brandId}`); // Assuming you have a route like /brands/:id
@@ -226,6 +251,27 @@ const HomePage: React.FC = () => {
       }
     }, 100);
   };
+  const mergedCategories = currentCategories
+    .map((category) => {
+      if ('name' in category && 'image' in category) {
+        // Category from backend (Category type)
+        return {
+          id: (category as Category)._id,
+          name: (category as Category).name,
+          image: (category as Category).image
+        };
+      } else {
+        
+        return {
+          id: (category as any).id,
+          name: (category as any).name,
+          image: (category as any).image
+        };
+      }
+    })
+    .filter((cat) => cat.name && cat.image && cat.image !== 'https://via.placeholder.com/150'); // Remove empty slots and placeholder images
+
+
 
   return (
     <div className="bg-gray-900 text-white min-h-screen pb-32">
@@ -389,20 +435,14 @@ const HomePage: React.FC = () => {
           {selectedGender === 'MAN' ? "Men's" : "Women's"} Categories
         </h2>
         <div className="grid grid-cols-4 gap-3 transition-all duration-500 ease-in-out">
-          {currentCategories.map((category) => (
+          {mergedCategories.map((category) => (
             <button
               key={category.id}
-              onClick={() => handleCategoryClick(category.id)}
-              className="text-center hover:scale-105 transition-transform"
+              onClick={() => navigate(`/products/${category.id}`)}
+              className="..."
             >
-              <div className="bg-gray-800 rounded-2xl p-3 mb-2 aspect-square flex items-center justify-center hover:bg-gray-700 transition-colors">
-                <img
-                  src={category.image}
-                  alt={category.label}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-              <p className="text-xs font-medium text-white">{category.label}</p>
+              <img src={category.image} alt={category.name} />
+              <p>{category.name}</p>
             </button>
           ))}
         </div>
@@ -411,6 +451,26 @@ const HomePage: React.FC = () => {
           <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
         </div>
       </div>
+
+      {/* Products Grid (show when products are fetched) */}
+      {products.length > 0 && (
+        <div className="px-4 mb-8">
+          <h2 className="text-xl font-bold mb-4">Products</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {products.map((product) => (
+              <div key={product.id || product._id} className="bg-gray-800 p-3 rounded-lg flex flex-col items-center justify-center text-center">
+                <img
+                  src={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/150'}
+                  alt={product.name || 'Product'}
+                  className="w-24 h-32 object-cover mb-2 rounded"
+                />
+                <p className="text-sm font-semibold text-white">{product.name || 'No Name'}</p>
+                <p className="text-xs text-gray-400">{product.price ? `₹${product.price}` : ''}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* What's your next iconic look? */}
       <div className="px-4 mb-8">

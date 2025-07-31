@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 interface Product {
@@ -23,16 +23,33 @@ interface Product {
 
 const ProductsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const { categoryId } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const brandId = searchParams.get('brand');
 
   useEffect(() => {
-    if (brandId) {
+    if (categoryId) {
+      fetchProductsByCategory(categoryId);
+    } else if (brandId) {
       fetchProductsByBrand(brandId);
+    } else {
+      setLoading(false);
     }
-  }, [brandId]);
+  }, [categoryId, brandId]);
+
+  const fetchProductsByCategory = async (categoryId: string) => {
+    try {
+      const response = await fetch(`http://localhost:5002/api/products/category?category=${categoryId}`);
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchProductsByBrand = async (brandId: string) => {
     try {
@@ -61,7 +78,7 @@ const ProductsPage: React.FC = () => {
         {loading ? (
           <p>Loading products...</p>
         ) : products.length === 0 ? (
-          <p>No products found for this brand.</p>
+          <p>No products found for this category.</p>
         ) : (
           <div className="grid grid-cols-2 gap-4">
             {products.map((product) => (
@@ -78,7 +95,12 @@ const ProductsPage: React.FC = () => {
                 <div className="p-3">
                   <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
                   <p className="text-xs text-gray-400 mb-2">{product.brand.name}</p>
-                  <p className="font-bold">{product.currency}{product.price}</p>
+                  <p className="font-bold">
+                    {product.currency}
+                    {typeof product.price === 'object' && product.price !== null && '$numberDecimal' in product.price
+                      ? product.price.$numberDecimal
+                      : product.price}
+                  </p>
                 </div>
               </div>
             ))}

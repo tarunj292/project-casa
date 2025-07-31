@@ -17,7 +17,7 @@
     "gender": "female",
     "colors": ["Cream Floral", "Navy Floral"],
     "brand": "Diamond Lady", 
-    "category": ["dresses"]
+    "category": ["Dresses"]
   },
   {
     "name": "one shoulder shimmer cape",
@@ -36,7 +36,7 @@
     "gender": "female",
     "colors": ["Black"],
     "brand": "Ashtag",
-    "category": ["tops"]
+    "category": ["Tops"]
   },
   {
     
@@ -56,7 +56,7 @@
     "gender": "female",
     "colors": ["Terracotta Print", "Forest Green Print"],
     "brand": "Rangita",
-    "category": ["kurtis"]
+    "category": ["Kurtis"]
   },
   {
     
@@ -76,7 +76,27 @@
     "gender": "female",
     "colors": ["Navy Blue", "Charcoal Grey"],
     "brand": "Supervintage",
-    "category": ["bodysuits"]
+    "category": ["Bodysuits"]
+  },
+  {
+    
+    "name": "The Gilded Viper Hand Bag - Khaki Beige",
+    "description": "A sophisticated ribbed bodycon midi dress designed to accentuate your figure. Features a high neck and long sleeves, suitable for evening events or professional settings.",
+    "images": [
+      "https://www.buyhautesauce.com/cdn/shop/files/HSHB2594_2_9738e2c8-1d50-4ca1-9eaf-50bae4e955fb.jpg?v=1745431209&width=800"
+    ],
+    "price": 799.00,
+    "currency": "INR",
+    "sizes": ["FreeSize"],
+    "fits": [],
+    "tags": [],
+    "stock": 33,
+    "is_active": true,
+    "geo_tags": [],
+    "gender": "female",
+    "colors": ["Navy Blue", "Charcoal Grey"],
+    "brand": "Haute Sauce",
+    "category": ["Handbags"]
   },
   
   {
@@ -117,7 +137,7 @@
     "gender": "female",
     "colors": ["Navy Blue", "Charcoal Grey"],
     "brand": "Sohi",
-    "category": ["earrings"]
+    "category": ["Earrings"]
   },
   {
     
@@ -137,6 +157,6 @@
     "gender": "female",
     "colors": ["Navy Blue", "Charcoal Grey"],
     "brand": "Salty",
-    "category": ["necklace"]
+    "category": ["Necklace"]
   }
 ]
