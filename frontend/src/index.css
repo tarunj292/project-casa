@@ -192,3 +192,13 @@ button:focus, .btn:focus {
 .black-text{
   color: black
 }
+
+html, body {
+  height: 100%;
+  overflow-x: hidden; /* always hide x-scroll globally */
+}
+
+body.scroll-locked {
+  overflow: hidden; /* used only for Swipe page */
+}
+
