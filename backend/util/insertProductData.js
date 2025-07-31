@@ -6,7 +6,9 @@ const Category = require('../models/category');
 // Replace with your MongoDB connection string
 mongoose.connect('mongodb+srv://jaylulia20:cb28jfBC719EiUGt@cluster0.akrbkak.mongodb.net/casa_app?retryWrites=true&w=majority&appName=Cluster0');
 
-const data = require('./dummy_products_women.json'); // save your big array in productData.json
+const womenData = require('./dummy_products_women.json');
+const menData = require('./dummy_products_men.json');
+const data = [...womenData, ...menData];
 
 async function insertProducts() {
   try {

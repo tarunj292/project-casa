@@ -180,9 +180,15 @@ const HomePage: React.FC = () => {
       const response = await axios.get('http://localhost:5002/api/categories');
       const data = response.data;
 
-      // Only take categories where parentCategory is null (top level categories)
-      const topCategories = data.filter((cat: Category) => cat.parentCategory === null);
-      setWomenCategories(topCategories);
+      // Use name matching with dummy data for separation
+      const menNames = [
+        "Oversized T-shirt", "Shirt", "Jeans", "Cargos & Parachutes", "sunglasses", "watches", "bracelets", "necklace"
+      ];
+      const womenNames = [
+        "Dresses", "Tops", "Kurtis", "Bodysuits", "Handbags", "Sunglasses", "Earrings", "Necklace"
+      ];
+      setMenCategories(data.filter((cat: Category) => menNames.includes(cat.name)));
+      setWomenCategories(data.filter((cat: Category) => womenNames.includes(cat.name)));
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
