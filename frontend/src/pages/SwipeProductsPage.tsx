@@ -41,6 +41,13 @@ const to = (i: number) => ({
   delay: i * 100,
 });
 
+useEffect(() => {
+  document.body.classList.add('scroll-locked');
+  return () => {
+    document.body.classList.remove('scroll-locked');
+  };
+}, []);
+
 // Helper function to define the card's initial "from" state (off-screen)
 const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 });
 
@@ -434,6 +441,7 @@ function Deck() {
     </div>
   );
 }
+
 
 // Main SwipeProductsPage Component
 const SwipeProductsPage: React.FC = () => {

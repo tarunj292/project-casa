@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
 
 // Type definitions
 interface Product {
@@ -37,19 +38,40 @@ const CheckoutPage: React.FC = () => {
   const [selectedPayment, setSelectedPayment] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Get data from navigation state with fallback
+  const { cart } = useCart();
   const { product, bagItems, total, directBuy } = location.state || {};
 
-  // Fallback product data for direct access
-  const fallbackProduct: Product = {
-    id: '1',
-    name: 'Sample Product',
-    brand: 'Sample Brand',
-    price: '₹999',
-    images: ['https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=100'],
-    selectedSize: 'M',
-    quantity: 1,
-  };
+  const fallbackBagItems = cart?.items || [];
+
+  // Safely calculate fallback total from cart.items
+  const fallbackTotal = fallbackBagItems.reduce((sum, item) => {
+    const price = parseFloat(item.product.price.$numberDecimal);
+    return sum + price * (item.quantity || 1);
+  }, 0);
+
+  // Convert CartItem[] into Product[]
+  const mappedCartItems: Product[] = fallbackBagItems.map((item) => ({
+    id: item.product._id,
+    name: item.product.name,
+    brand: typeof item.product.brand === 'string' ? item.product.brand : item.product.brand.name,
+    price: `₹${parseFloat(item.product.price.$numberDecimal).toFixed(2)}`,
+    images: item.product.images,
+    selectedSize: item.size,
+    quantity: item.quantity,
+  }));
+
+  const orderItems: Product[] =
+    directBuy && product
+      ? [product]
+      : bagItems
+      ? bagItems
+      : mappedCartItems;
+
+  const orderTotal: number =
+    total ||
+    (product
+      ? parseInt(product.price.replace('₹', '').replace(',', ''))
+      : fallbackTotal);
 
   const addresses: Address[] = [
     {
@@ -67,37 +89,17 @@ const CheckoutPage: React.FC = () => {
   ];
 
   const paymentMethods: PaymentMethod[] = [
-    {
-      id: 1,
-      type: 'UPI',
-      name: 'PhonePe / Google Pay / Paytm',
-      icon: '📱'
-    },
-    {
-      id: 2,
-      type: 'Card',
-      name: 'Credit / Debit Card',
-      icon: '💳'
-    },
-    {
-      id: 3,
-      type: 'COD',
-      name: 'Cash on Delivery',
-      icon: '💵'
-    }
+    { id: 1, type: 'UPI', name: 'PhonePe / Google Pay / Paytm', icon: '📱' },
+    { id: 2, type: 'Card', name: 'Credit / Debit Card', icon: '💳' },
+    { id: 3, type: 'COD', name: 'Cash on Delivery', icon: '💵' }
   ];
-
-  const orderItems: Product[] = directBuy && product ? [product] : bagItems || [fallbackProduct];
-  const orderTotal = total || (product ? parseInt(product.price.replace('₹', '').replace(',', '')) : parseInt(fallbackProduct.price.replace('₹', '').replace(',', '')));
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    
-    // Simulate order processing
     setTimeout(() => {
       setIsProcessing(false);
-      navigate('/order-success', { 
-        state: { 
+      navigate('/order-success', {
+        state: {
           orderId: 'ORD' + Date.now(),
           items: orderItems,
           total: orderTotal,
@@ -108,12 +110,8 @@ const CheckoutPage: React.FC = () => {
   };
 
   return (
-    // Main container that establishes the "mobile screen" layout and positioning context.
     <div className="relative max-w-md mx-auto min-h-screen bg-gray-900 text-white overflow-x-hidden">
-      
-      {/* Wrapper for all scrollable content. Bottom padding prevents the Place Order button from covering content. */}
       <div className="pb-24">
-        {/* Header */}
         <div className="px-4 py-3 border-b border-gray-800">
           <div className="flex items-center space-x-3">
             <button onClick={() => navigate(-1)} className="p-1">
@@ -124,7 +122,7 @@ const CheckoutPage: React.FC = () => {
         </div>
 
         <div className="px-4 py-6 space-y-6">
-          {/* Delivery Address */}
+          {/* Address */}
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
               <MapPin size={20} className="text-blue-400" />
@@ -160,13 +158,15 @@ const CheckoutPage: React.FC = () => {
           <div>
             <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
             <div className="bg-gray-800 rounded-lg p-4 space-y-3">
-              {orderItems.map((item: Product, index: number) => (
+              {orderItems.map((item, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <img
                     src={item.image || (item.images && item.images[0]) || 'https://placehold.co/100x100/1f2937/ffffff?text=Item'}
                     alt={item.name}
                     className="w-12 h-12 rounded-lg object-cover"
-                    onError={(e) => { e.currentTarget.src = 'https://placehold.co/100x100/1f2937/ffffff?text=Error'; }}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://placehold.co/100x100/1f2937/ffffff?text=Error';
+                    }}
                   />
                   <div className="flex-1">
                     <h3 className="text-sm font-medium">{item.brand}</h3>
@@ -192,7 +192,7 @@ const CheckoutPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Payment Method */}
+          {/* Payment */}
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
               <CreditCard size={20} className="text-green-400" />
@@ -239,7 +239,7 @@ const CheckoutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Place Order Button: Now positioned absolutely within the relative parent. */}
+      {/* Place Order */}
       <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
         <button
           onClick={handlePlaceOrder}
