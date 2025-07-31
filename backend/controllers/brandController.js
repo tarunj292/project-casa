@@ -39,9 +39,43 @@ const getAllBrands = async (req, res) => {
   }
 };
 
+// POST create a new brand
+const createBrand = async (req, res) => {
+  try {
+    const {
+      name,
+      logo_url,
+      description,
+      website,
+      social_links,
+      crm_user_ids,
+      inventory_sync_status,
+      is_active
+    } = req.body;
+
+    const brand = new Brand({
+      name,
+      logo_url,
+      description,
+      website,
+      social_links,
+      crm_user_ids,
+      inventory_sync_status,
+      is_active
+    });
+
+    const savedBrand = await brand.save();
+    res.status(201).json(savedBrand);
+  } catch (error) {
+    res.status(400).json({ message: 'Failed to create brand', error: error.message });
+  }
+};
+
+
 
 module.exports = {
   getBrandById,
   getBrandByName,
-  getAllBrands
+  getAllBrands,
+  createBrand
 };

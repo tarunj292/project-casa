@@ -2,6 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const { getBrandById, getBrandByName, getAllBrands } = require('../controllers/brandController');
+const brandController = require('../controllers/brandController');
+
+
+// POST create a new brand
+router.post('/', brandController.createBrand); 
 
 // GET all brands
 router.get('/', getAllBrands);
