@@ -18,6 +18,8 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import SwipeProductsPage from './pages/SwipeProductsPage';
 import AllBrandsPage from './pages/AllBrandsPage';
 import OnboardingPage from './pages/OnboardingPage';
+import ProductsPage from './pages/ProductsPage';
+
 
 
 
@@ -46,6 +48,8 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order-success" element={<OrderSuccessPage />} />
               <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/products/:categoryId" element={<ProductsPage />} />
+              <Route path="/products" element={<ProductsPage />} />
             </Routes>
           </div>
             </Router>
