@@ -16,17 +16,20 @@ const orderSchema = new mongoose.Schema({
       },
       quantity: {
         type: Number,
-        default: 1
+        default: 1,
+        required: true
       }
     }
   ],
   deliveryStatus: {
+    required: true,
     type: String,
     enum: ['Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'],
     default: 'Pending'
   },
   estimatedDelivery: {
-    type: Date
+    type: Date,
+    required: true
   },
   address: {
     type: String,
@@ -35,7 +38,8 @@ const orderSchema = new mongoose.Schema({
   paymentStatus: {
     type: String,
     enum: ['Pending', 'Paid', 'Failed', "COD"],
-    default: 'Pending'
+    default: 'Pending',
+    required: true
   },
   createdAt: {
     type: Date,
