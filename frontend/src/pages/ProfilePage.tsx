@@ -16,20 +16,34 @@ import {
   LogOut
 } from 'lucide-react';
 import LoginPopup from '../components/LoginPopup';
+import { useUser } from '../contexts/UserContext';
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // The state for chatbot visibility has been removed.
 
+  // ENHANCED USER CONTEXT: Now uses logout function and displays collected user details
+  const { userData, logout } = useUser();
+  const isLoggedIn = userData.isLoggedIn;
+
+  // NAVIGATION FIX: Always go to home page instead of browser back
   const handleBack = () => {
-    navigate(-1);
+    navigate('/'); // Always navigate to home page
   };
 
-  const menuItems = [
+  // MENU ITEM TYPE: Define the structure for menu items with optional logout flag
+  type MenuItem = {
+    icon: any;
+    label: string;
+    hasChevron: boolean;
+    isLogout?: boolean; // Optional property for logout styling
+  };
+
+  const baseMenuItems: MenuItem[] = [
     { icon: Package, label: 'My Orders', hasChevron: false },
     { icon: HelpCircle, label: 'Help & Query', hasChevron: false },
-    { icon: Heart, label: 'Wishlist', hasChevron: false },
+
     { icon: Users, label: 'Refer & Earn', hasChevron: false },
     { icon: Palette, label: 'Appearance', hasChevron: true },
     { icon: User, label: 'Manage Account', hasChevron: true },
@@ -37,25 +51,42 @@ const ProfilePage: React.FC = () => {
     { icon: Gift, label: 'My Offers', hasChevron: true },
     { icon: FileText, label: 'Terms & Conditions', hasChevron: true },
     { icon: Shield, label: 'Privacy Policy', hasChevron: true },
-    { icon: LogOut, label: 'Log Out', hasChevron: true, isLogout: true },
   ];
+
+  // CONDITIONAL MENU: Add logout option only when user is logged in
+  const menuItems: MenuItem[] = isLoggedIn
+    ? [...baseMenuItems, { icon: LogOut, label: 'Log Out', hasChevron: true, isLogout: true }]
+    : baseMenuItems;
+
+  /**
+   * IMPROVED LOGOUT: Uses centralized logout function from UserContext
+   * This ensures proper cleanup of both state and localStorage
+   */
+  const handleLogout = () => {
+    logout(); // Clears both React state and localStorage
+    console.log('User logged out successfully');
+  };
 
   const handleMenuClick = (label: string) => {
     if (label === 'Log Out') {
-      setIsLoggedIn(false);
-    } else if (!isLoggedIn && ['My Orders', 'Wishlist', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
+      handleLogout();
+    } else if (!isLoggedIn && ['My Orders', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
+      // AUTHENTICATION REQUIRED: Show login popup for protected features
       setIsLoginPopupOpen(true);
     } else {
-      // Navigate to appropriate pages
+      // NAVIGATION: Navigate to appropriate pages
       switch (label) {
         case 'My Orders':
           navigate('/order-success'); // Placeholder - shows order success page
           break;
-        case 'Wishlist':
-          navigate('/wishlist');
+
+        case 'Manage Account':
+          navigate('/manage-account'); // NEW: Navigate to manage account page
           break;
         case 'Help & Query':
-          navigate('/search'); // Placeholder - redirect to search
+          // The chatbot functionality has been removed.
+          // You may want to navigate to a new help page here instead.
+          console.log('Help & Query menu item clicked. Chatbot functionality removed.');
           break;
         case 'Refer & Earn':
           navigate('/'); // Placeholder - redirect to home
@@ -76,7 +107,7 @@ const ProfilePage: React.FC = () => {
 
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
-    setIsLoggedIn(true);
+    // The LoginPopup component now handles user state updates
     setIsLoginPopupOpen(false);
     // Here you would typically make an API call to send OTP
   };
@@ -98,16 +129,29 @@ const ProfilePage: React.FC = () => {
 
       {/* User Profile Card */}
       <div className="px-4 py-6">
-        <div 
+        <div
           className="bg-gradient-to-r from-gray-600 to-gray-700 rounded-2xl p-6 relative overflow-hidden"
         >
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-white/10 rounded-2xl"></div>
-          
+
           <div className="relative z-10">
             {isLoggedIn ? (
               <>
-                <h2 className="text-2xl font-bold mb-1">vinvin</h2>
+                {/* ENHANCED USER DISPLAY: Shows collected name from onboarding */}
+                <h2 className="text-2xl font-bold mb-1">
+                  {userData.name || `User ${userData.phoneNumber?.slice(-4)}` || 'User'}
+                </h2>
+                {/* PHONE NUMBER DISPLAY: Always show phone number */}
+                <p className="text-gray-300 text-sm mb-1">
+                  {userData.phoneNumber || 'No phone number'}
+                </p>
+                {/* EMAIL DISPLAY: Show collected email if available */}
+                {userData.email && (
+                  <p className="text-gray-300 text-sm mb-1">
+                    {userData.email}
+                  </p>
+                )}
                 <p className="text-gray-300 text-sm mb-4">Lvl 00</p>
 
                 <div className="mb-4">
@@ -208,6 +252,7 @@ const ProfilePage: React.FC = () => {
         onClose={handleLoginClose}
         onContinue={handleLoginContinue}
       />
+      {/* The ChatbotComponent has been removed. */}
     </div>
   );
 };

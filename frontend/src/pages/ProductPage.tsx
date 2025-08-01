@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import { ArrowLeft, Heart, Share, Search, ShoppingBag, Shield, RotateCcw, Sparkles, ChevronRight } from 'lucide-react';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
+
+interface Product {
+  _id: string;
+  name: string;
+  description?: string;
+  price: number | { $numberDecimal: string };
+  currency: string;
+  images: string[];
+  brand: {
+    _id: string;
+    name: string;
+    logo_url?: string;
+  };
+  category: {
+    _id: string;
+    name: string;
+  };
+  tags: string[];
+  gender: string;
+}
 
 const ProductPage: React.FC = () => {
-  const { id } = useParams();
+  const { productId } = useParams();
   const navigate = useNavigate();
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string>('L');
   const [activeTab, setActiveTab] = useState<'SPECIFICATION' | 'DESCRIPTION'>('SPECIFICATION');
 
@@ -16,33 +41,24 @@ const ProductPage: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
 
-  // Mock product data
-  const product = {
-    id: id || '1',
-    name: 'Bunny Time Hoodie',
-    brand: 'Bonkers Corner',
-    price: '₹1,899',
-    originalPrice: '₹2,499',
-    discount: '24% off',
-    images: [
-      'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=600',
-      'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=600',
-      'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=600',
-      'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600',
-    ],
-    description: 'Premium quality hoodie with comfortable fit and modern design.',
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: ['Beige', 'Black', 'White', 'Navy'],
-    specifications: {
-      pattern: 'Graphic',
-      length: 'Full',
-      fabric: 'Cotton',
-      sleeveLength: 'Full Sleeves',
-      fit: 'Oversized',
-      distress: 'Clean Look'
-    },
-    stock: {
-      L: 2
+  // Check if product is in wishlist
+  const isFavorite = isInWishlist(productId || '1');
+
+  useEffect(() => {
+    if (productId) {
+      fetchProduct(productId);
+    }
+  }, [productId]);
+    console.log('Buy Now clicked for product:', product._id, { size: selectedSize });
+  const fetchProduct = async (id: string) => {
+    try {
+      const response = await fetch(`http://localhost:5002/api/products/${id}`);
+      const data = await response.json();
+      setProduct(data);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +72,11 @@ const ProductPage: React.FC = () => {
       console.error('Please select a size');
       return;
     }
-    console.log('Buy Now clicked for product:', product.id, { size: selectedSize });
+    if (!product) {
+      console.error('Product not loaded');
+      return;
+    }
+    console.log('Buy Now clicked for product:', product.id || product._id, { size: selectedSize });
     navigate('/checkout', {
       state: {
         product: { ...product, selectedSize },
@@ -65,21 +85,38 @@ const ProductPage: React.FC = () => {
     });
   };
 
-  const handleAddToBag = () => {
+  const handleAddToBag = async () => {
     if (!selectedSize) {
       console.error('Please select a size');
       return;
     }
-    console.log('Add to Bag clicked for product:', product.id, { size: selectedSize });
-    // Add to cart logic here
-    navigate('/bag');
+
+    if (!product) {
+      console.error('Product not loaded');
+      return;
+    }
+    try {
+      console.log('🛒 Adding to bag:', product.name, { size: selectedSize });
+      await addToCart(product.id || product._id, 1, selectedSize);
+      console.log('✅ Product added to bag successfully');
+      navigate('/bag');
+    } catch (error) {
+      console.error('❌ Error adding to bag:', error);
+    }
   };
 
-  const handleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    console.log('Favorite toggled:', !isFavorite);
-    // Navigate to wishlist page
-    navigate('/wishlist');
+  const handleFavorite = async () => {
+    try {
+      if (isFavorite) {
+        await removeFromWishlist(product.id);
+        console.log('✅ Product removed from wishlist');
+      } else {
+        await addToWishlist(product.id, 'medium', `Added from product page on ${new Date().toLocaleDateString()}`);
+        console.log('✅ Product added to wishlist');
+      }
+    } catch (error) {
+      console.error('❌ Error toggling wishlist:', error);
+    }
   };
 
   // Swipe handlers
@@ -89,6 +126,10 @@ const ProductPage: React.FC = () => {
     setStartX(touch.clientX);
     setIsDragging(true);
     setSwipeOffset(0);
+  };
+
+  const handleSizeSelect = (size: string) => {
+    setSelectedSize(size);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -166,11 +207,16 @@ const ProductPage: React.FC = () => {
     document.addEventListener('mouseup', handleGlobalMouseUp);
   };
 
-
-
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
   };
+
+  if (loading) return <div className="min-h-screen bg-gray-900 text-white p-8">Loading...</div>;
+  if (!product) return <div className="min-h-screen bg-gray-900 text-white p-8">Product not found.</div>;
+
+  const price = typeof product.price === 'object' && product.price !== null && '$numberDecimal' in product.price
+    ? product.price.$numberDecimal
+    : product.price;
 
   return (
     // This is the main screen container. It centers the content and provides a relative
@@ -252,11 +298,11 @@ const ProductPage: React.FC = () => {
         <div className="p-4 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">{product.brand}</h1>
+              <h1 className="text-2xl font-bold text-white">{product.brand.name}</h1>
               <p className="text-gray-400">{product.name}</p>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-bold text-white">{product.price}</span>
+              <span className="text-2xl font-bold text-white">{product.currency}{price}</span>
             </div>
           </div>
 
@@ -267,7 +313,7 @@ const ProductPage: React.FC = () => {
               <button className="text-white underline text-sm">size chart</button>
             </div>
             <div className="flex space-x-3 mb-2">
-              {product.sizes.map((size) => (
+              {product.sizes?.map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
@@ -316,27 +362,27 @@ const ProductPage: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
                   <div>
                     <p className="text-gray-400">Pattern</p>
-                    <p className="text-white font-medium">{product.specifications.pattern}</p>
+                    <p className="text-white font-medium">{product.specifications?.pattern}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Length</p>
-                    <p className="text-white font-medium">{product.specifications.length}</p>
+                    <p className="text-white font-medium">{product.specifications?.length}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Fabric</p>
-                    <p className="text-white font-medium">{product.specifications.fabric}</p>
+                    <p className="text-white font-medium">{product.specifications?.fabric}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Sleeve length</p>
-                    <p className="text-white font-medium">{product.specifications.sleeveLength}</p>
+                    <p className="text-white font-medium">{product.specifications?.sleeveLength}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Fit</p>
-                    <p className="text-white font-medium">{product.specifications.fit}</p>
+                    <p className="text-white font-medium">{product.specifications?.fit}</p>
                   </div>
                   <div>
                     <p className="text-gray-400">Distress</p>
-                    <p className="text-white font-medium">{product.specifications.distress}</p>
+                    <p className="text-white font-medium">{product.specifications?.distress}</p>
                   </div>
                 </div>
               )}

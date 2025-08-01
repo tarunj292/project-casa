@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const userController = require('../userController.js');
+// ✅ FIX THIS PATH
+const userController = require('../controllers/userController.js');
 
-// ⭐ CRUD routes for Users
-router.post('/', userController.createUser);        // Create user
-router.get('/', userController.getUsers);           // Get all users
-router.get('/:id', userController.getUserById);     // Get single user by ID
-router.put('/:id', userController.updateUser);      // Update user
-router.delete('/:id', userController.deleteUser);   // Delete user
-
-// ⭐ OTP route (using generateOtp from userController itself)
+// your routes
+router.post('/', userController.createUser);
+router.get('/', userController.getUsers);
+router.get('/:id', userController.getUserById);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+router.delete('/delete-by-phone', userController.deleteUserByPhone); // NEW: Delete by phone number
 router.post('/generate-otp', userController.generateOtp);
 
 module.exports = router;

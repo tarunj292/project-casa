@@ -7,6 +7,24 @@ const CollectionPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('MAN');
   const [activeCategory, setActiveCategory] = useState('Brands');
+  const [brands, setBrands] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch brands from backend
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch('http://localhost:5002/api/brands');
+        const data = await response.json();
+        setBrands(data.filter((brand: any) => brand.is_active));
+      } catch (error) {
+        console.error('Error fetching brands:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBrands();
+  }, []);
 
   // Initialize state from URL params
   useEffect(() => {
@@ -27,17 +45,6 @@ const CollectionPage: React.FC = () => {
     { id: 'BottomWear', label: 'Bottom Wear' },
     { id: 'CoOrds', label: 'Co-Ords' },
     { id: 'Athleisure', label: 'Athleisure' },
-  ];
-
-  const brands = [
-    { id: 'a47', name: 'A47', logo: 'A47', bg: 'bg-white text-black' },
-    { id: 'aesthetic-bodies', name: 'Aesthetic Bodies', logo: '△', bg: 'bg-white text-black' },
-    { id: 'bad-teddy', name: 'Bad Teddy', logo: 'Bad Teddy', bg: 'bg-white text-black' },
-    { id: 'beegles', name: 'Beegles', logo: 'EE', bg: 'bg-black text-white' },
-    { id: 'bene-kleed', name: 'Bene Kleed', logo: 'Bene kleed', bg: 'bg-white text-black' },
-    { id: 'bodyssey', name: 'Bodyssey', logo: 'B', bg: 'bg-white text-black' },
-    { id: 'bonkers-corner', name: 'Bonkers Corner', logo: 'BONKERS CORNER', bg: 'bg-black text-white' },
-    { id: 'hummer', name: 'Hummer', logo: 'hummer', bg: 'bg-yellow-400 text-black' },
   ];
 
   const handleBrandClick = (brandId: string) => {
@@ -154,16 +161,32 @@ const CollectionPage: React.FC = () => {
           <h2 className="text-xl font-bold mb-4">Brands</h2>
           
           <div className="grid grid-cols-2 gap-4">
-            {brands.map((brand) => (
-              <button
-                key={brand.id}
-                className={`aspect-square rounded-2xl flex flex-col items-center justify-center text-center p-4 hover:scale-105 transition-transform ${brand.bg}`}
-                onClick={() => handleBrandClick(brand.id)}
-              >
-                <div className="text-lg font-bold mb-2 leading-tight">{brand.logo}</div>
-                <div className="text-xs font-medium">{brand.name}</div>
-              </button>
-            ))}
+            {loading ? (
+              <p className="col-span-2 text-center">Loading brands...</p>
+            ) : brands.length === 0 ? (
+              <p className="col-span-2 text-center">No brands found</p>
+            ) : (
+              brands.map((brand) => (
+                <button
+                  key={brand._id}
+                  className="aspect-square rounded-2xl flex flex-col items-center justify-center text-center p-4 hover:scale-105 transition-transform bg-gray-800"
+                  onClick={() => handleBrandClick(brand._id)}
+                >
+                  {brand.logo_url ? (
+                    <img
+                      src={brand.logo_url}
+                      alt={brand.name}
+                      className="w-16 h-16 object-contain mb-2 rounded-full"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mb-2">
+                      <span className="text-xs font-bold">{brand.name.charAt(0)}</span>
+                    </div>
+                  )}
+                  <div className="text-xs font-medium text-white">{brand.name}</div>
+                </button>
+              ))
+            )}
           </div>
         </div>
       </div>

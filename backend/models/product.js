@@ -1,4 +1,3 @@
-// models/product.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
@@ -50,6 +49,12 @@ const productSchema = new mongoose.Schema({
     enum: ['male', 'female', 'unisex', 'others'],
   },
 
+  // New Color Field Added
+  colors: {
+    type: [String],
+    default: [],
+  },
+
   // Reference to Brand model
   brand: {
     type: mongoose.Schema.Types.ObjectId,
@@ -58,14 +63,13 @@ const productSchema = new mongoose.Schema({
   },
 
   // Reference to Category model
-  category: {
+  category: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
     required: true,
-  },
+  }],
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
 
 module.exports = mongoose.model('Product', productSchema);
-
