@@ -1,46 +1,52 @@
+// backend/routes/productRoutes.js
 const express = require('express');
 const router = express.Router();
-const productController = require('../controllers/productController');
-// require('../models/brand');     // ✅ registers Brand schema
-// require('../models/category');  // ✅ registers Category schema (if needed)
 
+const {
+  getAllProducts,
+  getProductById,
+  getProductByCategory,
+  getAllProductsByBrand,
+  getAllProductsByPrice,
+  getProductsByGender,
+  getProductsByTag,
+  search,
+  createProduct,
+  deleteProduct,
+  updateProduct
+} = require('../controllers/productController');
 
-// ✅ Add this first
-router.get('/', productController.getAllProducts);
+// CREATE product
+router.post('/create', createProduct);
 
-// Get products by category (tag used as category)
-router.get('/category', productController.getProductByCategory);
+// GET all products (with pagination and exclusion)
+router.get('/', getAllProducts);
 
-// Get all products by brand
-router.get('/brand', productController.getAllProductsByBrand);
+// GET product by ID
+router.get('/id/:id', getProductById);
 
-// Get all products by gender
-router.get('/gender', productController.getProductsByGender);
+// GET products by category (tag-based)
+router.get('/category', getProductByCategory);
 
-// Get products by tag
-router.get('/tag', productController.getProductsByTag);
+// GET all products by brand ID
+router.get('/brand', getAllProductsByBrand);
 
-// Get products by price range using query params ?min=100&max=1000
-router.get('/price', productController.getAllProductsByPrice);
+// GET products by price range
+router.get('/price', getAllProductsByPrice);
 
-router.post('/search', productController.search)
+// GET products by gender
+router.get('/gender', getProductsByGender);
 
-// Get product by ID
-router.get('/:id', productController.getProductById);
+// GET products by tag
+router.get('/tag', getProductsByTag);
 
-// creates a new product 
-router.post('/', productController.createProduct);
+// SEARCH products
+router.post('/search', search);
+
+// UPDATE product by ID
+router.put('/id/:id', updateProduct);
+
+// DELETE product by ID
+router.delete('/id/:id', deleteProduct);
 
 module.exports = router;
-
-
-
-//Option 1: Use an existing brand ID (preferred)
-// Make sure you use the _id of an already existing brand in your database. Example:
-// "brand": "64b5f301a4892f96f1c9be4d" // existing brand ObjectId
-
-
-// Option 2: If you're creating a new brand in the POST logic, update the request body to include logo_url:
-// "brand": {
-//   "name": "Street Hoodie",
-//   "logo_url": "https://dummyimage.com/100x100/000/fff.png&text=SH"

@@ -71,11 +71,37 @@ const createBrand = async (req, res) => {
   }
 };
 
+// DELETE brand by ID
+const deleteBrand = async (req, res) => {
+  try {
+    const deleted = await Brand.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Brand not found' });
+    res.json({ message: 'Brand deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// UPDATE brand by ID
+const updateBrand = async (req, res) => {
+  try {
+    const updated = await Brand.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!updated) return res.status(404).json({ message: 'Brand not found' });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
 
 
 module.exports = {
   getBrandById,
   getBrandByName,
   getAllBrands,
-  createBrand
+  createBrand,
+  deleteBrand,
+  updateBrand
 };

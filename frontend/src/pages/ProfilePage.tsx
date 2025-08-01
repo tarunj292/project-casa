@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ChatbotComponent from '../chatbot/ChatbotComponent';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -21,6 +22,7 @@ import { useUser } from '../contexts/UserContext';
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  const [isChatVisible, setIsChatVisible] = useState(false);
   // ENHANCED USER CONTEXT: Now uses logout function and displays collected user details
   const { userData, logout } = useUser();
   const isLoggedIn = userData.isLoggedIn;
@@ -82,7 +84,7 @@ const ProfilePage: React.FC = () => {
           navigate('/manage-account'); // NEW: Navigate to manage account page
           break;
         case 'Help & Query':
-          navigate('/search'); // Placeholder - redirect to search
+          setIsChatVisible(true); // ✅ show chatbot
           break;
         case 'Refer & Earn':
           navigate('/'); // Placeholder - redirect to home
@@ -248,6 +250,8 @@ const ProfilePage: React.FC = () => {
         onClose={handleLoginClose}
         onContinue={handleLoginContinue}
       />
+      <ChatbotComponent visible={isChatVisible} onClose={() => setIsChatVisible(false)} />
+
     </div>
   );
 };

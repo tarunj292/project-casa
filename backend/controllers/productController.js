@@ -1,16 +1,15 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
-const Brand = require('../models/brand')
+const Brand = require('../models/brand');
 const mongoose = require('mongoose');
 
 // GET all products with pagination support and exclusion
-exports.getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 50; // Default to 50 if no limit specified
+    const limit = parseInt(req.query.limit) || 50;
     const skip = (page - 1) * limit;
 
-    // Parse exclude parameter (comma-separated product IDs)
     const excludeParam = req.query.exclude;
     let excludeIds = [];
 
@@ -19,9 +18,6 @@ exports.getAllProducts = async (req, res) => {
       console.log(`🚫 Excluding ${excludeIds.length} products:`, excludeIds.slice(0, 3), excludeIds.length > 3 ? '...' : '');
     }
 
-    console.log(`📦 Fetching products - Page: ${page}, Limit: ${limit}, Skip: ${skip}, Excluding: ${excludeIds.length} products`);
-
-    // Build query with exclusions
     const query = {
       is_active: true,
       ...(excludeIds.length > 0 && { _id: { $nin: excludeIds } })
@@ -31,9 +27,7 @@ exports.getAllProducts = async (req, res) => {
       .populate('brand category')
       .skip(skip)
       .limit(limit)
-      .sort({ created_at: -1 }); // Sort by newest first
-
-    console.log(`✅ Found ${products.length} products for page ${page} (excluded ${excludeIds.length})`);
+      .sort({ created_at: -1 });
 
     res.json(products);
   } catch (err) {
@@ -43,7 +37,7 @@ exports.getAllProducts = async (req, res) => {
 };
 
 // GET product by ID
-exports.getProductById = async (req, res) => {
+const getProductById = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -59,8 +53,8 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// GET products by category (uses tag as category)
-exports.getProductByCategory = async (req, res) => {
+// GET products by category (using tag field)
+const getProductByCategory = async (req, res) => {
   try {
     const { category } = req.query;
     const products = await Product.find({ tags: category });
@@ -70,8 +64,8 @@ exports.getProductByCategory = async (req, res) => {
   }
 };
 
-// ✅ GET all products by brand ID
-exports.getAllProductsByBrand = async (req, res) => {
+// GET all products by brand ID
+const getAllProductsByBrand = async (req, res) => {
   try {
     const brandId = req.query.id;
 
@@ -82,19 +76,19 @@ exports.getAllProductsByBrand = async (req, res) => {
     const products = await Product.find({ brand: brandId }).populate('brand category');
     res.json(products);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
 };
 
 // GET products by price range
-exports.getAllProductsByPrice = async (req, res) => {
+const getAllProductsByPrice = async (req, res) => {
   const { min, max } = req.query;
   try {
     const products = await Product.find({
       price: {
         $gte: min ? parseFloat(min) : 0,
-        $lte: max ? parseFloat(max) : Infinity,
-      },
+        $lte: max ? parseFloat(max) : Infinity
+      }
     });
     res.json(products);
   } catch (err) {
@@ -103,7 +97,7 @@ exports.getAllProductsByPrice = async (req, res) => {
 };
 
 // GET products by gender
-exports.getProductsByGender = async (req, res) => {
+const getProductsByGender = async (req, res) => {
   try {
     const { gender } = req.query;
     const products = await Product.find({ gender });
@@ -114,7 +108,7 @@ exports.getProductsByGender = async (req, res) => {
 };
 
 // GET products by tag
-exports.getProductsByTag = async (req, res) => {
+const getProductsByTag = async (req, res) => {
   try {
     const { tag } = req.query;
     const products = await Product.find({ tags: tag });
@@ -124,20 +118,21 @@ exports.getProductsByTag = async (req, res) => {
   }
 };
 
-exports.search = async (req, res) => {
-  const { query } = req.body
-  console.log(query)
-  try{
+// SEARCH products by name
+const search = async (req, res) => {
+  const { query } = req.body;
+  try {
     const result = await Product.find({
-      name: {$regex: query, $options: "i"}
-    })
-    res.json(result)
+      name: { $regex: query, $options: 'i' }
+    });
+    res.json(result);
   } catch (err) {
-    res.status(500).json({ error: 'Search failed' })
+    res.status(500).json({ error: 'Search failed' });
   }
-}
+};
 
-exports.createProduct = async (req, res) => {
+// CREATE product
+const createProduct = async (req, res) => {
   try {
     let {
       name,
@@ -153,7 +148,7 @@ exports.createProduct = async (req, res) => {
       category
     } = req.body;
 
-    // ✅ Handle dynamic brand creation
+    // Handle dynamic brand creation
     if (typeof brand === 'object' && brand.name) {
       let existingBrand = await Brand.findOne({ name: brand.name });
       if (existingBrand) {
@@ -167,7 +162,7 @@ exports.createProduct = async (req, res) => {
       }
     }
 
-    // ✅ Handle dynamic category creation
+    // Handle dynamic category creation
     if (typeof category === 'object' && category.name) {
       let existingCategory = await Category.findOne({ name: category.name });
       if (existingCategory) {
@@ -178,7 +173,6 @@ exports.createProduct = async (req, res) => {
       }
     }
 
-    // ✅ Create and save the product
     const newProduct = new Product({
       name,
       description,
@@ -200,3 +194,41 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+// DELETE product by ID
+const deleteProduct = async (req, res) => {
+  try {
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Product not found' });
+    res.json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// UPDATE product by ID
+const updateProduct = async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!updated) return res.status(404).json({ message: 'Product not found' });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  getProductByCategory,
+  getAllProductsByBrand,
+  getAllProductsByPrice,
+  getProductsByGender,
+  getProductsByTag,
+  search,
+  createProduct,
+  deleteProduct,
+  updateProduct
+};
