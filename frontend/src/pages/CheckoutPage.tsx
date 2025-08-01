@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle } from 'lucide-react';
-import { useCart } from '../contexts/CartContext';
+import { CartData, useCart } from '../contexts/CartContext';
+import axios from "axios";
+import { useUser } from '../contexts/UserContext';
 
 // Type definitions
 interface Product {
@@ -39,6 +41,7 @@ const CheckoutPage: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { cart } = useCart();
+  const { userData  }= useUser();
   const { product, bagItems, total, directBuy } = location.state || {};
 
   const fallbackBagItems = cart?.items || [];
@@ -96,19 +99,54 @@ const CheckoutPage: React.FC = () => {
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsProcessing(false);
-      navigate('/order-success', {
-        state: {
-          orderId: 'ORD' + Date.now(),
-          items: orderItems,
-          total: orderTotal,
-          address: addresses[selectedAddress]
-        }
-      });
+      const response = await createOrder(cart, addresses[selectedAddress].address, paymentMethods[selectedPayment].type)
+      if (response.success){
+        await deleteCart()
+        navigate('/order-success', {
+          state: {
+            orderId: 'ORD' + Date.now(),
+            items: orderItems,
+            total: orderTotal,
+            address: addresses[selectedAddress]
+          }
+        });
+      } else {
+        //implement else part, if cart does not create order
+      }
     }, 2000);
   };
 
+  const createOrder = async (cart: CartData, deliveryAddress: string, paymentStatus: string) => {
+    try {
+      const response = await axios.post("http://localhost:5002/api/orders/create", {
+        user: userData._id,
+        products: cart.items,
+        address: deliveryAddress,
+        estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+        paymentStatus: paymentStatus,
+        deliveryStatus: "pending"
+      });
+      return response.data
+    } catch (error: any){
+      console.error("Error creating order:", error.response?.data || error.message);
+    }
+  }
+
+  const deleteCart = async () => {
+    try {
+      const response = await axios.delete("http://localhost:5002/api/cart/delete", {
+        data: {
+          phone: userData.phoneNumber
+        }
+      });
+      console.log("Cart deleted:", response.data);
+    } catch (error: any) {
+      console.error("Error deleting cart:", error.response?.data || error.message);
+    }
+  };
+  
   return (
     <div className="relative max-w-md mx-auto min-h-screen bg-gray-900 text-white overflow-x-hidden">
       <div className="pb-24">
@@ -254,3 +292,4 @@ const CheckoutPage: React.FC = () => {
 };
 
 export default CheckoutPage;
+
