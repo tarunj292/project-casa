@@ -11,13 +11,14 @@ router.post('/create', brandController.createBrand);
 // GET all brands
 router.get('/', getAllBrands);
 
+// GET brand by name
+router.get('/name/:name', getBrandByName);
+
 // GET brand by ID
 router.get('/:id', getBrandById);
 
-// GET brand by name
-router.get('/:name', getBrandByName);
-
 router.put('/:id', updateBrand);     // Update brand by ID
+
 router.delete('/:id', deleteBrand);  // Delete brand by ID
 
 module.exports = router;

@@ -23,7 +23,7 @@ router.post('/create', createProduct);
 router.get('/', getAllProducts);
 
 // GET product by ID
-router.get('/id/:id', getProductById);
+router.get('/:id', getProductById);
 
 // GET products by category (tag-based)
 router.get('/category', getProductByCategory);
@@ -44,9 +44,9 @@ router.get('/tag', getProductsByTag);
 router.post('/search', search);
 
 // UPDATE product by ID
-router.put('/id/:id', updateProduct);
+router.put('/:id', updateProduct);
 
 // DELETE product by ID
-router.delete('/id/:id', deleteProduct);
+router.delete('/:id', deleteProduct);
 
 module.exports = router;

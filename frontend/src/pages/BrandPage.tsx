@@ -75,7 +75,7 @@ const BrandPage: React.FC = () => {
       try {
         setLoadingBrand(true);
         setError(null);
-        const res = await fetch(`${API_BASE}/api/brands/id/${brandId}`, {
+          const res = await fetch(`${API_BASE}/api/brands/${brandId}`, {
           signal: ctrl.signal,
           headers: { Accept: "application/json" },
         });
