@@ -8,6 +8,8 @@ const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+
 
 
 const app = express();
@@ -22,6 +24,8 @@ app.use('/api/brands', brandRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/chat', chatRoutes);
+
 
 
 // Default route

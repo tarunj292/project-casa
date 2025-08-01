@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ChatbotComponent from '../chatbot/ChatbotComponent';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -18,6 +17,7 @@ import {
 } from 'lucide-react';
 import LoginPopup from '../components/LoginPopup';
 import { useUser } from '../contexts/UserContext';
+
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ const ProfilePage: React.FC = () => {
           navigate('/manage-account'); // NEW: Navigate to manage account page
           break;
         case 'Help & Query':
-          setIsChatVisible(true); // ✅ show chatbot
+          navigate('/chat', { state: { autoMessage: true } }); // ✅ NEW: triggers auto-reply
           break;
         case 'Refer & Earn':
           navigate('/'); // Placeholder - redirect to home
@@ -250,8 +250,6 @@ const ProfilePage: React.FC = () => {
         onClose={handleLoginClose}
         onContinue={handleLoginContinue}
       />
-      <ChatbotComponent visible={isChatVisible} onClose={() => setIsChatVisible(false)} />
-
     </div>
   );
 };

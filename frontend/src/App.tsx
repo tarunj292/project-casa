@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
-
 import NavShell from './components/NavShell';
 import HomePage from './pages/HomePage';
 import CollectionPage from './pages/CollectionPage';
@@ -12,7 +11,7 @@ import ProductPage from './pages/ProductPage';
 import ProfilePage from './pages/ProfilePage';
 import ManageAccountPage from './pages/ManageAccountPage'; // NEW: Manage Account page
 import SearchPage from './pages/SearchPage';
-
+import ChatPage from './pages/ChatPage'; // ✅ make sure it's imported
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import SwipeProductsPage from './pages/SwipeProductsPage';
@@ -44,10 +43,10 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/manage-account" element={<ManageAccountPage />} /> {/* NEW: Manage Account route */}
               <Route path="/search" element={<SearchPage />} />
-
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order-success" element={<OrderSuccessPage />} />
               <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/chat" element={<ChatPage />} /> {/* ✅ Add this line */}
             </Routes>
           </div>
             </Router>
