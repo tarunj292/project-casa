@@ -5,6 +5,7 @@ import axios from 'axios';
 // collected during the onboarding process
 // MANAGE ACCOUNT: Added additional fields for profile management
 export interface UserData {
+  _id? : string,
   phoneNumber?: string;
   name?: string; // User's full name collected in UserDetailsStep
   email?: string; // User's email address collected in UserDetailsStep
@@ -131,7 +132,8 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // ONBOARDING COMPLETION: Mark user as no longer new
       setUserData(prev => ({
         ...prev,
-        isNewUser: false
+        isNewUser: false,
+        _id: response.data._id
       }));
     } catch (error: any) {
       console.error('Error registering user:', error);
