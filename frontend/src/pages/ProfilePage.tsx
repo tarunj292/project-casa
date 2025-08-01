@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ChatbotComponent from '../chatbot/ChatbotComponent';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -250,7 +249,6 @@ const ProfilePage: React.FC = () => {
         onClose={handleLoginClose}
         onContinue={handleLoginContinue}
       />
-      <ChatbotComponent visible={isChatVisible} onClose={() => setIsChatVisible(false)} />
 
     </div>
   );
