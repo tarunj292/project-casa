@@ -350,10 +350,43 @@ const clearCart = async (req, res) => {
   }
 };
 
+const deleteCart = async (req, res) => {
+  try {
+    const { phone } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({
+        success: false,
+        error: 'Phone number is required'
+      })
+    }
+
+    const deleteCart = await Cart.findOneAndDelete({phone})
+
+    if(!deleteCart) {
+      return res.status(400).json({
+        success: false,
+        error: 'Cart not found'
+      })
+    }
+
+    res.json({
+      success: true,
+      message: 'Cart deleted successfully'
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to delete cart',
+      details: error.message
+    })
+  }
+}
 module.exports = {
   getCart,
   addToCart,
   updateCartItem,
   removeFromCart,
-  clearCart
+  clearCart,
+  deleteCart
 };

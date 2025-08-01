@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
     });
 
     const saved = await newOrder.save();
-    res.status(201).json(saved);
+    res.status(201).json({success: true, saved});
   } catch (err) {
     res.status(500).json({ error: 'Failed to create order', detail: err.message });
   }
