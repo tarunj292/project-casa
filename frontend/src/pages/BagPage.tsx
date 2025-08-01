@@ -34,7 +34,7 @@ const BagPage: React.FC = () => {
       );
 
       if (currentItem) {
-        const newQuantity = Math.max(1, currentItem.quantity + change);
+        const newQuantity = Math.max(0, currentItem.quantity + change);
         await updateQuantity(productId, size, newQuantity);
       }
     } catch (error) {
