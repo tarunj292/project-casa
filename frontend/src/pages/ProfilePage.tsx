@@ -21,6 +21,8 @@ import { useUser } from '../contexts/UserContext';
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  // The state for chatbot visibility has been removed.
+
   // ENHANCED USER CONTEXT: Now uses logout function and displays collected user details
   const { userData, logout } = useUser();
   const isLoggedIn = userData.isLoggedIn;
@@ -41,7 +43,7 @@ const ProfilePage: React.FC = () => {
   const baseMenuItems: MenuItem[] = [
     { icon: Package, label: 'My Orders', hasChevron: false },
     { icon: HelpCircle, label: 'Help & Query', hasChevron: false },
-    { icon: Heart, label: 'Wishlist', hasChevron: false },
+
     { icon: Users, label: 'Refer & Earn', hasChevron: false },
     { icon: Palette, label: 'Appearance', hasChevron: true },
     { icon: User, label: 'Manage Account', hasChevron: true },
@@ -68,7 +70,7 @@ const ProfilePage: React.FC = () => {
   const handleMenuClick = (label: string) => {
     if (label === 'Log Out') {
       handleLogout();
-    } else if (!isLoggedIn && ['My Orders', 'Wishlist', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
+    } else if (!isLoggedIn && ['My Orders', 'Manage Account', 'Addresses', 'My Offers'].includes(label)) {
       // AUTHENTICATION REQUIRED: Show login popup for protected features
       setIsLoginPopupOpen(true);
     } else {
@@ -77,14 +79,14 @@ const ProfilePage: React.FC = () => {
         case 'My Orders':
           navigate('/order-success'); // Placeholder - shows order success page
           break;
-        case 'Wishlist':
-          navigate('/wishlist');
-          break;
+
         case 'Manage Account':
           navigate('/manage-account'); // NEW: Navigate to manage account page
           break;
         case 'Help & Query':
-          navigate('/search'); // Placeholder - redirect to search
+          // The chatbot functionality has been removed.
+          // You may want to navigate to a new help page here instead.
+          console.log('Help & Query menu item clicked. Chatbot functionality removed.');
           break;
         case 'Refer & Earn':
           navigate('/'); // Placeholder - redirect to home
@@ -127,12 +129,12 @@ const ProfilePage: React.FC = () => {
 
       {/* User Profile Card */}
       <div className="px-4 py-6">
-        <div 
+        <div
           className="bg-gradient-to-r from-gray-600 to-gray-700 rounded-2xl p-6 relative overflow-hidden"
         >
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-white/10 rounded-2xl"></div>
-          
+
           <div className="relative z-10">
             {isLoggedIn ? (
               <>
@@ -250,6 +252,7 @@ const ProfilePage: React.FC = () => {
         onClose={handleLoginClose}
         onContinue={handleLoginContinue}
       />
+      {/* The ChatbotComponent has been removed. */}
     </div>
   );
 };
