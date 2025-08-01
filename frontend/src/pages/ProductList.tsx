@@ -52,7 +52,7 @@ const ProductList: React.FC<ProductsProp> = (props) => {
       ))}
     </div>
   ) : (
-    <h1 className="text-white text-center text-lg mt-8">No products found.</h1>
+    <h1 className="text-white text-center text-lg mt-32">No products found.</h1>
   );
 };
 
