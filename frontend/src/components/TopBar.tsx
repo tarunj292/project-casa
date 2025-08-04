@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Heart, User, MapPin } from 'lucide-react';
 import LoginPopup from './LoginPopup';
-import { useUser } from '../contexts/UserContext';
 
 const TopBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const { userData } = useUser();
-  const isLoggedIn = userData.isLoggedIn;
 
   const isProductPage = location.pathname.startsWith('/product/');
   const showBackButton = isProductPage;

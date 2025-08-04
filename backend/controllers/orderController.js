@@ -8,26 +8,26 @@ const createOrder = async (req, res) => {
   try {
     const {
       user,
-      wishlistProducts,
+      products,
       address,
       estimatedDelivery,
       paymentStatus
     } = req.body;
 
-    if (!user || !wishlistProducts || wishlistProducts.length === 0 || !address) {
+    if (!user || !products || products.length === 0 || !address) {
       return res.status(400).json({ error: 'Required fields missing' });
     }
 
     const newOrder = new Order({
       user,
-      wishlistProducts,
+      products,
       address,
       estimatedDelivery,
       paymentStatus
     });
 
     const saved = await newOrder.save();
-    res.status(201).json(saved);
+    res.status(201).json({success: true, saved});
   } catch (err) {
     res.status(500).json({ error: 'Failed to create order', detail: err.message });
   }
@@ -38,7 +38,7 @@ const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate('user', 'display_name email phone')
-      .populate('wishlistProducts.product', 'name price images');
+      .populate('products.product', 'name price images');
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -50,7 +50,7 @@ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate('user', 'display_name email phone')
-      .populate('wishlistProducts.product', 'name price images');
+      .populate('products.product', 'name price images');
 
     if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json(order);

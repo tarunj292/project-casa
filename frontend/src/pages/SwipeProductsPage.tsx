@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'framer-motion';
 import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useUser } from '../contexts/UserContext'
 import fetchProducts from '../utils/fetchProductforSwipe';
 
 // Product interface to match backend data
@@ -122,6 +123,7 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
 function Deck() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { userData } = useUser()
 
   // State for products, loading, and pagination
   const [cards, setCards] = useState<Product[]>([]);
@@ -198,6 +200,9 @@ function Deck() {
   // Handle the swipe action from the card component
   const handleSwipe = (productId: string, direction: 'left' | 'right') => {
     // If swiped right, add to cart
+    if(userData.isLoggedIn === false){
+      navigate('/profile')
+    }
     if (direction === 'right') {
       const product = cards.find(c => c._id === productId);
       if (product && !addedToCart.has(product._id)) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
 import NavShell from './components/NavShell';
@@ -19,7 +19,7 @@ import AllBrandsPage from './pages/AllBrandsPage';
 import BrandPage from './pages/BrandPage';
 import OnboardingPage from './pages/OnboardingPage';
 import ProductList from './pages/ProductList'
-
+import './index.css'
 
 function App() {
   return (

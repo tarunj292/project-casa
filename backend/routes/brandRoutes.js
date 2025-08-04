@@ -7,14 +7,14 @@ const brandController = require('../controllers/brandController');
 // POST create a new brand
 router.post('/create', brandController.createBrand); 
 
+// GET brand by ID
+router.get('/:id', getBrandById);
+
 // GET all brands
 router.get('/', getAllBrands);
 
 // GET brand by name
 router.get('/name/:name', getBrandByName);
-
-// GET brand by ID
-router.get('/:id', getBrandById);
 
 // Update brand by ID
 router.put('/:id', updateBrand);     

@@ -15,7 +15,7 @@ router.post('/create', createOrder);
 router.get('/', getAllOrders);
 
 // Get a specific order by ID
-router.get('/:id', getOrderById);
+router.get('/id/:id', getOrderById);
 
 // Update an order (e.g., deliveryStatus or paymentStatus)
 router.put('/update/:id', updateOrder);
