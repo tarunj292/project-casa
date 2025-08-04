@@ -1,5 +1,7 @@
 // backend/controllers/brandController.js
 
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Brand = require('../models/brand');
 
 // GET brand by ID
@@ -96,6 +98,55 @@ const updateBrand = async (req, res) => {
   }
 };
 
+// REGISTER BRAND
+exports.registerBrand = async (req, res) => {
+  try {
+    const { name, logo_url, description, website, social_links, email, password } = req.body;
+
+    const existing = await Brand.findOne({ email });
+    if (existing) return res.status(400).json({ error: 'Email already in use' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newBrand = new Brand({
+      name,
+      logo_url,
+      description,
+      website,
+      social_links,
+      email,
+      password: hashedPassword
+    });
+
+    await newBrand.save();
+
+    res.status(201).json({ message: 'Brand registered successfully', brand: newBrand });
+  } catch (err) {
+    if (err.code === 11000 && err.keyPattern?.name) {
+      return res.status(400).json({ error: 'Brand name already exists' });
+    }
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// LOGIN BRAND
+exports.loginBrand = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const brand = await Brand.findOne({ email });
+    if (!brand) return res.status(404).json({ error: 'Brand not found' });
+
+    const isMatch = await bcrypt.compare(password, brand.password);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+
+    // JWT not yet used, so just return brand for now
+    res.status(200).json({ message: 'Login successful', brand });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 module.exports = {
   getBrandById,
@@ -103,5 +154,7 @@ module.exports = {
   getAllBrands,
   createBrand,
   deleteBrand,
-  updateBrand
+  updateBrand,
+  registerBrand,
+  loginBrand
 };

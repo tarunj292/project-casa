@@ -1,5 +1,3 @@
-// backend/models/brand.js
-
 const mongoose = require('mongoose');
 
 const brandSchema = new mongoose.Schema({
@@ -22,12 +20,16 @@ const brandSchema = new mongoose.Schema({
   social_links: {
     type: [String] // array of URLs
   },
-  created_at: {
-    type: Date,
-    default: Date.now
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address']
   },
-  updated_at: {
-    type: Date
+  password: {
+    type: String,
+    required: true
   },
   crm_user_ids: {
     type: [String]
@@ -38,6 +40,13 @@ const brandSchema = new mongoose.Schema({
   is_active: {
     type: Boolean,
     default: true
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
+  },
+  updated_at: {
+    type: Date
   }
 });
 

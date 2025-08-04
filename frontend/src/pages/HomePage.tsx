@@ -287,19 +287,19 @@ const HomePage: React.FC = () => {
       {/* Brand Logo (Your main app logo, not individual brands) */}
       <div className="text-center py-4">
         <div className="flex items-center justify-center space-x-2">
-          <div className="flex space-x-1">
+          {/* <div className="flex space-x-1">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="w-1 h-6 bg-white transform rotate-12"></div>
             ))}
-          </div>
+          </div> */}
           <h1 className="text-2xl font-bold">
             <span className="text-gray-400 text-xs">+ CERTIFIED +</span>
           </h1>
-          <div className="flex space-x-1">
+          {/* <div className="flex space-x-1">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="w-1 h-6 bg-white transform -rotate-12"></div>
             ))}
-          </div>
+          </div> */}
         </div>
         <h1 className="text-3xl font-bold mt-1">
           <span className="text-blue-400">DRIP</span>
@@ -307,7 +307,7 @@ const HomePage: React.FC = () => {
           <span className="text-white">TER</span>
         </h1>
         <div className="flex items-center justify-center space-x-2 mt-2">
-          <div className="flex space-x-1">
+          {/* <div className="flex space-x-1">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="w-1 h-6 bg-white transform rotate-12"></div>
             ))}
@@ -316,7 +316,7 @@ const HomePage: React.FC = () => {
             {[...Array(3)].map((_, i) => (
               <div key={i} className="w-1 h-6 bg-white transform -rotate-12"></div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
 

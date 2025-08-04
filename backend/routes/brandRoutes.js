@@ -4,7 +4,6 @@ const router = express.Router();
 const { getBrandById, getBrandByName, getAllBrands, createBrand, deleteBrand, updateBrand} = require('../controllers/brandController');
 const brandController = require('../controllers/brandController');
 
-
 // POST create a new brand
 router.post('/create', brandController.createBrand); 
 
@@ -17,8 +16,12 @@ router.get('/name/:name', getBrandByName);
 // GET brand by ID
 router.get('/:id', getBrandById);
 
-router.put('/:id', updateBrand);     // Update brand by ID
+// Update brand by ID
+router.put('/:id', updateBrand);     
 
-router.delete('/:id', deleteBrand);  // Delete brand by ID
+// Delete brand by ID
+router.delete('/:id', deleteBrand);  
+
+router.post('/login', brandController.loginBrand);
 
 module.exports = router;

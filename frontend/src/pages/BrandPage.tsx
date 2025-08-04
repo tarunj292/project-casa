@@ -108,6 +108,7 @@ const BrandPage: React.FC = () => {
         });
         if (!res.ok) throw new Error("Failed to fetch products");
         const data: Product[] = await res.json();
+        console.log("Fetched products:", data);
         setProducts(Array.isArray(data) ? data : []);
       } catch (e: any) {
         if (e.name !== "AbortError") {
