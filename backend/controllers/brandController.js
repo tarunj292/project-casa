@@ -1,7 +1,6 @@
 // backend/controllers/brandController.js
 
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Brand = require('../models/brand');
 
 // GET brand by ID
@@ -99,7 +98,7 @@ const updateBrand = async (req, res) => {
 };
 
 // REGISTER BRAND
-exports.registerBrand = async (req, res) => {
+const registerBrand = async (req, res) => {
   try {
     const { name, logo_url, description, website, social_links, email, password } = req.body;
 
@@ -129,8 +128,7 @@ exports.registerBrand = async (req, res) => {
   }
 };
 
-// LOGIN BRAND
-exports.loginBrand = async (req, res) => {
+const loginBrand = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -140,12 +138,12 @@ exports.loginBrand = async (req, res) => {
     const isMatch = await bcrypt.compare(password, brand.password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // JWT not yet used, so just return brand for now
     res.status(200).json({ message: 'Login successful', brand });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 module.exports = {
