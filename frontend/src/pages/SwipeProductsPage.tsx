@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'framer-motion';
-import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, ShoppingCart, Share2, Heart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext'
 import fetchProducts from '../utils/fetchProductforSwipe';
@@ -27,10 +27,12 @@ interface SwipeableCardProps {
   onSwipe: (productId: string, direction: 'left' | 'right') => void;
   index: number;
   total: number;
+  wishlistItems: Set<string>;
+  onWishlistToggle: (productId: string) => void;
 }
 
 // Single Swipeable Card Component using Framer Motion
-function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
+function SwipeableCard({ product, onSwipe, index, total, wishlistItems, onWishlistToggle }: SwipeableCardProps) {
   const navigate = useNavigate()
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 300], [-20, 20]);
@@ -113,21 +115,43 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
                 </span>
               ))}
             </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
-    <button
+            <div className="absolute right-4 bottom-4 flex flex-col items-center gap-2">
+    <motion.button
       onClick={() => {
         onSwipe(product._id, 'right')
         navigate('/checkout')}}
-      className="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-blue-700 transition"
+      className="bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title="Buy Now"
     >
-      Buy Now
-    </button>
-    <button
+      <ShoppingCart size={20} />
+    </motion.button>
+    <motion.button
+      onClick={() => onWishlistToggle(product._id)}
+      className={`p-3 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center ${
+        wishlistItems.has(product._id)
+          ? 'bg-red-500 text-white hover:bg-red-600'
+          : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+      }`}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title={wishlistItems.has(product._id) ? "Remove from Wishlist" : "Add to Wishlist"}
+    >
+      <Heart
+        size={20}
+        className={wishlistItems.has(product._id) ? 'fill-current' : ''}
+      />
+    </motion.button>
+    <motion.button
       onClick={() => alert('Share clicked')}
-      className="bg-gray-800 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-gray-900 transition"
+      className="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all duration-200 flex items-center justify-center"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title="Share Product"
     >
-      Share
-    </button>
+      <Share2 size={20} />
+    </motion.button>
   </div>
           </div>
         </div>
@@ -147,10 +171,15 @@ function Deck() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
+  const [wishlistItems, setWishlistItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreProducts, setHasMoreProducts] = useState(true);
   const [seenProductIds, setSeenProductIds] = useState<Set<string>>(new Set());
-  
+
+  // State for policy dropdowns
+  const [writtenPolicyOpen, setWrittenPolicyOpen] = useState(false);
+  const [shippingPolicyOpen, setShippingPolicyOpen] = useState(false);
+
   // Ref to store the size of the current batch for progress bar calculation
   const currentBatchSize = useRef(0);
 
@@ -250,6 +279,25 @@ function Deck() {
   // const handleBack = () => navigate('/');
   // const handleViewBag = () => navigate('/bag');
 
+  // Handle wishlist toggle
+  const handleWishlistToggle = (productId: string) => {
+    setWishlistItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) {
+        newSet.delete(productId);
+      } else {
+        newSet.add(productId);
+        // Add a small heart animation when adding to wishlist
+        const product = cards.find(c => c._id === productId);
+        if (product) {
+          // You could add a toast or animation here
+          console.log(`❤️ ${product.name} added to wishlist!`);
+        }
+      }
+      return newSet;
+    });
+  };
+
   // const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
 
   if (loading) {
@@ -281,7 +329,7 @@ function Deck() {
   }
 
   return (
-    <div className="bg-gray-900 text-white h-screen flex flex-col overflow-hidden">
+    <div className="bg-gray-900 text-white min-h-screen flex flex-col overflow-y-auto">
       {/* Header
       <div className="absolute top-0 left-0 right-0 z-20 px-4 py-4 bg-gradient-to-b from-black/50 to-transparent">
         <div className="flex items-center justify-between">
@@ -318,7 +366,7 @@ function Deck() {
       </div> */}
 
       {/* Card Deck */}
-      <div className="flex-1 flex items-center justify-center w-full overflow-hidden px-4 select-none">
+      <div className="h-screen flex items-center justify-center w-full overflow-hidden px-4 select-none">
         <div className="w-full max-w-sm h-[670px] relative">
           <AnimatePresence>
             {cards.map((product, index) => (
@@ -328,6 +376,8 @@ function Deck() {
                 onSwipe={handleSwipe}
                 index={index}
                 total={cards.length}
+                wishlistItems={wishlistItems}
+                onWishlistToggle={handleWishlistToggle}
               />
             ))}
           </AnimatePresence>
@@ -340,6 +390,65 @@ function Deck() {
                     <p>Loading more...</p>
                 </div>
              </div>
+          )}
+        </div>
+      </div>
+
+      {/* Policies Section - Scrollable below swipe area */}
+      <div className="px-4 py-8 space-y-6">
+        {/* Written Policy */}
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
+          <button
+            onClick={() => setWrittenPolicyOpen(!writtenPolicyOpen)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Written Policy
+            </h3>
+            <svg
+              className={`w-5 h-5 text-white transition-transform duration-200 ${writtenPolicyOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {writtenPolicyOpen && (
+            <p className="text-gray-300 text-base leading-relaxed mt-4">
+              This is written policy
+            </p>
+          )}
+        </div>
+
+        {/* Shipping Policy */}
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
+          <button
+            onClick={() => setShippingPolicyOpen(!shippingPolicyOpen)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              Shipping Policy
+            </h3>
+            <svg
+              className={`w-5 h-5 text-white transition-transform duration-200 ${shippingPolicyOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {shippingPolicyOpen && (
+            <p className="text-gray-300 text-base leading-relaxed mt-4">
+              This is shipping policy
+            </p>
           )}
         </div>
       </div>
