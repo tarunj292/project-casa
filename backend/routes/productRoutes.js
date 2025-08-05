@@ -20,7 +20,7 @@ const {
 router.post('/create', createProduct);
 
 // GET all products by brand ID
-router.get('/brand', getAllProductsByBrand);
+router.get('/brand/:id', getAllProductsByBrand);
 
 // GET all products (with pagination and exclusion)
 router.get('/', getAllProducts);

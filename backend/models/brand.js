@@ -1,5 +1,27 @@
 const mongoose = require('mongoose');
 
+const store = new mongoose.Schema({
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    country: { type: String, required: true },
+    pincode: { type: String, required: true },
+    landmark: { type: String },
+}, { _id: true });
+
+const emergencyContact = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  number: { type: String, required: true },
+  working_hours: { type: String, required: true }
+}, { _id: false });
+
+const bankDetails = new mongoose.Schema({
+  account_number: { type: String, required: true },
+  ifsc_code: { type: String, required: true },
+  upi_id: { type: String, required: true }
+}, { _id: false });
+
 const brandSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -47,7 +69,13 @@ const brandSchema = new mongoose.Schema({
   },
   updated_at: {
     type: Date
-  }
+  },
+  store_addresses: [store],
+  emergency_contact: emergencyContact,
+  return_policy: { type: String },
+  shipping_policy: { type: String },
+  store_policy: { type: String },
+  bank_details: bankDetails,
 });
 
 module.exports = mongoose.model('Brand', brandSchema);

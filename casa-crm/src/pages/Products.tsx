@@ -1,62 +1,81 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Plus, Star, Heart, ShoppingBag } from 'lucide-react';
+import axios from 'axios'
 
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const categories = ['All', 'Electronics', 'Clothing', 'Sports', 'Beauty', 'Home'];
-  
-  const products = [
-    { 
-      id: 1, 
-      name: 'Wireless Headphones', 
-      brand: 'TechSound', 
-      price: '$129.99', 
-      rating: 4.8, 
-      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=300',
-      category: 'Electronics',
-      sales: 234
-    },
-    { 
-      id: 2, 
-      name: 'Designer Sneakers', 
-      brand: 'UrbanStep', 
-      price: '$89.99', 
-      rating: 4.6, 
-      image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=300',
-      category: 'Sports',
-      sales: 189
-    },
-    { 
-      id: 3, 
-      name: 'Minimalist Watch', 
-      brand: 'TimeCore', 
-      price: '$199.99', 
-      rating: 4.9, 
-      image: 'https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg?auto=compress&cs=tinysrgb&w=300',
-      category: 'Electronics',
-      sales: 156
-    },
-    { 
-      id: 4, 
-      name: 'Organic Face Cream', 
-      brand: 'PureGlow', 
-      price: '$45.99', 
-      rating: 4.7, 
-      image: 'https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=300',
-      category: 'Beauty',
-      sales: 298
-    },
-  ];
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.brand.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  interface Category {
+    _id: string;
+    name: string;
+    parentCategory: string | null;
+    __v: number;
+  }
+  
+  interface Brand {
+    _id: string;
+    name: string;
+    logo_url: string;
+    social_links: string[];
+    crm_user_ids: string[];
+    is_active: boolean;
+    created_at: string;
+    __v: number;
+  }
+  
+ interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  images: string[];
+  price: number; // Will be parsed from $numberDecimal string
+  currency: string;
+  sizes: string[];
+  fits: string[];
+  tags: string[];
+  stock: number;
+  is_active: boolean;
+  geo_tags: string[];
+  gender: 'male' | 'female' | 'unisex';
+  brand: Brand;
+  category: Category[];
+  created_at: string;
+  updated_at: string;
+  __v: number;
+}
+
+  const [products, setProducts] = useState<Product[]>([]);
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:5002/api/products/brand/68821e323a949edfc6376e5d');
+        setProducts(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const getPrice = (price: any): string => {
+    if (!price) return 'N/A';
+    if (typeof price === 'object' && price.$numberDecimal) return price.$numberDecimal;
+    return price.toString(); // fallback
+  };
+
+  // const filteredProducts = products.filter(product => {
+  //   const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //                        product.brand.toLowerCase().includes(searchQuery.toLowerCase());
+  //   const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+  //   return matchesSearch && matchesCategory;
+  // });
 
   return (
     <div className="px-4 py-6 space-y-6">
@@ -106,11 +125,11 @@ const Products = () => {
 
       {/* Products Grid */}
       <div className="space-y-4">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="bg-white rounded-3xl p-6 shadow-lg">
+        {products.map((product) => (
+          <div key={product._id} className="bg-white rounded-3xl p-6 shadow-lg">
             <div className="flex items-start space-x-4">
               <img
-                src={product.image}
+                src={product.images[0]}
                 alt={product.name}
                 className="w-20 h-20 rounded-2xl object-cover"
               />
@@ -118,7 +137,7 @@ const Products = () => {
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h3 className="text-lg font-bold text-slate-800">{product.name}</h3>
-                    <p className="text-slate-600 text-sm">{product.brand}</p>
+                    <p className="text-slate-600 text-sm">{product.brand.name}</p>
                   </div>
                   <button className="text-slate-400 hover:text-red-500 transition-colors">
                     <Heart className="w-5 h-5" />
@@ -128,14 +147,14 @@ const Products = () => {
                 <div className="flex items-center space-x-2 mb-3">
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium text-slate-700">{product.rating}</span>
+                    <span className="text-sm font-medium text-slate-700">{product.currency}</span>
                   </div>
                   <span className="text-slate-400">•</span>
-                  <span className="text-sm text-slate-600">{product.sales} sold</span>
+                  <span className="text-sm text-slate-600">{product.gender} sold</span>
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <span className="text-xl font-bold text-slate-800">{product.price}</span>
+                  <span className="text-xl font-bold text-slate-800">{getPrice(product.price)}</span>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2">
                     <ShoppingBag className="w-4 h-4" />
                     <span className="text-sm font-medium">View</span>
@@ -147,7 +166,7 @@ const Products = () => {
         ))}
       </div>
 
-      {filteredProducts.length === 0 && (
+      {products.length === 0 && (
         <div className="text-center py-12">
           <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
             <Search className="w-8 h-8 text-slate-400" />

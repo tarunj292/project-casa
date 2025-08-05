@@ -66,9 +66,10 @@ const getProductByCategory = async (req, res) => {
 
 // GET all products by brand ID
 const getAllProductsByBrand = async (req, res) => {
+  
   try {
-    const brandId = req.query.id;
-
+    const brandId = req.params.id;
+    
     if (!brandId || !mongoose.Types.ObjectId.isValid(brandId)) {
       return res.status(400).json({ error: 'Valid brand ID is required in query (?id=...)' });
     }

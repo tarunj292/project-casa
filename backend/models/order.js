@@ -14,9 +14,21 @@ const orderSchema = new mongoose.Schema({
         ref: 'Product',
         required: true
       },
+      name: {
+        type: String,
+        required: true
+      },
       quantity: {
         type: Number,
         default: 1,
+        required: true
+      },
+      price: {
+        type: Number,
+        required: true
+      },
+      size: {
+        type: String,
         required: true
       }
     }
@@ -39,6 +51,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ['Pending', 'Paid', 'Failed', "COD"],
     default: 'Pending',
+    required: true
+  },
+  totalAmount: {
+    type: Number,
     required: true
   },
   createdAt: {

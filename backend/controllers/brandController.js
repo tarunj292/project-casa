@@ -49,10 +49,21 @@ const createBrand = async (req, res) => {
       description,
       website,
       social_links,
+      email,
+      password,
       crm_user_ids,
       inventory_sync_status,
-      is_active
+      is_active,
+      store_addresses,
+      emergency_contact,
+      bank_details,
+      return_policy,
+      shipping_policy,
+      store_policy
     } = req.body;
+
+    // Optional: Hash password if you’re allowing password creation here
+    const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
     const brand = new Brand({
       name,
@@ -60,9 +71,17 @@ const createBrand = async (req, res) => {
       description,
       website,
       social_links,
+      email,
+      password: hashedPassword,
       crm_user_ids,
       inventory_sync_status,
-      is_active
+      is_active,
+      store_addresses,
+      emergency_contact,
+      bank_details,
+      return_policy,
+      shipping_policy,
+      store_policy
     });
 
     const savedBrand = await brand.save();
