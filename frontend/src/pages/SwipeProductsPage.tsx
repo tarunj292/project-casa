@@ -31,6 +31,7 @@ interface SwipeableCardProps {
 
 // Single Swipeable Card Component using Framer Motion
 function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
+  const navigate = useNavigate()
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 300], [-20, 20]);
   const scale = useTransform(x, [-300, 0, 300], [0.9, 1, 0.9]);
@@ -92,7 +93,7 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
             onError={(e) => { e.currentTarget.src = 'https://placehold.co/400x600/27272a/ffffff?text=No+Image' }}
           />
 
-          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white select-none pointer-events-none">
+          <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white select-none">
             <div className="flex items-baseline space-x-2">
               <p className="text-2xl font-bold">
                 ₹{product.price?.$numberDecimal
@@ -112,6 +113,22 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
                 </span>
               ))}
             </div>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+    <button
+      onClick={() => {
+        onSwipe(product._id, 'right')
+        navigate('/checkout')}}
+      className="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-blue-700 transition"
+    >
+      Buy Now
+    </button>
+    <button
+      onClick={() => alert('Share clicked')}
+      className="bg-gray-800 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-gray-900 transition"
+    >
+      Share
+    </button>
+  </div>
           </div>
         </div>
       </motion.div>
@@ -230,10 +247,10 @@ function Deck() {
     }, 350);
   };
 
-  const handleBack = () => navigate('/');
-  const handleViewBag = () => navigate('/bag');
+  // const handleBack = () => navigate('/');
+  // const handleViewBag = () => navigate('/bag');
 
-  const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
+  // const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
 
   if (loading) {
     return (
@@ -265,7 +282,7 @@ function Deck() {
 
   return (
     <div className="bg-gray-900 text-white h-screen flex flex-col overflow-hidden">
-      {/* Header */}
+      {/* Header
       <div className="absolute top-0 left-0 right-0 z-20 px-4 py-4 bg-gradient-to-b from-black/50 to-transparent">
         <div className="flex items-center justify-between">
           <button onClick={handleBack} className="p-2 bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-gray-700 transition-colors">
@@ -284,9 +301,9 @@ function Deck() {
             )}
           </button>
         </div>
-      </div>
+      </div> */}
 
-      {/* Progress Bar */}
+      {/* Progress Bar
       <div className="absolute top-16 left-4 right-4 z-20">
         <div className="bg-gray-700 rounded-full h-2">
           <div
@@ -298,7 +315,7 @@ function Deck() {
           <span className="text-xs text-gray-400">Batch {currentPage}</span>
           <span className="text-xs text-gray-400">{swipedInBatch}/{currentBatchSize.current} swiped</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Card Deck */}
       <div className="flex-1 flex items-center justify-center w-full overflow-hidden px-4 select-none">

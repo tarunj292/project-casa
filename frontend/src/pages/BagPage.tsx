@@ -63,7 +63,7 @@ const BagPage: React.FC = () => {
   };
 
   const isEmpty = cart.items.length === 0;
-
+  cart.items.map((item) => {console.log(item)})
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
       {/* Header */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle, Minus, Plus } from 'lucide-react';
 import { CartData, useCart } from '../contexts/CartContext';
 import axios from "axios";
 import { useUser } from '../contexts/UserContext';
@@ -15,8 +15,8 @@ interface Product {
   discount?: string;
   image?: string;
   images?: string[];
-  selectedSize?: string;
-  quantity?: number;
+  selectedSize: string;
+  quantity: number;
 }
 
 interface Address {
@@ -40,7 +40,7 @@ const CheckoutPage: React.FC = () => {
   const [selectedPayment, setSelectedPayment] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { cart } = useCart();
+  const { cart, updateQuantity } = useCart();
   const { userData  }= useUser();
   const { product, bagItems, total, directBuy } = location.state || {};
 
@@ -146,7 +146,23 @@ const CheckoutPage: React.FC = () => {
       console.error("Error deleting cart:", error.response?.data || error.message);
     }
   };
-  
+  orderItems.map((item) => {console.log(item)})
+
+  const handleQuantity = async (productId: string, size: string , change: number) =>{
+    try {
+      const currentItem = orderItems.find(item =>
+        item.id === productId && item.selectedSize === size
+      );
+
+      if (currentItem) {
+        const newQuantity = Math.max(0, currentItem.quantity + change);
+        await updateQuantity(productId, size, newQuantity);
+      }
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
+    }
+  }
+
   return (
     <div className="relative max-w-md mx-auto min-h-screen bg-gray-900 text-white overflow-x-hidden">
       <div className="pb-24">
@@ -219,6 +235,21 @@ const CheckoutPage: React.FC = () => {
                       <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
                     )}
                   </div>
+
+                  <button
+                        onClick={() => {handleQuantity(item.id, item.selectedSize, -1)}}
+                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="w-8 text-center text-white">{item.quantity}</span>
+                      <button
+                        onClick={() => {handleQuantity(item.id, item.selectedSize, 1)}}
+                        className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
+                      >
+                        <Plus size={14} />
+                      </button>
+
                 </div>
               ))}
               <div className="border-t border-gray-700 pt-3">
