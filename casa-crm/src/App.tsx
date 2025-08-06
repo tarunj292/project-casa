@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { BrandProvider } from './contexts/BrandContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -11,10 +11,11 @@ import Products from './pages/Products';
 import RegisterBrand from './pages/RegisterBrand';
 import Sales from './pages/Sales';
 import AddProduct from './pages/AddProduct';
+import CreateBrandForm from './pages/CreateBrand'
 
 function App() {
   return (
-    <AuthProvider>
+    <BrandProvider>
       <Router>
         <div className="min-h-screen bg-slate-800">
           <Routes>
@@ -27,11 +28,12 @@ function App() {
               <Route path="products/add" element={<AddProduct />} />
               <Route path="register-brand" element={<RegisterBrand />} />
               <Route path="sales" element={<Sales />} />
+              <Route path="create-brand" element={<CreateBrandForm />} />
             </Route>
           </Routes>
         </div>
       </Router>
-    </AuthProvider>
+    </BrandProvider>
   );
 }
 

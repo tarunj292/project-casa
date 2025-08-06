@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Filter, Plus, Star, Heart, ShoppingBag } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, Filter, Plus, Star, Edit, ShoppingBag } from 'lucide-react';
 import axios from 'axios'
 
 const Products = () => {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [show, setShow] = useState(false)
 
-  const categories = ['All', 'Electronics', 'Clothing', 'Sports', 'Beauty', 'Home'];
+  const categories = [
+    'All',
+    'Cargos & Parachutes',
+    'Jeans',
+    'T-Shirts',
+    'Oversized T-shirt',
+  ];
 
   interface Category {
     _id: string;
@@ -53,7 +61,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/api/products/brand/68821e323a949edfc6376e5d');
+        const response = await axios.get('http://localhost:5002/api/products/brand/6891d5fd3b095cfe19090dd3');
         setProducts(response.data);
         console.log(response.data)
       } catch (error) {
@@ -70,12 +78,16 @@ const Products = () => {
     return price.toString(); // fallback
   };
 
-  // const filteredProducts = products.filter(product => {
-  //   const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //                        product.brand.toLowerCase().includes(searchQuery.toLowerCase());
-  //   const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-  //   return matchesSearch && matchesCategory;
-  // });
+  const filteredProducts = products.filter(product => {
+    const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const brandMatch = product.brand?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+  
+    const categoryMatch =
+      selectedCategory === 'All' ||
+      product.category.some(cat => cat.name === selectedCategory);
+  
+    return (nameMatch || brandMatch) && categoryMatch;
+  });  
 
   return (
     <div className="px-4 py-6 space-y-6">
@@ -125,7 +137,7 @@ const Products = () => {
 
       {/* Products Grid */}
       <div className="space-y-4">
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product._id} className="bg-white rounded-3xl p-6 shadow-lg">
             <div className="flex items-start space-x-4">
               <img
@@ -139,42 +151,48 @@ const Products = () => {
                     <h3 className="text-lg font-bold text-slate-800">{product.name}</h3>
                     <p className="text-slate-600 text-sm">{product.brand.name}</p>
                   </div>
-                  <button className="text-slate-400 hover:text-red-500 transition-colors">
-                    <Heart className="w-5 h-5" />
+                  <button onClick={() => navigate('/products/add', { state: { product }})}className="text-slate-400 hover:text-red-500 transition-colors">
+                    <Edit className="w-5 h-5" />
                   </button>
                 </div>
                 
                 <div className="flex items-center space-x-2 mb-3">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-medium text-slate-700">{product.currency}</span>
-                  </div>
+                <span className="text-sm text-slate-600">{product.description}</span>
                   <span className="text-slate-400">•</span>
-                  <span className="text-sm text-slate-600">{product.gender} sold</span>
+                  <span className="text-sm text-slate-600">Gender: {product.gender}</span>
                 </div>
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-xl font-bold text-slate-800">{getPrice(product.price)}</span>
+                {/* <div className="flex items-center justify-between">
+                  <span className="text-xl font-bold text-slate-800">Rs. {getPrice(product.price)} </span>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition-colors flex items-center space-x-2">
                     <ShoppingBag className="w-4 h-4" />
                     <span className="text-sm font-medium">View</span>
                   </button>
-                </div>
+                </div> */}
+                {`
+                size: ${product.sizes} 
+                fits: ${product.fits}
+                tags: ${product.tags}
+                stock: ${product.stock}
+                geotags: ${product.geo_tags}
+                gender: ${product.gender}
+                `}
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {products.length === 0 && (
-        <div className="text-center py-12">
-          <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-slate-400" />
-          </div>
-          <h3 className="text-xl font-bold text-white mb-2">No products found</h3>
-          <p className="text-slate-400">Try adjusting your search or filters</p>
+      {filteredProducts.length === 0 && (
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Search className="w-8 h-8 text-slate-400" />
         </div>
-      )}
+        <h3 className="text-xl font-bold text-white mb-2">No products found</h3>
+      <p className="text-slate-400">Try adjusting your search or filters</p>
+      </div>
+)}
+
     </div>
   );
 };

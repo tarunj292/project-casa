@@ -1,9 +1,9 @@
 import React from 'react';
 import { TrendingUp, Users, Package, DollarSign, ArrowUpRight } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useBrand } from '../contexts/BrandContext';
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { brand } = useBrand();
 
   const stats = [
     { title: 'Total Revenue', value: '$45,231', change: '+12%', icon: DollarSign, color: 'bg-green-500' },
@@ -24,7 +24,7 @@ const Dashboard = () => {
       {/* Welcome Header */}
       <div className="text-center py-8">
         <h1 className="text-3xl font-bold text-white mb-2">
-          Good Morning, {user?.name?.split(' ')[0] || 'User'}
+          Good Morning, {brand?.name?.split(' ')[0] || 'User'}
         </h1>
         <p className="text-slate-300">
           Here's what's happening with your business today

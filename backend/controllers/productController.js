@@ -144,34 +144,21 @@ const createProduct = async (req, res) => {
       sizes,
       fits,
       tags,
+      stock,
+      geo_tags,
       gender,
       brand,
       category
     } = req.body;
 
-    // Handle dynamic brand creation
-    if (typeof brand === 'object' && brand.name) {
-      let existingBrand = await Brand.findOne({ name: brand.name });
-      if (existingBrand) {
-        brand = existingBrand._id;
-      } else {
-        if (!brand.logo_url) {
-          return res.status(400).json({ error: 'Brand logo_url is required for new brands' });
-        }
-        const newBrand = await Brand.create(brand);
-        brand = newBrand._id;
-      }
+    const foundBrand = await Brand.findOne({ name: brand });
+    if (!foundBrand) {
+      return res.status(400).json({ error: `Brand "${brand}" not found` });
     }
 
-    // Handle dynamic category creation
-    if (typeof category === 'object' && category.name) {
-      let existingCategory = await Category.findOne({ name: category.name });
-      if (existingCategory) {
-        category = existingCategory._id;
-      } else {
-        const newCategory = await Category.create(category);
-        category = newCategory._id;
-      }
+    const foundCategory = await Category.findOne({ name: category });
+    if (!foundCategory) {
+      return res.status(400).json({ error: `Category "${category}" not found` });
     }
 
     const newProduct = new Product({
@@ -183,13 +170,15 @@ const createProduct = async (req, res) => {
       sizes,
       fits,
       tags,
+      stock,
+      geo_tags,
       gender,
-      brand,
-      category
+      brand: foundBrand,
+      category: foundCategory
     });
 
     const saved = await newProduct.save();
-    res.status(201).json(saved);
+    res.status(201).json({data: saved});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -209,7 +198,17 @@ const deleteProduct = async (req, res) => {
 // UPDATE product by ID
 const updateProduct = async (req, res) => {
   try {
-    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
+
+    const brand = await Brand.findOne({name: req.body.brand})
+    const category = await Category.findOne({name: req.body.category})
+
+    if (!brand || !category) {
+      return res.status(400).json({ message: 'Invalid brand or category name' });
+    }
+
+    const product = {...req.body, brand: brand._id, category: [category._id]}
+    
+    const updated = await Product.findByIdAndUpdate(req.params.id, product, {
       new: true,
       runValidators: true
     });

@@ -157,7 +157,7 @@ const loginBrand = async (req, res) => {
     const isMatch = await bcrypt.compare(password, brand.password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
-    res.status(200).json({ message: 'Login successful', brand });
+    res.status(200).json({ success: true, brand });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

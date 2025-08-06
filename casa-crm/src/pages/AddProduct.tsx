@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Upload, Camera, Package, DollarSign, Tag, FileText, Layers, AlertCircle, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ArrowLeft, Upload, Camera, Package, DollarSign, Tag, FileText, Layers, AlertCircle, Check, Move } from 'lucide-react';
 
 interface ProductFormData {
   name: string;
@@ -8,10 +8,15 @@ interface ProductFormData {
   price: string;
   category: string;
   brand: string;
-  sku: string;
-  stock_quantity: string;
   images: string[];
   tags: string[];
+  currency: string;
+  sizes: string[];
+  fits: string[];
+  stock: string;
+  is_active: boolean;
+  geo_tags: string[];
+  gender: "Male" | "Female" | "Unisex";
 }
 
 interface FormErrors {
@@ -20,37 +25,75 @@ interface FormErrors {
   category?: string;
   brand?: string;
   sku?: string;
-  stock_quantity?: string;
+  stock?: string;
   general?: string;
+  gender?: string;
 }
 
 const AddProduct = () => {
   const navigate = useNavigate();
+  const [title, setTitle] = useState('Add New')
+  const [description, setDescription] = useState('Create a new')
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
     price: '',
     category: '',
     brand: '',
-    sku: '',
-    stock_quantity: '',
     images: [''],
     tags: [''],
+    currency: '',
+    sizes: [''],
+    fits: [''],
+    stock: '',
+    is_active: false,
+    geo_tags: [''],
+    gender: 'Unisex'
   });
-
+  const location = useLocation();
+  const editData = location.state?.product || null;
+  
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        ...formData,
+        ...editData,
+        brand: editData.brand.name,
+        category: editData.category[0].name,
+        price: editData?.price?.$numberDecimal,
+        stock: String(editData.stock),
+        images: editData.images.length ? editData.images : [''],
+        tags: editData.tags.length ? editData.tags : [''],
+        sizes: editData.sizes.length ? editData.sizes : [''],
+        fits: editData.fits.length ? editData.fits : [''],
+        geo_tags: editData.geo_tags.length ? editData.geo_tags : [''],
+      });
+      setTitle('Edit')
+      setDescription('Edit')
+    }
+  }, [editData]);
+  
+  
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const categories = [
-    'Electronics',
-    'Clothing',
-    'Sports & Fitness',
-    'Beauty & Cosmetics',
-    'Home & Garden',
-    'Books & Media',
-    'Toys & Games',
-    'Automotive',
+    'Watches',
+    'sunglasses',
+    'bracelets',
+    'watches',
+    'Cargos & Parachutes',
+    'Jeans',
+    'Shirt',
+    'Oversized T-shirt',
+    'T-Shirts'
+  ];
+
+  const gender = [
+    'Male',
+    'Female',
+    'Unisex',
   ];
 
   const validateForm = (): boolean => {
@@ -70,18 +113,18 @@ const AddProduct = () => {
       newErrors.category = 'Category is required';
     }
 
+    if (!formData.gender) {
+      newErrors.gender = 'Gender is required';
+    }
+
     if (!formData.brand.trim()) {
       newErrors.brand = 'Brand is required';
     }
 
-    if (!formData.sku.trim()) {
-      newErrors.sku = 'SKU is required';
-    }
-
-    if (!formData.stock_quantity.trim()) {
-      newErrors.stock_quantity = 'Stock quantity is required';
-    } else if (isNaN(Number(formData.stock_quantity)) || Number(formData.stock_quantity) < 0) {
-      newErrors.stock_quantity = 'Please enter a valid stock quantity';
+    if (!formData.stock.trim()) {
+      newErrors.stock = 'Stock quantity is required';
+    } else if (isNaN(Number(formData.stock)) || Number(formData.stock) < 0) {
+      newErrors.stock = 'Please enter a valid stock quantity';
     }
 
     setErrors(newErrors);
@@ -95,10 +138,9 @@ const AddProduct = () => {
            Number(formData.price) > 0 &&
            formData.category !== '' &&
            formData.brand.trim() !== '' &&
-           formData.sku.trim() !== '' &&
-           formData.stock_quantity.trim() !== '' &&
-           !isNaN(Number(formData.stock_quantity)) &&
-           Number(formData.stock_quantity) >= 0;
+           formData.stock.trim() !== '' &&
+           !isNaN(Number(formData.stock)) &&
+           Number(formData.stock) >= 0;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -152,10 +194,58 @@ const AddProduct = () => {
     }));
   };
 
+  const handleSizesChange = (index: number, value: string) => {
+    const newSizes = [...formData.sizes];
+    newSizes[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      sizes: newSizes
+    }));
+  };
+
+  const handleFitsChange = (index: number, value: string) => {
+    const newFits = [...formData.fits];
+    newFits[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      fits: newFits
+    }));
+  };
+
+  const handleGTagChange = (index: number, value: string) => {
+    const newGeotag = [...formData.geo_tags];
+    newGeotag[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      geo_tags: newGeotag
+    }));
+  };
+
   const addTagField = () => {
     setFormData(prev => ({
       ...prev,
       tags: [...prev.tags, '']
+    }));
+  };
+
+  const addSizeField = () => {
+    setFormData(prev => ({
+      ...prev,
+      sizes: [...prev.sizes, '']
+    }))
+  }
+
+  const addFitField = () => {
+    setFormData(prev => ({
+      ...prev,
+      fits: [...prev.fits, '']
+    }))
+  }
+
+  const addGTagField = () => {
+    setFormData(prev => ({
+      ...prev,
+      geo_tags: [...prev.geo_tags, '']
     }));
   };
 
@@ -168,6 +258,79 @@ const AddProduct = () => {
       }));
     }
   };
+
+  const removeSizeField = (index: number) => {
+    if (formData.sizes.length > 1) {
+      const newSizes = formData.sizes.filter((_, i) => i !== index);
+      setFormData(prev => ({
+        ...prev,
+        size: newSizes
+      }));
+    }
+  };
+
+  const removeFitField = (index: number) => {
+    if (formData.fits.length > 1) {
+      const newFits = formData.fits.filter((_, i) => i !== index);
+      setFormData(prev => ({
+        ...prev,
+        fits: newFits
+      }));
+    }
+  };
+
+  const removeGTagField = (index: number) => {
+    if (formData.geo_tags.length > 1) {
+      const newGTags = formData.geo_tags.filter((_, i) => i !== index);
+      setFormData(prev => ({
+        ...prev,
+        geo_tags: newGTags
+      }));
+    }
+  };
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if(!validateForm()) return;
+
+    setIsLoading(true);
+    setErrors({});
+    try {
+      const cleanedData = {
+        ...formData,
+        images: formData.images.filter(img => img.trim() !== ''),
+        tags: formData.tags.filter(tag => tag.trim() !== ''),
+        price: Number(formData.price),
+        stock: Number(formData.stock)
+      };
+
+      const response = await fetch(`http://localhost:5002/api/products/update/${editData._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cleanedData),
+      });
+
+      if (response.ok) {
+        console.log(response)
+
+        setIsSuccess(true);
+        setTimeout(() => {
+          navigate('/products');
+        }, 2000);
+      } else {
+        const errorData = await response.json();
+        console.log(errorData)
+        setErrors({ general: errorData.message || 'Failed to update product. Please try again.' });
+      }
+    }catch (error) {
+      setErrors({ general: 'Network error. Please check your connection and try again.' });
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -184,10 +347,10 @@ const AddProduct = () => {
         images: formData.images.filter(img => img.trim() !== ''),
         tags: formData.tags.filter(tag => tag.trim() !== ''),
         price: Number(formData.price),
-        stock_quantity: Number(formData.stock_quantity)
+        stock: Number(formData.stock)
       };
 
-      const response = await fetch('/api/products', {
+      const response = await fetch('http://localhost:5002/api/products/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -196,12 +359,15 @@ const AddProduct = () => {
       });
 
       if (response.ok) {
+        console.log(response)
+
         setIsSuccess(true);
         setTimeout(() => {
           navigate('/products');
         }, 2000);
       } else {
         const errorData = await response.json();
+        console.log(errorData)
         setErrors({ general: errorData.message || 'Failed to create product. Please try again.' });
       }
     } catch (error) {
@@ -218,9 +384,9 @@ const AddProduct = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-6">
             <Check className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-4">Product Added!</h1>
+          <h1 className="text-3xl font-bold text-white mb-4">{title === 'Add New' ? 'Product Added!' : 'Product Updated!'}</h1>
           <p className="text-slate-300 mb-8">
-            Your product has been successfully added to the catalog.
+            Your product has been successfully {title === 'Add New' ? 'Added' : 'Updated'} to the catalog.
           </p>
           <Link
             to="/products"
@@ -245,14 +411,14 @@ const AddProduct = () => {
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">Add New Product</h1>
-            <p className="text-slate-300 text-sm">Create a new product listing</p>
+            <h1 className="text-2xl font-bold text-white">{title} Product</h1>
+            <p className="text-slate-300 text-sm">{description} product listing</p>
           </div>
         </div>
 
         {/* Form Card */}
         <div className="bg-white rounded-3xl p-6 shadow-2xl space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={title === 'Add New' ? handleSubmit : handleUpdate} className="space-y-5">
             {errors.general && (
               <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start space-x-3">
                 <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
@@ -289,7 +455,7 @@ const AddProduct = () => {
               <div className="relative">
                 <DollarSign className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
                 <input
-                  type="number"
+                  type="text"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
@@ -310,7 +476,6 @@ const AddProduct = () => {
                 Category *
               </label>
               <div className="relative">
-                <Layers className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
                 <select
                   name="category"
                   value={formData.category}
@@ -326,6 +491,29 @@ const AddProduct = () => {
                 </select>
               </div>
               {errors.category && <p className="text-red-500 text-sm mt-2">{errors.category}</p>}
+            </div>
+
+            {/* Gender */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Gender *
+              </label>
+              <div className="relative">
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
+                  className={`w-full pl-12 pr-4 py-4 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all shadow-sm text-slate-800 ${
+                    errors.gender ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                  }`}
+                >
+                  <option value="">Select a gender</option>
+                  {gender.map((gender) => (
+                    <option key={gender} value={gender}>{gender}</option>
+                  ))}
+                </select>
+              </div>
+              {errors.gender && <p className="text-red-500 text-sm mt-2">{errors.gender}</p>}
             </div>
 
             {/* Brand */}
@@ -346,27 +534,6 @@ const AddProduct = () => {
               {errors.brand && <p className="text-red-500 text-sm mt-2">{errors.brand}</p>}
             </div>
 
-            {/* SKU */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                SKU *
-              </label>
-              <div className="relative">
-                <Tag className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
-                <input
-                  type="text"
-                  name="sku"
-                  value={formData.sku}
-                  onChange={handleInputChange}
-                  className={`w-full pl-12 pr-4 py-4 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400 ${
-                    errors.sku ? 'focus:ring-red-500' : 'focus:ring-blue-500'
-                  }`}
-                  placeholder="Enter SKU"
-                />
-              </div>
-              {errors.sku && <p className="text-red-500 text-sm mt-2">{errors.sku}</p>}
-            </div>
-
             {/* Stock Quantity */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -374,16 +541,16 @@ const AddProduct = () => {
               </label>
               <input
                 type="number"
-                name="stock_quantity"
-                value={formData.stock_quantity}
+                name="stock"
+                value={formData.stock}
                 onChange={handleInputChange}
                 min="0"
                 className={`w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400 ${
-                  errors.stock_quantity ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                  errors.stock ? 'focus:ring-red-500' : 'focus:ring-blue-500'
                 }`}
                 placeholder="Enter stock quantity"
               />
-              {errors.stock_quantity && <p className="text-red-500 text-sm mt-2">{errors.stock_quantity}</p>}
+              {errors.stock && <p className="text-red-500 text-sm mt-2">{errors.stock}</p>}
             </div>
 
             {/* Description */}
@@ -446,9 +613,14 @@ const AddProduct = () => {
 
             {/* Tags */}
             <div>
+              
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Tags
               </label>
+              <span>Note*
+                </span><span>
+                Please use hash-tags wisely, as incorrect use will lead to lower reach
+              </span>
               <div className="space-y-3">
                 {formData.tags.map((tag, index) => (
                   <div key={index} className="flex items-center space-x-2">
@@ -481,13 +653,124 @@ const AddProduct = () => {
               </div>
             </div>
 
+            {/* Geo Tags */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Geo-Tags
+              </label>
+              <div className="space-y-3">
+                {formData.geo_tags.map((geo_tag, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={geo_tag}
+                      onChange={(e) => handleGTagChange(index, e.target.value)}
+                      className="flex-1 px-4 py-3 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400"
+                      placeholder="Enter tag"
+                    />
+                    {formData.geo_tags.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeGTagField(index)}
+                        className="w-10 h-10 bg-red-100 text-red-500 rounded-xl hover:bg-red-200 transition-colors flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addGTagField}
+                  className="w-full py-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-colors flex items-center justify-center space-x-2 font-medium"
+                >
+                  <Tag className="w-4 h-4" />
+                  <span>Add Tag</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Sizes */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Sizes
+              </label>
+              <div className="space-y-3">
+                {formData.sizes.map((size, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={size}
+                      onChange={(e) => handleSizesChange(index, e.target.value)}
+                      className="flex-1 px-4 py-3 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400"
+                      placeholder="Enter size"
+                    />
+                    {formData.sizes.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeSizeField(index)}
+                        className="w-10 h-10 bg-red-100 text-red-500 rounded-xl hover:bg-red-200 transition-colors flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addSizeField}
+                  className="w-full py-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-colors flex items-center justify-center space-x-2 font-medium"
+                >
+                  <Move className="w-4 h-4" />
+                  <span>Add Size</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Fits */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Fits
+              </label>
+              <div className="space-y-3">
+                {formData.fits.map((fit, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      value={fit}
+                      onChange={(e) => handleFitsChange(index, e.target.value)}
+                      className="flex-1 px-4 py-3 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400"
+                      placeholder="Enter fit"
+                    />
+                    {formData.fits.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeFitField(index)}
+                        className="w-10 h-10 bg-red-100 text-red-500 rounded-xl hover:bg-red-200 transition-colors flex items-center justify-center"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addFitField}
+                  className="w-full py-3 bg-slate-100 text-slate-600 rounded-2xl hover:bg-slate-200 transition-colors flex items-center justify-center space-x-2 font-medium"
+                >
+                  <Move className="w-4 h-4" />
+                  <span>Add Fit</span>
+                </button>
+              </div>
+            </div>
+
             {/* Submit Button */}
             <button
               type="submit"
               disabled={!isFormValid() || isLoading}
               className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-slate-900 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {isLoading ? 'Adding Product...' : 'Add Product'}
+              {isLoading ? 'Adding Product...' : title}
             </button>
           </form>
         </div>

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useBrand } from '../contexts/BrandContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { loginBrand} = useBrand();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('support@zara.com');
+  const [password, setPassword] = useState('SecureP@ssw0rd');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,9 +16,8 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-
     try {
-      const success = await login(email, password);
+      const success = await loginBrand(email, password);
       if (success) {
         navigate('/');
       } else {

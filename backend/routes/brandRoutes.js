@@ -1,14 +1,10 @@
 // backend/routes/brandRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getBrandById, getBrandByName, getAllBrands, createBrand, deleteBrand, updateBrand} = require('../controllers/brandController');
-const brandController = require('../controllers/brandController');
+const { getBrandById, getBrandByName, getAllBrands, createBrand, deleteBrand, updateBrand, loginBrand} = require('../controllers/brandController');
 
 // POST create a new brand
-router.post('/create', brandController.createBrand); 
-
-// GET brand by ID
-router.get('/:id', getBrandById);
+router.post('/create', createBrand); 
 
 // GET all brands
 router.get('/', getAllBrands);
@@ -22,6 +18,9 @@ router.put('/:id', updateBrand);
 // Delete brand by ID
 router.delete('/:id', deleteBrand);  
 
-router.post('/login', brandController.loginBrand);
+// GET brand by ID
+router.get('/:id', getBrandById);
+
+router.post('/login', loginBrand);
 
 module.exports = router;

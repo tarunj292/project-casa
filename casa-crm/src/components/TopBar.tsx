@@ -1,9 +1,9 @@
 import React from 'react';
 import { Search, User, LogOut } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useBrand } from '../contexts/BrandContext';
 
 const TopBar = () => {
-  const { user, logout } = useAuth();
+  const { brand, logoutBrand } = useBrand();
 
   return (
     <div className="sticky top-0 z-50 bg-slate-800 border-b border-slate-700">
@@ -22,10 +22,10 @@ const TopBar = () => {
           
           <div className="relative group">
             <button className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-slate-600 transition-colors">
-              {user?.avatar ? (
+              {brand?.name ? (
                 <img 
-                  src={user.avatar} 
-                  alt={user.name}
+                  src={brand.logo_url} 
+                  alt={brand.name}
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (
@@ -37,10 +37,10 @@ const TopBar = () => {
             <div className="absolute right-0 top-12 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="p-4">
                 <div className="flex items-center space-x-3 mb-4">
-                  {user?.avatar ? (
+                  {brand?.name ? (
                     <img 
-                      src={user.avatar} 
-                      alt={user.name}
+                      src={brand.logo_url} 
+                      alt={brand.name}
                       className="w-12 h-12 rounded-full object-cover"
                     />
                   ) : (
@@ -49,14 +49,14 @@ const TopBar = () => {
                     </div>
                   )}
                   <div>
-                    <h3 className="font-bold text-slate-800">{user?.name}</h3>
-                    <p className="text-sm text-slate-600">{user?.email}</p>
+                    <h3 className="font-bold text-slate-800">{brand?.name}</h3>
+                    <p className="text-sm text-slate-600">{brand?.email}</p>
                   </div>
                 </div>
                 
                 <div className="border-t border-slate-200 pt-4">
                   <button
-                    onClick={logout}
+                    onClick={logoutBrand}
                     className="w-full flex items-center space-x-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
                   >
                     <LogOut className="w-4 h-4" />

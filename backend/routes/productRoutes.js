@@ -44,7 +44,7 @@ router.get('/tag', getProductsByTag);
 router.post('/search', search);
 
 // UPDATE product by ID
-router.put('/id/:id', updateProduct);
+router.put('/update/:id', updateProduct);
 
 // DELETE product by ID
 router.delete('/id/:id', deleteProduct);

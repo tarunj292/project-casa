@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ['male', 'female', 'unisex', 'others'],
+    enum: ['Male', 'Female', 'Unisex'],
   },
 
   // Reference to Brand model
@@ -66,6 +66,9 @@ const productSchema = new mongoose.Schema({
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
+
+// 👇 Compound unique index: same product name not allowed under same brand
+productSchema.index({ name: 1, brand: 1 }, { unique: true });
 
 module.exports = mongoose.model('Product', productSchema);
 
