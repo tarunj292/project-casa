@@ -93,8 +93,7 @@ const CheckoutPage: React.FC = () => {
 
   const paymentMethods: PaymentMethod[] = [
     { id: 1, type: 'UPI', name: 'PhonePe / Google Pay / Paytm', icon: '📱' },
-    { id: 2, type: 'Card', name: 'Credit / Debit Card', icon: '💳' },
-    { id: 3, type: 'COD', name: 'Cash on Delivery', icon: '💵' }
+    { id: 2, type: 'Card', name: 'Credit / Debit Card', icon: '💳' }
   ];
 
   const handlePlaceOrder = async () => {
@@ -126,7 +125,8 @@ const CheckoutPage: React.FC = () => {
         address: deliveryAddress,
         estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
         paymentStatus: paymentStatus,
-        deliveryStatus: "pending"
+        deliveryStatus: "pending",
+        totalAmount: orderTotal
       });
       return response.data
     } catch (error: any){

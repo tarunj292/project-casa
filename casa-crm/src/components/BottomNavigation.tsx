@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Package, TrendingUp, UserPlus, BarChart3 } from 'lucide-react';
+import { Home, Package, TrendingUp, UserPlus, BarChart3, ShoppingCart } from 'lucide-react';
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -9,6 +9,7 @@ const BottomNavigation = () => {
     { path: '/', icon: Home, label: 'Home' },
     { path: '/products', icon: Package, label: 'Products' },
     // { path: '/register-brand', icon: UserPlus, label: 'Register' },
+    { path: '/orders', icon: ShoppingCart, label: 'Orders'},
     { path: '/sales', icon: BarChart3, label: 'Sales' },
     // { path: '/analytics', icon: TrendingUp, label: 'Analytics' },
   ];

@@ -61,8 +61,6 @@ const getCart = async (req, res) => {
         error: 'Phone number is required'
       });
     }
-    
-    console.log(`📦 Fetching cart for phone: ${phone}`);
 
     let cart = await Cart.findByPhone(phone);
 
@@ -81,11 +79,8 @@ const getCart = async (req, res) => {
         message: 'Cart is empty'
       });
     }
-
     // Clean up any duplicate items
     cart = await cleanupDuplicateItems(cart);
-
-    console.log(`✅ Cart found with ${cart.items.length} items`);
     
     res.json({
       success: true,

@@ -1,7 +1,4 @@
 const Order = require('../models/order');
-const User = require('../models/user');
-const Product = require('../models/product');
-const mongoose = require('mongoose');
 
 // CREATE new order
 const createOrder = async (req, res) => {
@@ -11,19 +8,43 @@ const createOrder = async (req, res) => {
       products,
       address,
       estimatedDelivery,
-      paymentStatus
+      paymentStatus,
+      totalAmount
     } = req.body;
 
-    if (!user || !products || products.length === 0 || !address) {
+    if (!user || !products || products.length === 0 || !address || !estimatedDelivery || !paymentStatus) {
       return res.status(400).json({ error: 'Required fields missing' });
     }
 
+    const newProductsEntry = products.map(product => ({
+      product: product.product._id,
+      name: product.product.name,
+      price: parseFloat(product.priceAtAdd?.['$numberDecimal'] || product.product.price?.['$numberDecimal']),
+      quantity: product.quantity || 1,
+      size: product.size
+    }))
+    console.log(newProductsEntry)
+
+    for (const item of newProductsEntry) {
+      if (!item.product || !item.name || !item.price || !item.size) {
+        return res.status(400).json({ error: 'Each product must include product ID, name, price, and size' });
+      }
+      item.quantity = item.quantity || 1;
+    }
+
+    // no need we already have it in frontend
+    // const totalAmount = products.reduce((sum, item) => {
+    //   console.log(item)
+    //   return sum + item.priceAtAdd.$numberDecimal * item.quantity;
+    // }, 0);
+
     const newOrder = new Order({
       user,
-      products,
+      products: newProductsEntry,
       address,
       estimatedDelivery,
-      paymentStatus
+      paymentStatus,
+      totalAmount
     });
 
     const saved = await newOrder.save();
