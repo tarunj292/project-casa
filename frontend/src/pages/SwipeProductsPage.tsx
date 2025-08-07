@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'framer-motion';
-import { ArrowLeft, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, ShoppingCart, Share2, Heart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext'
 import fetchProducts from '../utils/fetchProductforSwipe';
@@ -27,10 +27,12 @@ interface SwipeableCardProps {
   onSwipe: (productId: string, direction: 'left' | 'right') => void;
   index: number;
   total: number;
+  curatedItems: Set<string>;
+  onCuratedToggle: (productId: string) => void;
 }
 
 // Single Swipeable Card Component using Framer Motion
-function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
+function SwipeableCard({ product, onSwipe, index, total, curatedItems, onCuratedToggle }: SwipeableCardProps) {
   const navigate = useNavigate()
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 300], [-20, 20]);
@@ -113,21 +115,43 @@ function SwipeableCard({ product, onSwipe, index, total }: SwipeableCardProps) {
                 </span>
               ))}
             </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
-    <button
+            <div className="absolute right-4 bottom-4 flex flex-col items-center gap-2">
+    <motion.button
       onClick={() => {
         onSwipe(product._id, 'right')
         navigate('/checkout')}}
-      className="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-blue-700 transition"
+      className="bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title="Buy Now"
     >
-      Buy Now
-    </button>
-    <button
+      <ShoppingCart size={20} />
+    </motion.button>
+    <motion.button
+      onClick={() => onCuratedToggle(product._id)}
+      className={`p-3 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center ${
+        curatedItems.has(product._id)
+          ? 'bg-red-500 text-white hover:bg-red-600 ring-2 ring-red-300'
+          : 'bg-white/90 text-gray-700 hover:bg-red-100 hover:text-red-500'
+      }`}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title={curatedItems.has(product._id) ? "Remove from Curated List" : "Add to Curated List"}
+    >
+      <Heart
+        size={20}
+        className={curatedItems.has(product._id) ? 'fill-current text-white' : 'hover:fill-current'}
+      />
+    </motion.button>
+    <motion.button
       onClick={() => alert('Share clicked')}
-      className="bg-gray-800 text-white px-4 py-2 text-sm rounded-lg shadow-md hover:bg-gray-900 transition"
+      className="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all duration-200 flex items-center justify-center"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title="Share Product"
     >
-      Share
-    </button>
+      <Share2 size={20} />
+    </motion.button>
   </div>
           </div>
         </div>
@@ -147,14 +171,19 @@ function Deck() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
+  const [curatedItems, setCuratedItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreProducts, setHasMoreProducts] = useState(true);
   const [seenProductIds, setSeenProductIds] = useState<Set<string>>(new Set());
-  
+
+  // State for policy dropdowns
+  const [writtenPolicyOpen, setWrittenPolicyOpen] = useState(false);
+  const [shippingPolicyOpen, setShippingPolicyOpen] = useState(false);
+
   // Ref to store the size of the current batch for progress bar calculation
   const currentBatchSize = useRef(0);
 
-  const PRODUCTS_PER_BATCH = 10;
+  const PRODUCTS_PER_BATCH = 20;
 
   // Function to load the next batch of products
   const loadMoreProducts = async () => {
@@ -174,7 +203,7 @@ function Deck() {
       setSeenProductIds(prev => new Set([...prev, ...newProductIds]));
       
       // Set new batch of cards
-      setCards(newProducts);
+      setCards(prev => [...prev, ...newProducts]); // ✅ Appends new batch
       currentBatchSize.current = newProducts.length; // Update batch size
       setCurrentPage(prev => prev + 1);
       console.log(`✅ Loaded new batch: ${newProducts.length} unique products`);
@@ -204,6 +233,46 @@ function Deck() {
 
     loadInitialProducts();
   }, []);
+
+  const loadCuratedList = async () => {
+    try {
+      if (!userData._id) return; // or navigate('/profile');
+
+    const userId = userData._id;
+
+      console.log('🔍 Loading curated list for userId:', userId);
+      const response = await fetch(`http://localhost:5002/api/curatedlist/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const productIds = data.products.map((product: { _id: string }) => product._id);
+        setCuratedItems(new Set(productIds));
+        console.log('✅ Loaded curated list:', productIds);
+      } else if (response.status === 404) {
+        // No curated list exists yet, that's fine
+        console.log('📝 No curated list found for user, starting fresh');
+        setCuratedItems(new Set());
+      }
+    } catch (error) {
+      console.error('❌ Error loading curated list:', error);
+    }
+  };
+
+  // Load user's curated list when component mounts
+  useEffect(() => {
+    console.log('🔄 SwipeProductsPage: User data changed:', userData);
+    if (userData.isLoggedIn) {
+      console.log('✅ User is logged in, loading curated list...');
+      loadCuratedList();
+    } else {
+      console.log('❌ User not logged in, clearing curated items');
+      setCuratedItems(new Set());
+    }
+  }, [userData.isLoggedIn]);
 
   // Effect to load more products when the current batch is finished
   useEffect(() => {
@@ -250,6 +319,87 @@ function Deck() {
   // const handleBack = () => navigate('/');
   // const handleViewBag = () => navigate('/bag');
 
+  // Handle curated list toggle
+const handleCuratedToggle = async (productId: string) => {
+  console.log('💖 Heart clicked! Product ID:', productId);
+  console.log('👤 User logged in:', userData.isLoggedIn);
+  console.log('📋 Current curated items:', Array.from(curatedItems));
+
+  if (!userData.isLoggedIn) {
+    console.log('❌ User not logged in, redirecting to profile');
+    navigate('/profile');
+    return;
+  }
+
+  try {
+    const userId = userData._id;
+    const isCurrentlyInList = curatedItems.has(productId);
+
+    // Immediate UI update
+    if (!isCurrentlyInList) {
+      setCuratedItems(prev => new Set(prev).add(productId));
+    }
+
+    if (isCurrentlyInList) {
+      const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      if (response.ok) {
+        window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+        console.log('✅ Removed from curated list');
+        setCuratedItems(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(productId);
+          return newSet;
+        });
+      } else {
+        console.error('❌ Failed to remove');
+        setCuratedItems(prev => new Set(prev).add(productId));
+      }
+    } else {
+      const response = await fetch('http://localhost:5002/api/curatedlist/add', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, productId }),
+      });
+
+      if (response.ok) {
+        window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+        console.log('✅ Added to curated list');
+      } else {
+        console.error('❌ Failed to add');
+        setCuratedItems(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(productId);
+          return newSet;
+        });
+      }
+    }
+  } catch (error) {
+    console.error('❌ Error in curated toggle:', error);
+  }
+};
+
+useEffect(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (cards.length === 0) return;
+
+    const topCard = cards[0];
+    if (e.key === 'ArrowLeft') {
+      handleSwipe(topCard._id, 'left');
+    } else if (e.key === 'ArrowRight') {
+      handleSwipe(topCard._id, 'right');
+    }
+  };
+
+  window.addEventListener('keydown', handleKeyDown);
+  return () => window.removeEventListener('keydown', handleKeyDown);
+}, [cards]);
+
+
   // const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
 
   if (loading) {
@@ -281,7 +431,7 @@ function Deck() {
   }
 
   return (
-    <div className="bg-gray-900 text-white h-screen flex flex-col overflow-hidden">
+    <div className="bg-gray-900 text-white min-h-screen flex flex-col overflow-y-auto">
       {/* Header
       <div className="absolute top-0 left-0 right-0 z-20 px-4 py-4 bg-gradient-to-b from-black/50 to-transparent">
         <div className="flex items-center justify-between">
@@ -317,8 +467,9 @@ function Deck() {
         </div>
       </div> */}
 
+
       {/* Card Deck */}
-      <div className="flex-1 flex items-center justify-center w-full overflow-hidden px-4 select-none">
+      <div className="h-screen flex items-center justify-center w-full overflow-hidden px-4 select-none">
         <div className="w-full max-w-sm h-[670px] relative">
           <AnimatePresence>
             {cards.map((product, index) => (
@@ -328,6 +479,8 @@ function Deck() {
                 onSwipe={handleSwipe}
                 index={index}
                 total={cards.length}
+                curatedItems={curatedItems}
+                onCuratedToggle={handleCuratedToggle}
               />
             ))}
           </AnimatePresence>
@@ -343,9 +496,70 @@ function Deck() {
           )}
         </div>
       </div>
+
+      {/* Policies Section - Scrollable below swipe area */}
+      <div className="px-4 py-8 space-y-6">
+        {/* Written Policy */}
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
+          <button
+            onClick={() => setWrittenPolicyOpen(!writtenPolicyOpen)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Written Policy
+            </h3>
+            <svg
+              className={`w-5 h-5 text-white transition-transform duration-200 ${writtenPolicyOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {writtenPolicyOpen && (
+            <p className="text-gray-300 text-base leading-relaxed mt-4">
+              This is written policy
+            </p>
+          )}
+        </div>
+
+        {/* Shipping Policy */}
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6">
+          <button
+            onClick={() => setShippingPolicyOpen(!shippingPolicyOpen)}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <h3 className="text-xl font-semibold text-white flex items-center">
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              Shipping Policy
+            </h3>
+            <svg
+              className={`w-5 h-5 text-white transition-transform duration-200 ${shippingPolicyOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {shippingPolicyOpen && (
+            <p className="text-gray-300 text-base leading-relaxed mt-4">
+              This is shipping policy
+            </p>
+          )}
+          
+        </div>
+      </div>
     </div>
   );
 }
+
 
 const SwipeProductsPage: React.FC = () => {
   return <Deck />;

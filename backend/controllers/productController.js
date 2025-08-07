@@ -23,11 +23,15 @@ const getAllProducts = async (req, res) => {
       ...(excludeIds.length > 0 && { _id: { $nin: excludeIds } })
     };
 
-    const products = await Product.find(query)
-      .populate('brand category')
-      .skip(skip)
-      .limit(limit)
-      .sort({ created_at: -1 });
+    let productsQuery = Product.find(query).populate('brand category').sort({ created_at: -1 });
+
+    if (excludeIds.length === 0) {
+      productsQuery = productsQuery.skip(skip).limit(limit);
+    } else {
+      productsQuery = productsQuery.limit(limit); // Skip removed for swipe-mode
+    }
+
+    const products = await productsQuery;
 
     res.json(products);
   } catch (err) {
@@ -35,6 +39,7 @@ const getAllProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // GET product by ID
 const getProductById = async (req, res) => {
