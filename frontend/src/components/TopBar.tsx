@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Heart, User, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LoginPopup from './LoginPopup';
+import { useUser } from '../contexts/UserContext';
 
 const TopBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const [wishlistItems, setWishlistItems] = useState<Set<string>>(new Set());
+  const [curatedItems, setCuratedItems] = useState<Set<string>>(new Set());
+  const { userData } = useUser();
 
   const isProductPage = location.pathname.startsWith('/product/');
   const showBackButton = isProductPage;
@@ -21,29 +23,59 @@ const TopBar: React.FC = () => {
     navigate('/search');
   };
 
-
-
   const handleProfile = () => {
     navigate('/profile');
   };
 
-  const handleWishlist = () => {
-    navigate('/wishlist');
+  const handleCuratedList = () => {
+    navigate('/curatedList'); // or whatever your frontend route is
   };
 
-  // Demo effect to simulate wishlist items (you can remove this in production)
+  // Load curated list from database when user logs in
   useEffect(() => {
-    // Simulate getting wishlist from localStorage or API
-    const savedWishlist = localStorage.getItem('wishlist');
-    if (savedWishlist) {
-      try {
-        const wishlistArray = JSON.parse(savedWishlist);
-        setWishlistItems(new Set(wishlistArray));
-      } catch (error) {
-        console.error('Error parsing wishlist from localStorage:', error);
-      }
+    if (userData.isLoggedIn) {
+      loadCuratedList();
+    } else {
+      setCuratedItems(new Set());
     }
-  }, []);
+  }, [userData.isLoggedIn]);
+
+  // Listen for curated list updates from other components
+  useEffect(() => {
+    const handleCuratedListUpdate = () => {
+      if (userData.isLoggedIn) {
+        loadCuratedList();
+      }
+    };
+
+    window.addEventListener('curatedListUpdated', handleCuratedListUpdate);
+    return () => {
+      window.removeEventListener('curatedListUpdated', handleCuratedListUpdate);
+    };
+  }, [userData.isLoggedIn]);
+
+  const loadCuratedList = async () => {
+    try {
+      const userId = userData._id || 'dummyUserId';
+      const response = await fetch(`http://localhost:5002/api/curatedlist/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const productIds = data.products.map((product: any) => product._id);
+        setCuratedItems(new Set(productIds));
+        console.log('🔝 TopBar: Loaded curated list count:', productIds.length);
+      } else if (response.status === 404) {
+        setCuratedItems(new Set());
+      }
+    } catch (error) {
+      console.error('🔝 TopBar: Error loading curated list:', error);
+      setCuratedItems(new Set());
+    }
+  };
 
   const handleLoginClose = () => {
     setIsLoginPopupOpen(false);
@@ -51,14 +83,11 @@ const TopBar: React.FC = () => {
 
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
-    // The LoginPopup component now handles user state updates
     setIsLoginPopupOpen(false);
-    // Here you would typically make an API call to send OTP
   };
 
   return (
     <div className="top-bar bg-gray-900 text-white px-4 py-3 border-b border-gray-800">
-      {/* Main navigation */}
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           {showBackButton ? (
@@ -71,7 +100,9 @@ const TopBar: React.FC = () => {
           ) : (
             <div className="flex items-center space-x-1">
               <MapPin size={16} className="text-blue-400" />
-              <span className="text-sm">Delivery in <span className="text-blue-400 font-semibold">60 minutes</span></span>
+              <span className="text-sm">
+                Delivery in <span className="text-blue-400 font-semibold">60 minutes</span>
+              </span>
             </div>
           )}
         </div>
@@ -83,23 +114,23 @@ const TopBar: React.FC = () => {
 
           <motion.button
             className="btn p-2 hover:bg-gray-800 rounded-full transition-colors relative"
-            onClick={handleWishlist}
+            onClick={handleCuratedList}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            title="Wishlist"
+            title="Curated List"
           >
             <Heart
               size={20}
-              className={wishlistItems.size > 0 ? 'text-red-500 fill-current' : 'text-white'}
+              className={curatedItems.size > 0 ? 'text-red-500 fill-current' : 'text-white'}
             />
-            {wishlistItems.size > 0 && (
+            {curatedItems.size > 0 && (
               <motion.span
                 className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200 }}
               >
-                {wishlistItems.size > 99 ? '99+' : wishlistItems.size}
+                {curatedItems.size > 99 ? '99+' : curatedItems.size}
               </motion.span>
             )}
           </motion.button>
@@ -110,9 +141,6 @@ const TopBar: React.FC = () => {
         </div>
       </div>
 
-
-
-      {/* Login Popup */}
       <LoginPopup
         isOpen={isLoginPopupOpen}
         onClose={handleLoginClose}

@@ -69,7 +69,7 @@ const CollectionPage: React.FC = () => {
             <button onClick={() => navigate('/search')} className="p-1">
               <Search size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>
-            <button onClick={() => navigate('/wishlist')} className="p-1">
+            <button onClick={() => navigate('/curatedList')} className="p-1">
               <Heart size={20} className="text-white hover:text-red-400 transition-colors" />
             </button>
             <button onClick={() => navigate('/profile')} className="p-1">

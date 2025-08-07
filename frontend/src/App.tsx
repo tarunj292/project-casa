@@ -18,7 +18,9 @@ import SwipeProductsPage from './pages/SwipeProductsPage';
 import AllBrandsPage from './pages/AllBrandsPage';
 import BrandPage from './pages/BrandPage';
 import OnboardingPage from './pages/OnboardingPage';
-import ProductList from './pages/ProductList'
+import ProductList from './pages/ProductList';
+import ProductsPage from './pages/ProductsPage';
+import CuratedListPage from './pages/CuratedListPage';
 import './index.css'
 
 function App() {
@@ -39,7 +41,9 @@ function App() {
               <Route path="/brands" element={<AllBrandsPage />} />
               <Route path="/brands/:brandId" element={<BrandPage />} />
               <Route path="/products" element={<ProductList />} />
+              <Route path="/products/:categoryId" element={<ProductsPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/curatedList" element={<CuratedListPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/manage-account" element={<ManageAccountPage />} /> {/* NEW: Manage Account route */}
               <Route path="/search" element={<SearchPage />} />

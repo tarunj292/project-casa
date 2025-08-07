@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, AnimatePresence, animate } from 'framer-motion';
 import { ArrowLeft, ShoppingBag, ShoppingCart, Share2, Heart } from 'lucide-react';
@@ -27,12 +27,12 @@ interface SwipeableCardProps {
   onSwipe: (productId: string, direction: 'left' | 'right') => void;
   index: number;
   total: number;
-  wishlistItems: Set<string>;
-  onWishlistToggle: (productId: string) => void;
+  curatedItems: Set<string>;
+  onCuratedToggle: (productId: string) => void;
 }
 
 // Single Swipeable Card Component using Framer Motion
-function SwipeableCard({ product, onSwipe, index, total, wishlistItems, onWishlistToggle }: SwipeableCardProps) {
+function SwipeableCard({ product, onSwipe, index, total, curatedItems, onCuratedToggle }: SwipeableCardProps) {
   const navigate = useNavigate()
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 300], [-20, 20]);
@@ -128,19 +128,19 @@ function SwipeableCard({ product, onSwipe, index, total, wishlistItems, onWishli
       <ShoppingCart size={20} />
     </motion.button>
     <motion.button
-      onClick={() => onWishlistToggle(product._id)}
-      className={`p-3 rounded-full shadow-lg transition-all duration-200 flex items-center justify-center ${
-        wishlistItems.has(product._id)
-          ? 'bg-red-500 text-white hover:bg-red-600'
-          : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+      onClick={() => onCuratedToggle(product._id)}
+      className={`p-3 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center ${
+        curatedItems.has(product._id)
+          ? 'bg-red-500 text-white hover:bg-red-600 ring-2 ring-red-300'
+          : 'bg-white/90 text-gray-700 hover:bg-red-100 hover:text-red-500'
       }`}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      title={wishlistItems.has(product._id) ? "Remove from Wishlist" : "Add to Wishlist"}
+      title={curatedItems.has(product._id) ? "Remove from Curated List" : "Add to Curated List"}
     >
       <Heart
         size={20}
-        className={wishlistItems.has(product._id) ? 'fill-current' : ''}
+        className={curatedItems.has(product._id) ? 'fill-current text-white' : 'hover:fill-current'}
       />
     </motion.button>
     <motion.button
@@ -171,7 +171,7 @@ function Deck() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
-  const [wishlistItems, setWishlistItems] = useState<Set<string>>(new Set());
+  const [curatedItems, setCuratedItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreProducts, setHasMoreProducts] = useState(true);
   const [seenProductIds, setSeenProductIds] = useState<Set<string>>(new Set());
@@ -234,6 +234,44 @@ function Deck() {
     loadInitialProducts();
   }, []);
 
+  const loadCuratedList = async () => {
+    try {
+      // Use a consistent user ID that will be converted to ObjectId in backend
+      const userId = userData._id || 'dummyUserId';
+      console.log('🔍 Loading curated list for userId:', userId);
+      const response = await fetch(`http://localhost:5002/api/curatedlist/${userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const productIds = data.products.map((product: { _id: string }) => product._id);
+        setCuratedItems(new Set(productIds));
+        console.log('✅ Loaded curated list:', productIds);
+      } else if (response.status === 404) {
+        // No curated list exists yet, that's fine
+        console.log('📝 No curated list found for user, starting fresh');
+        setCuratedItems(new Set());
+      }
+    } catch (error) {
+      console.error('❌ Error loading curated list:', error);
+    }
+  };
+
+  // Load user's curated list when component mounts
+  useEffect(() => {
+    console.log('🔄 SwipeProductsPage: User data changed:', userData);
+    if (userData.isLoggedIn) {
+      console.log('✅ User is logged in, loading curated list...');
+      loadCuratedList();
+    } else {
+      console.log('❌ User not logged in, clearing curated items');
+      setCuratedItems(new Set());
+    }
+  }, [userData.isLoggedIn]);
+
   // Effect to load more products when the current batch is finished
   useEffect(() => {
     // Trigger when cards array is empty, but it's not the initial load
@@ -279,23 +317,92 @@ function Deck() {
   // const handleBack = () => navigate('/');
   // const handleViewBag = () => navigate('/bag');
 
-  // Handle wishlist toggle
-  const handleWishlistToggle = (productId: string) => {
-    setWishlistItems(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
+  // Handle curated list toggle
+  const handleCuratedToggle = async (productId: string) => {
+    console.log('💖 Heart clicked! Product ID:', productId);
+    console.log('👤 User logged in:', userData.isLoggedIn);
+    console.log('📋 Current curated items:', Array.from(curatedItems));
+
+    if (!userData.isLoggedIn) {
+      console.log('❌ User not logged in, redirecting to profile');
+      navigate('/profile');
+      return;
+    }
+
+    try {
+      const isCurrentlyInList = curatedItems.has(productId);
+      console.log(`🔄 ${isCurrentlyInList ? 'Removing' : 'Adding'} product ${productId} ${isCurrentlyInList ? 'from' : 'to'} curated list`);
+      console.log('🎯 Current state - isCurrentlyInList:', isCurrentlyInList);
+
+      // Immediate visual feedback - update UI first
+      if (!isCurrentlyInList) {
+        setCuratedItems(prev => {
+          const newSet = new Set(prev);
+          newSet.add(productId);
+          console.log('⚡ Immediate UI update: Added to curated list');
+          return newSet;
+        });
+      }
+
+      if (isCurrentlyInList) {
+        // Remove from curated list
+        const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer dummy-token', // Dummy token for backend
+          },
+          body: JSON.stringify({ productId }),
+        });
+
+        console.log('🗑️ Remove response status:', response.status);
+        if (response.ok) {
+          console.log('✅ Product removed from curated list in database');
+          // Trigger a custom event to update TopBar
+          window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+        } else {
+          console.error('❌ Failed to remove from curated list:', response.status);
+          // Revert the UI change if API call failed
+          setCuratedItems(prev => {
+            const newSet = new Set(prev);
+            newSet.add(productId);
+            return newSet;
+          });
+        }
       } else {
-        newSet.add(productId);
-        // Add a small heart animation when adding to wishlist
-        const product = cards.find(c => c._id === productId);
-        if (product) {
-          // You could add a toast or animation here
-          console.log(`❤️ ${product.name} added to wishlist!`);
+        // Add to curated list
+        const response = await fetch('http://localhost:5002/api/curatedlist/add', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer dummy-token', // Dummy token for backend
+          },
+          body: JSON.stringify({ productId }),
+        });
+
+        console.log('➕ Add response status:', response.status);
+        if (response.ok) {
+          console.log('✅ Product added to curated list in database');
+          // Trigger a custom event to update TopBar
+          window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+
+          const product = cards.find(c => c._id === productId);
+          if (product) {
+            console.log(`❤️ ${product.name} added to curated list!`);
+          }
+        } else {
+          console.error('❌ Failed to add to curated list:', response.status);
+          // Revert the UI change if API call failed
+          setCuratedItems(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(productId);
+            return newSet;
+          });
         }
       }
-      return newSet;
-    });
+    } catch (error) {
+      console.error('❌ Error updating curated list:', error);
+    }
   };
 
   // const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
@@ -365,6 +472,22 @@ function Deck() {
         </div>
       </div> */}
 
+      {/* Debug Info */}
+      <div className="fixed top-16 left-4 bg-black bg-opacity-75 text-white p-2 rounded text-xs z-50">
+        <div>User Logged In: {userData.isLoggedIn ? '✅' : '❌'}</div>
+        <div>Curated Items: {curatedItems.size}</div>
+        <div>User ID: {userData._id || 'None'}</div>
+        <div>Phone: {userData.phoneNumber || 'None'}</div>
+        {cards.length > 0 && (
+          <button
+            onClick={() => handleCuratedToggle(cards[0]._id)}
+            className="mt-2 bg-red-500 text-white px-2 py-1 rounded text-xs"
+          >
+            Test Heart ❤️
+          </button>
+        )}
+      </div>
+
       {/* Card Deck */}
       <div className="h-screen flex items-center justify-center w-full overflow-hidden px-4 select-none">
         <div className="w-full max-w-sm h-[670px] relative">
@@ -376,8 +499,8 @@ function Deck() {
                 onSwipe={handleSwipe}
                 index={index}
                 total={cards.length}
-                wishlistItems={wishlistItems}
-                onWishlistToggle={handleWishlistToggle}
+                curatedItems={curatedItems}
+                onCuratedToggle={handleCuratedToggle}
               />
             ))}
           </AnimatePresence>
