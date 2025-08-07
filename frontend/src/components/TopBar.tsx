@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Heart, User, MapPin } from 'lucide-react';
+import { useLocation as useReactRouterLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Search, User, MapPin } from 'lucide-react';
 import LoginPopup from './LoginPopup';
 
-const TopBar: React.FC = () => {
-  const location = useLocation();
+interface TopBarProps {
+  setShowLocationPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserLocation: React.Dispatch<React.SetStateAction<{ lat: number; lng: number } | null>>;
+}
+
+const TopBar: React.FC<TopBarProps> = ({ setShowLocationPopup, setUserLocation }) => {
   const navigate = useNavigate();
+  const location = useReactRouterLocation();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const isProductPage = location.pathname.startsWith('/product/');
@@ -19,8 +24,6 @@ const TopBar: React.FC = () => {
     navigate('/search');
   };
 
-
-
   const handleProfile = () => {
     navigate('/profile');
   };
@@ -31,14 +34,36 @@ const TopBar: React.FC = () => {
 
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
-    // The LoginPopup component now handles user state updates
     setIsLoginPopupOpen(false);
-    // Here you would typically make an API call to send OTP
+  };
+
+  const handleLocationClick = async () => {
+    try {
+      const permission = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
+
+      if (permission.state === 'denied') {
+        alert('Location access denied in browser settings.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+          setShowLocationPopup(true);
+        },
+        (err) => {
+          console.warn('Geolocation error:', err.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    } catch (error) {
+      console.error('Geolocation not supported or blocked:', error);
+    }
   };
 
   return (
     <div className="top-bar bg-gray-900 text-white px-4 py-3 border-b border-gray-800">
-      {/* Main navigation */}
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           {showBackButton ? (
@@ -49,27 +74,29 @@ const TopBar: React.FC = () => {
               <ArrowLeft size={20} />
             </button>
           ) : (
-            <div className="flex items-center space-x-1">
+            <div
+              onClick={handleLocationClick}
+              className="flex items-center space-x-1 cursor-pointer"
+            >
               <MapPin size={16} className="text-blue-400" />
-              <span className="text-sm">Delivery in <span className="text-blue-400 font-semibold">60 minutes</span></span>
+              <span className="text-sm">
+                Click here <span className="text-blue-400 font-semibold">to add loction</span>
+              </span>
             </div>
           )}
         </div>
 
         <div className="flex items-center space-x-2">
-          <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors">
-            <Search size={20} onClick={handleSearch} />
+          <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors" onClick={handleSearch}>
+            <Search size={20} />
           </button>
 
-          <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors">
-            <User size={20} onClick={handleProfile} />
+          <button className="btn p-2 hover:bg-gray-800 rounded-full transition-colors" onClick={handleProfile}>
+            <User size={20} />
           </button>
         </div>
       </div>
 
-
-
-      {/* Login Popup */}
       <LoginPopup
         isOpen={isLoginPopupOpen}
         onClose={handleLoginClose}

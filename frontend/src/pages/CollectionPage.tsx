@@ -56,7 +56,6 @@ const CollectionPage: React.FC = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen pb-20">
-      Header
       <div className="px-4 py-4 border-b border-gray-800">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">

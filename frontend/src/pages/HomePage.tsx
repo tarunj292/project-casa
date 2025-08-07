@@ -230,9 +230,11 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen pb-32">
+    
+    <div className="bg-gray-900 text-white min-h-screen pb-40">
+      <div className="h-20"></div>
       {/* Top Header */}
-      <div className="px-4 py-3 border-b border-gray-800">
+      {/* <div className="px-4 py-3 border-b border-gray-800">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-1">
             <MapPin size={16} className="text-blue-400" />
@@ -248,7 +250,7 @@ const HomePage: React.FC = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* User Selection */}
       <div className="flex items-center justify-center space-x-4 px-4 py-4">
