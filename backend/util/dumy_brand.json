@@ -70,8 +70,37 @@
   {
     "logo_url": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtuG6dcGaiQUnMe4Bh-sRbOtGQkWegXA0K4w&s"],
     "brand": "Snitch"
+  },
+  {
+    "logo_url": ["https://rigo.in/cdn/shop/files/RIGO_LOGO_60x.png?v=1673602869"],
+    "brand": "Rigo"
+  },
+  {
+    "logo_url": ["https://shopfootball.in/cdn/shop/files/Final-Logo-2_02111441-91be-40a0-89ed-a831e32b3124.webp?v=1706552876&width=90"],
+    "brand": "Shop Football"
+  },
+  {
+    "logo_url": ["https://campussutra.com/cdn/shop/files/CS-PNG-hires_280x.png?v=1714469060"],
+    "brand": "Campus Sutra"
+  },
+  {
+    "logo_url": ["https://pantproject.com/cdn/shop/files/Tpp_Horizontal_logo_7f559ce4-7ff9-4d8d-97fd-038eb7fa7580_230x.svg?v=1737449629"],
+    "brand": "Pant Project"
+  },
+  {
+    "logo_url": ["https://wtflex.in/cdn/shop/files/WTF_White_Logo.png?v=1740599074&width=50"],
+    "brand": "What the flex"
+  },
+  {
+    "logo_url": ["https://dripproject.co/cdn/shop/files/Drip_Project_Black_Horizontal.png?v=1746436088"],
+    "brand": "Drip Project"
+  },
+  {
+    "logo_url": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnTE92p98-PE0ma27hsUJs726uAh5drPz8yqYJch_QYrYrYZ1b5vLDgaAoVkvroWNwYRU&usqp=CAU"],
+    "brand": "Zach"
+  },
+  {
+    "logo_url": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaIYXICGp5nfqCplO4mjzJy1H0lztRtz75OQ&s"],
+    "brand": "Shopify"
   }
-
-
-  
 ]
