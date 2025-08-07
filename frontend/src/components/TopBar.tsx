@@ -12,7 +12,7 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({ setShowLocationPopup, setUserLocation }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // ✅ fixed typo
+  const location = useLocation();
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const [curatedItems, setCuratedItems] = useState<Set<string>>(new Set());
   const { userData } = useUser();
@@ -25,8 +25,29 @@ const TopBar: React.FC<TopBarProps> = ({ setShowLocationPopup, setUserLocation }
   const handleProfile = () => navigate('/profile');
   const handleCuratedList = () => navigate('/curatedList');
 
-  const handleLocationClick = () => {
-    setShowLocationPopup(true);
+  const handleLocationClick = async () => {
+    try {
+      const permission = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
+
+      if (permission.state === 'denied') {
+        alert('Location access denied in browser settings.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+          setShowLocationPopup(true);
+        },
+        (err) => {
+          console.warn('Geolocation error:', err.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    } catch (error) {
+      console.error('Geolocation not supported or blocked:', error);
+    }
   };
 
   const handleLoginClose = () => setIsLoginPopupOpen(false);
@@ -34,10 +55,8 @@ const TopBar: React.FC<TopBarProps> = ({ setShowLocationPopup, setUserLocation }
   const handleLoginContinue = (phoneNumber: string) => {
     console.log('Login with phone number:', phoneNumber);
     setIsLoginPopupOpen(false);
-    // TODO: Call your OTP API here
   };
 
-  // 🔄 Load curated list on login change
   useEffect(() => {
     if (userData?.isLoggedIn) {
       loadCuratedList();
@@ -46,7 +65,6 @@ const TopBar: React.FC<TopBarProps> = ({ setShowLocationPopup, setUserLocation }
     }
   }, [userData?.isLoggedIn]);
 
-  // 📡 Listen for curated list update events
   useEffect(() => {
     const handleUpdate = () => {
       if (userData?.isLoggedIn) {
