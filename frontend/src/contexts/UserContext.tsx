@@ -51,7 +51,7 @@ const loadUserDataFromStorage = (): UserData => {
           email: parsed.email || '',
           dateOfBirth: parsed.dateOfBirth || '',
           gender: parsed.gender || '',
-          isLoggedIn: true,
+          isLoggedIn: false,
           isNewUser: parsed.isNewUser ?? false,
           onboardingData: parsed.onboardingData || {}
         };
