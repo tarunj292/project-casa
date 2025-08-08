@@ -22,6 +22,7 @@ import ProductList from './pages/ProductList';
 import ProductsPage from './pages/ProductsPage';
 import CuratedListPage from './pages/CuratedListPage';
 import './index.css'
+import LocationPage from './pages/LocationPage';
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
               </Route>
               <Route path="/brands" element={<AllBrandsPage />} />
               <Route path="/brands/:brandId" element={<BrandPage />} />
+<Route path="/location" element={<LocationPage />} />
+
               <Route path="/products" element={<ProductList />} />
               <Route path="/products/:categoryId" element={<ProductsPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
@@ -61,3 +64,7 @@ function App() {
 }
 
 export default App;
+
+
+
+
