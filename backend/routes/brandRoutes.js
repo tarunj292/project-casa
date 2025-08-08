@@ -1,10 +1,12 @@
 // backend/routes/brandRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getBrandById, getBrandByName, getAllBrands, createBrand, deleteBrand, updateBrand, loginBrand} = require('../controllers/brandController');
+const { getBrandById, getBrandByName, getAllBrands, createBrand, deleteBrand, updateBrand, loginBrand, getBrandSales} = require('../controllers/brandController');
 
 // POST create a new brand
 router.post('/create', createBrand); 
+
+router.get('/sales/:id', getBrandSales)
 
 // GET all brands
 router.get('/', getAllBrands);

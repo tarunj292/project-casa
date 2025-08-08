@@ -2,6 +2,8 @@
 
 const bcrypt = require('bcryptjs');
 const Brand = require('../models/brand');
+const Order = require('../models/order')
+const mongoose = require('mongoose');
 
 // GET brand by ID
 const getBrandById = async (req, res) => {
@@ -163,12 +165,67 @@ const loginBrand = async (req, res) => {
   }
 };
 
+const getBrandSales = async (req, res) => {
+  const brandId = req.params.id;
+
+  try {
+    const sales = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.product",
+          foreignField: "_id",
+          as: "productDetails"
+        }
+      },
+      { $unwind: "$productDetails" },
+      {
+        $match: {
+          "productDetails.brand": new mongoose.Types.ObjectId(brandId)
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userDetails"
+        }
+      },
+      { $unwind: "$userDetails" },
+      {
+        $project: {
+          _id: 0,
+          product_name: "$productDetails.name",
+          quantity: "$products.quantity",
+          size: "$products.size",
+          order_date: "$createdAt",
+          delivery_status: "$deliveryStatus",
+          payment_status: "$paymentStatus",
+          user: {
+            email: "$userDetails.email",
+            phone: "$userDetails.phone",
+            display_name: "$userDetails.display_name"
+          }
+        }
+      },
+      { $sort: { order_date: -1 } }
+    ]);
+
+    res.status(200).json({ success: true, data: sales });
+  } catch (error) {
+    console.error("Error fetching brand sales:", error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
 
 
 module.exports = {
   getBrandById,
   getBrandByName,
   getAllBrands,
+  getBrandSales,
   createBrand,
   deleteBrand,
   updateBrand,
