@@ -29,7 +29,7 @@ function App() {
               <Route path="products" element={<Products />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="register-brand" element={<RegisterBrand />} />
-              <Route path="sales" element={<Sales />} />
+              {/* <Route path="sales" element={<Sales />} /> */}
               <Route path="create-brand" element={<CreateBrandForm />} />
             </Route>
           </Routes>
