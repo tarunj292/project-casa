@@ -203,6 +203,7 @@ const getBrandSales = async (req, res) => {
           order_date: "$createdAt",
           delivery_status: "$deliveryStatus",
           payment_status: "$paymentStatus",
+          order_id: "$_id",
           user: {
             email: "$userDetails.email",
             phone: "$userDetails.phone",

@@ -38,10 +38,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5002;
 
 if (process.env.MONGO_URI) {
-  mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  mongoose.connect(process.env.MONGO_URI)
     .then(() => {
       console.log('✅ MongoDB connected successfully');
       // ✅ Start server only after DB connection
