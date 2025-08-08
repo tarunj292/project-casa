@@ -20,6 +20,7 @@ import AllBrandsPage from './pages/AllBrandsPage';
 import BrandPage from './pages/BrandPage';
 import OnboardingPage from './pages/OnboardingPage';
 import ProductList from './pages/ProductList';
+import ProductsPage from './pages/ProductsPage';
 import Home from './pages/crm/Home';
 
 function AppRoutes() {
@@ -45,6 +46,7 @@ function AppRoutes() {
           <Route path="/brands" element={<AllBrandsPage />} />
           <Route path="/brands/:brandId" element={<BrandPage />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/products/:categoryId" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Route>
 

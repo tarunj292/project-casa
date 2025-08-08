@@ -1,4 +1,3 @@
-// models/product.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
@@ -49,15 +48,11 @@ const productSchema = new mongoose.Schema({
     type: String,
     enum: ['Male', 'Female', 'Unisex'],
   },
-
-  // Reference to Brand model
   brand: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Brand',
     required: true,
   },
-
-  // Reference to Category model
   category: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
@@ -67,8 +62,7 @@ const productSchema = new mongoose.Schema({
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
 
-// 👇 Compound unique index: same product name not allowed under same brand
-productSchema.index({ name: 1, brand: 1 }, { unique: true });
+// ✅ Avoid model overwrite
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
-module.exports = mongoose.model('Product', productSchema);
-
+module.exports = Product;

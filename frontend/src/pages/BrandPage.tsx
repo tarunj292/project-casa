@@ -102,7 +102,7 @@ const BrandPage: React.FC = () => {
     const run = async () => {
       try {
         setLoadingProducts(true);
-        const res = await fetch(`${API_BASE}/api/products/brand?id=${brandId}`, {
+        const res = await fetch(`${API_BASE}/api/products/brand/${brandId}`, {
           signal: ctrl.signal,
           headers: { Accept: "application/json" },
         });

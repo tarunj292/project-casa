@@ -56,7 +56,6 @@ const CollectionPage: React.FC = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen pb-20">
-      Header
       <div className="px-4 py-4 border-b border-gray-800">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
@@ -69,7 +68,7 @@ const CollectionPage: React.FC = () => {
             <button onClick={() => navigate('/search')} className="p-1">
               <Search size={20} className="text-white hover:text-blue-400 transition-colors" />
             </button>
-            <button onClick={() => navigate('/wishlist')} className="p-1">
+            <button onClick={() => navigate('/curatedList')} className="p-1">
               <Heart size={20} className="text-white hover:text-red-400 transition-colors" />
             </button>
             <button onClick={() => navigate('/profile')} className="p-1">
