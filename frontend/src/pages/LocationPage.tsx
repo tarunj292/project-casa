@@ -5,23 +5,45 @@ import axios from "axios";
 /* ---------------- Config ---------------- */
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 
-/* ---------------- Google Maps Places loader ---------------- */
+/* ---------------- Google Maps Places loader (bullet-proof) ---------------- */
 function loadGoogleMaps(apiKey: string): Promise<void> {
-  if ((window as any).google?.maps?.places) return Promise.resolve();
+  const w = window as any;
+  if (w.google?.maps?.places?.Autocomplete) return Promise.resolve();
+
   return new Promise((resolve, reject) => {
-    const existing = document.getElementById("google-maps-script");
+    const existing = document.getElementById("google-maps-script") as HTMLScriptElement | null;
+
+    const onReady = () => {
+      // Ensure Places is actually loaded (some keys/projects load Maps without Places)
+      if (w.google?.maps?.places?.Autocomplete) {
+        resolve();
+      } else {
+        reject(
+          new Error(
+            "Google Maps loaded but Places library (Autocomplete) is missing. Enable Places API for your key."
+          )
+        );
+      }
+    };
+
     if (existing) {
-      (existing as HTMLScriptElement).onload = () => resolve();
-      (existing as HTMLScriptElement).onerror = reject;
+      existing.onload = onReady;
+      existing.onerror = () => reject(new Error("Failed to load Google Maps script."));
       return;
     }
+
+    if (!apiKey) {
+      reject(new Error("Google Maps API key missing."));
+      return;
+    }
+
     const s = document.createElement("script");
     s.id = "google-maps-script";
     s.async = true;
     s.defer = true;
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-    s.onload = () => resolve();
-    s.onerror = reject;
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places&loading=async`;
+    s.onload = onReady;
+    s.onerror = () => reject(new Error("Failed to load Google Maps script."));
     document.head.appendChild(s);
   });
 }
@@ -53,19 +75,17 @@ function parseAddressComponents(place: google.maps.places.PlaceResult) {
     getComp(comps, "sublocality_level_1")?.long_name ||
     getComp(comps, "sublocality")?.long_name ||
     "";
+
   const formatted =
     place.formatted_address ||
-    [streetNumber && `${streetNumber} `, route, sublocality, city]
-      .filter(Boolean)
-      .join(", ");
+    [streetNumber && `${streetNumber} `, route, sublocality, city].filter(Boolean).join(", ");
 
   return { city, state, pincode, country, formatted };
 }
 
 /* ---------------- Validators ---------------- */
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-const isIndianPhone = (v: string) =>
-  /^(?:\+?91[-\s]?)?[6-9]\d{9}$/.test(v.replace(/\s/g, ""));
+const isIndianPhone = (v: string) => /^(?:\+?91[-\s]?)?[6-9]\d{9}$/.test(v.replace(/\s/g, ""));
 const isPincode = (v: string) => /^\d{6}$/.test(v.trim());
 
 /* ---------------- Types ---------------- */
@@ -110,7 +130,7 @@ const LocationPage: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const autocompleteRef = useRef<any>(null);
 
   /* Build final one-line address safely */
   const finalAddress = useMemo(() => {
@@ -127,52 +147,74 @@ const LocationPage: React.FC = () => {
       .join(", ");
   }, [form]);
 
-  /* Load maps */
+  /* Load Google Maps + Places */
   useEffect(() => {
     let mounted = true;
-    if (!apiKey) {
-      setMapsError("Google Maps API key missing.");
-      setLoadingMaps(false);
-      return;
-    }
+
     loadGoogleMaps(apiKey)
-      .then(() => mounted && setLoadingMaps(false))
-      .catch(() => {
-        if (mounted) {
-          setMapsError("Failed to load Google Maps.");
-          setLoadingMaps(false);
-        }
+      .then(() => {
+        if (!mounted) return;
+        setLoadingMaps(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (!mounted) return;
+        setMapsError(
+          err?.message ||
+            "Failed to load Google Maps. Check API key, billing, and that Places API is enabled."
+        );
+        setLoadingMaps(false);
       });
+
     return () => {
       mounted = false;
     };
   }, [apiKey]);
 
-  /* Init autocomplete */
+  /* Init Autocomplete (guarded) */
   useEffect(() => {
-    if (loadingMaps || !inputRef.current || autocompleteRef.current || mapsError) return;
+    const w = window as any;
+    if (loadingMaps || mapsError) return;
+    if (!inputRef.current) return;
+    if (autocompleteRef.current) return;
 
-    // NOTE: Autocomplete is legacy for new projects post-2025; if needed, switch to PlaceAutocompleteElement.
-    const ac = new google.maps.places.Autocomplete(inputRef.current as HTMLInputElement, {
-      types: ["geocode"],
-    });
-    ac.addListener("place_changed", () => {
-      const place = ac.getPlace();
-      if (!place || !place.address_components) return;
+    const Places = w.google?.maps?.places;
+    if (!Places || !Places.Autocomplete) {
+      console.warn("Places Autocomplete not available. Falling back to manual input.");
+      setMapsError(
+        "Address suggestions unavailable right now. You can still type your address manually."
+      );
+      return; // do not crash
+    }
 
-      const parsed = parseAddressComponents(place);
-      setForm((f) => ({
-        ...f,
-        addressSearch: (inputRef.current?.value || "").trim(),
-        addressLine: parsed.formatted,
-        city: parsed.city,
-        state: parsed.state,
-        pincode: parsed.pincode,
-        country: parsed.country || "India",
-      }));
-    });
+    try {
+      const ac = new Places.Autocomplete(inputRef.current as HTMLInputElement, {
+        types: ["geocode"],
+        // componentRestrictions: { country: "in" }, // optional
+      });
 
-    autocompleteRef.current = ac;
+      ac.addListener("place_changed", () => {
+        const place = ac.getPlace();
+        if (!place || !place.address_components) return;
+        const parsed = parseAddressComponents(place);
+        setForm((f) => ({
+          ...f,
+          addressSearch: (inputRef.current?.value || "").trim(),
+          addressLine: parsed.formatted,
+          city: parsed.city,
+          state: parsed.state,
+          pincode: parsed.pincode,
+          country: parsed.country || "India",
+        }));
+      });
+
+      autocompleteRef.current = ac;
+    } catch (err) {
+      console.error("Failed to initialize Places Autocomplete:", err);
+      setMapsError(
+        "Address suggestions failed to initialize. You can still type your address manually."
+      );
+    }
   }, [loadingMaps, mapsError]);
 
   /* Helpers */
@@ -217,9 +259,8 @@ const LocationPage: React.FC = () => {
 
   const back = () => setStep((s) => (s === 1 ? 1 : ((s - 1) as Step)));
 
-  /* Resolve userId robustly */
+  /* Resolve userId robustly (kept from your version) */
   const resolveUserId = async (): Promise<string | null> => {
-    // 1) Try common keys in local/session storage
     const keys = ["userData", "user", "currentUser"];
     for (const k of keys) {
       const raw = localStorage.getItem(k) || sessionStorage.getItem(k);
@@ -227,13 +268,18 @@ const LocationPage: React.FC = () => {
       try {
         const obj = JSON.parse(raw);
         const id = obj?._id || obj?.id || obj?.user?._id || obj?.user?.id;
-        if (id) return String(id);
-      } catch {}
+        if (id) {
+          localStorage.setItem("userId", String(id));
+          return String(id);
+        }
+      } catch (err) {
+        console.warn(`Failed to parse ${k}:`, err);
+      }
     }
+
     const directId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
     if (directId) return String(directId);
 
-    // 2) Fallback: if we have a phone, look up user by phone via your GET /api/users?phone=...
     const phone =
       localStorage.getItem("phone") ||
       sessionStorage.getItem("phone") ||
@@ -242,24 +288,42 @@ const LocationPage: React.FC = () => {
       try {
         const res = await axios.get(`${API_BASE}/users`, { params: { phone } });
         if (Array.isArray(res.data) && res.data.length > 0) {
-          return String(res.data[0]._id);
+          const id = String(res.data[0]._id);
+          localStorage.setItem("userId", id);
+          return id;
         }
       } catch (e) {
         console.warn("User lookup by phone failed:", e);
       }
     }
+
+    // Final fallback: create guest user (optional — remove if you don't want this)
+    try {
+      console.warn("No user found — creating guest account...");
+      const guest = await axios.post(`${API_BASE}/users`, {
+        phone: form.phone,
+        email: form.email || `guest_${Date.now()}@example.com`,
+        display_name: form.fullName || "Guest User",
+      });
+      if (guest.data?._id) {
+        const id = String(guest.data._id);
+        localStorage.setItem("userId", id);
+        return id;
+      }
+    } catch (err) {
+      console.error("Failed to create guest user:", err);
+    }
+
     return null;
   };
 
   /* Save to backend */
   const handleSave = async () => {
     if (!canSave) return;
-
     try {
       const userId = await resolveUserId();
       if (!userId) {
-        console.error("❌ Could not resolve user ID from storage or phone lookup.");
-        alert("Please log in again — we couldn't find your account.");
+        alert("Please log in again — we couldn't find or create your account.");
         return;
       }
 
@@ -270,17 +334,21 @@ const LocationPage: React.FC = () => {
         billing_address: `${form.flatNumber} ${form.wingBuilding}`.trim(),
         billing_address_2: form.addressLine || form.addressSearch,
         billing_city: form.city,
-        billing_pincode: String(form.pincode), // send as string
+        billing_pincode: String(form.pincode),
         billing_state: form.state,
         billing_country: form.country,
       };
-console.log("Saving address for user:", userId, payload);
-      await axios.post(`${API_BASE}/users/${userId}/shipment`, payload);
+
+      console.log("Saving address for user:", userId, payload);
+      await axios.post(`${API_BASE}/users/${userId}/shipment`, payload, {
+        // match your server CORS if you’re sending cookies
+        withCredentials: false,
+      });
 
       console.log("✅ Shipment address saved successfully");
       navigate(-1);
     } catch (err) {
-      console.error("❌ Failed to save address", err);
+      console.error("❌ Could not save address", err);
       alert("Could not save address. Please try again.");
     }
   };
