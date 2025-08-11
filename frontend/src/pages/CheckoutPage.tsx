@@ -1,9 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle, Minus, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  CreditCard,
+  Truck,
+  CheckCircle,
+  Minus,
+  Plus,
+  AlertTriangle,
+  Trash2,
+} from "lucide-react";
 import axios from "axios";
 import { CartData, useCart } from "../contexts/CartContext";
 import { useUser } from "../contexts/UserContext";
+import AnimatedList from "../components/AnimatedList.tsx";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 
@@ -22,9 +33,9 @@ interface Product {
 }
 
 interface Address {
-  id: string;        // backend _id of the shipment subdoc
-  name: string;      // label for UI (Home/Office/Address 1)
-  address: string;   // pretty one-line
+  id: string;
+  name: string;
+  address: string;
   phone: string;
   isDefault?: boolean;
 }
@@ -36,12 +47,24 @@ interface PaymentMethod {
   icon: string;
 }
 
+/* ---------------- Helpers ---------------- */
+const normalizeShipments = (data: any): any[] => {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.shipment)) return data.shipment;
+  if (Array.isArray(data?.shipments)) return data.shipments;
+  if (Array.isArray(data?.user?.shipment)) return data.user.shipment;
+  if (Array.isArray(data?.user?.shipments)) return data.user.shipments;
+  if (Array.isArray(data?.shipmentAddresses)) return data.shipmentAddresses;
+  if (Array.isArray(data?.data)) return data.data;
+  return [];
+};
+
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cart, updateQuantity } = useCart();
   const { userData } = useUser();
-  const { product, bagItems, total, directBuy } = location.state || {};
+  const { product, bagItems, total, directBuy } = (location.state || {}) as any;
 
   /* ---------------- Cart → Products ---------------- */
   const fallbackBagItems = cart?.items || [];
@@ -53,19 +76,25 @@ const CheckoutPage: React.FC = () => {
   const mappedCartItems: Product[] = fallbackBagItems.map((item) => ({
     id: item.product._id,
     name: item.product.name,
-    brand: typeof item.product.brand === "string" ? item.product.brand : item.product.brand.name,
+    brand:
+      typeof item.product.brand === "string"
+        ? item.product.brand
+        : item.product.brand.name,
     price: `₹${parseFloat(item.product.price.$numberDecimal).toFixed(2)}`,
     images: item.product.images,
     selectedSize: item.size,
     quantity: item.quantity,
   }));
 
-  const orderItems: Product[] = directBuy && product ? [product] : bagItems ? bagItems : mappedCartItems;
+  const orderItems: Product[] =
+    directBuy && product ? [product] : bagItems ? bagItems : mappedCartItems;
 
   const orderTotal: number = useMemo(
     () =>
       total ||
-      (product ? parseInt(product.price.replace("₹", "").replace(",", "")) : fallbackTotal),
+      (product
+        ? parseInt(product.price.replace("₹", "").replace(",", ""))
+        : fallbackTotal),
     [total, product, fallbackTotal]
   );
 
@@ -74,6 +103,7 @@ const CheckoutPage: React.FC = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
   const [addrLoading, setAddrLoading] = useState(true);
   const [addrError, setAddrError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   /* ---------------- Payment state ---------------- */
   const [selectedPayment, setSelectedPayment] = useState(0);
@@ -83,20 +113,27 @@ const CheckoutPage: React.FC = () => {
     { id: 1, type: "Razorpay", name: "Pay with Razorpay", icon: "💳" },
   ];
 
-  /* ---------------- Utils: resolve userId ---------------- */
+  /* ---------------- Resolve userId ---------------- */
   const resolveUserId = async (): Promise<string | null> => {
     if (userData?._id) return String(userData._id);
 
-    const keys = ["userData", "user", "currentUser"];
+    const keys = ["userData", "user", "currentUser", "auth"];
     for (const k of keys) {
       const raw = localStorage.getItem(k) || sessionStorage.getItem(k);
       if (!raw) continue;
       try {
         const obj = JSON.parse(raw);
-        const id = obj?._id || obj?.id || obj?.user?._id || obj?.user?.id;
+        const id =
+          obj?._id ||
+          obj?.id ||
+          obj?.user?._id ||
+          obj?.user?.id ||
+          obj?.profile?._id ||
+          obj?.data?._id;
         if (id) return String(id);
       } catch {}
     }
+
     const direct = localStorage.getItem("userId") || sessionStorage.getItem("userId");
     if (direct) return String(direct);
 
@@ -113,14 +150,12 @@ const CheckoutPage: React.FC = () => {
         if (Array.isArray(res.data) && res.data.length > 0) {
           return String(res.data[0]._id);
         }
-      } catch (e) {
-        console.warn("User lookup by phone failed:", e);
-      }
+      } catch {}
     }
     return null;
   };
 
-  /* ---------------- Fetch addresses from backend ---------------- */
+  /* ---------------- Fetch addresses ---------------- */
   useEffect(() => {
     let mounted = true;
 
@@ -133,37 +168,42 @@ const CheckoutPage: React.FC = () => {
         if (!userId) throw new Error("User not found. Please log in again.");
 
         const res = await axios.get(`${API_BASE}/users/${userId}/shipment`, {
-          withCredentials: false, // avoid CORS wildcard + credentials clash
+          withCredentials: false,
         });
-
-        // Expecting array of shipment subdocs or { shipment: [...] }
-        const list = Array.isArray(res.data) ? res.data : res.data?.shipment || [];
+        const list = normalizeShipments(res.data);
 
         const mapped: Address[] = list.map((s: any, idx: number) => {
           const line1 = (s.billing_address || "").trim();
           const line2 = (s.billing_address_2 || "").trim();
-          const cityState = [s.billing_city, s.billing_state].filter(Boolean).join(", ");
+          const cityState = [s.billing_city, s.billing_state]
+            .filter(Boolean)
+            .join(", ");
           const pin = s.billing_pincode ? ` - ${s.billing_pincode}` : "";
           const country = s.billing_country ? `, ${s.billing_country}` : "";
           return {
             id: s._id || String(idx),
-            name: s.isDefault ? "Home" : `Address ${idx + 1}`,
-            address: [line1, line2, cityState + pin + country].filter(Boolean).join(", "),
+            name: s.isDefault ? "Home" : s.label || `Address ${idx + 1}`,
+            address: [line1, line2, cityState + pin + country]
+              .filter(Boolean)
+              .join(", "),
             phone: s.billing_phone || "",
             isDefault: !!s.isDefault,
           };
         });
 
         if (!mounted) return;
-
         setAddresses(mapped);
+
+        // choose default if available, else first
         const defIndex = mapped.findIndex((a) => a.isDefault);
-        setSelectedAddress(defIndex >= 0 ? defIndex : 0);
+        setSelectedAddress(defIndex >= 0 ? defIndex : mapped.length ? 0 : -1);
       } catch (err: any) {
         if (!mounted) return;
-        console.error("Failed to fetch addresses:", err);
-        setAddrError(err?.message || "Could not fetch addresses.");
+        setAddrError(
+          err?.response?.data?.message || err?.message || "Could not fetch addresses."
+        );
         setAddresses([]);
+        setSelectedAddress(-1);
       } finally {
         if (mounted) setAddrLoading(false);
       }
@@ -172,8 +212,43 @@ const CheckoutPage: React.FC = () => {
     return () => {
       mounted = false;
     };
-    // re-run if user id in context changes
   }, [userData?._id]);
+
+  // keep selected index valid when list changes
+  useEffect(() => {
+    if (!addresses.length) {
+      setSelectedAddress(-1);
+      return;
+    }
+    setSelectedAddress((prev) => {
+      if (prev < 0) return 0;
+      return Math.min(prev, addresses.length - 1);
+    });
+  }, [addresses.length]);
+
+  /* ---------------- Delete address ---------------- */
+  const deleteAddress = async (addressId: string) => {
+    const userId = await resolveUserId();
+    if (!userId) {
+      alert("Please log in again.");
+      return;
+    }
+    if (!confirm("Delete this address?")) return;
+
+    try {
+      setDeletingId(addressId);
+      await axios.delete(`${API_BASE}/users/${userId}/shipment/${addressId}`, {
+        withCredentials: false,
+      });
+
+      setAddresses((prev) => prev.filter((a) => a.id !== addressId));
+    } catch (err: any) {
+      console.error("Delete address failed:", err);
+      alert(err?.response?.data?.message || "Failed to delete address.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   /* ---------------- Quantity handlers ---------------- */
   const handleQuantity = async (productId: string, size: string, change: number) => {
@@ -234,7 +309,7 @@ const CheckoutPage: React.FC = () => {
   /* ---------------- Payment ---------------- */
   const handleRazorpayPayment = async () => {
     try {
-      if (!addresses.length) {
+      if (!addresses.length || selectedAddress < 0) {
         alert("Please add a delivery address first.");
         return;
       }
@@ -345,61 +420,89 @@ const CheckoutPage: React.FC = () => {
           {/* Address */}
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-              <MapPin size={20} className="text-blue-400" />
-              <span>Delivery Address</span>
-            </h2>
+  <MapPin size={20} className="text-blue-400" />
+  <span>Delivery Address</span>
+</h2>
 
-            {addrLoading ? (
-              <div className="space-y-3">
-                <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
-                <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
-              </div>
-            ) : addresses.length ? (
-              <div className="space-y-3">
-                {addresses.map((address, index) => (
-                  <button
-                    key={address.id}
-                    onClick={() => setSelectedAddress(index)}
-                    className={`w-full p-4 rounded-lg border text-left transition-colors ${
-                      selectedAddress === index
-                        ? "border-blue-500 bg-blue-500 bg-opacity-10"
-                        : "border-gray-700 bg-gray-800 hover:border-gray-600"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="font-medium text-white">
-                          {address.name} {address.isDefault ? "(Default)" : ""}
-                        </h3>
-                        <p className="text-sm text-gray-400 mt-1">{address.address}</p>
-                        <p className="text-sm text-gray-400">{address.phone}</p>
-                      </div>
-                      {selectedAddress === index && (
-                        <CheckCircle size={20} className="text-blue-400 flex-shrink-0" />
-                      )}
-                    </div>
-                  </button>
-                ))}
-                <button
-                  onClick={() => navigate("/location")}
-                  className="w-full p-3 rounded-lg border border-dashed border-gray-700 text-gray-300 hover:border-gray-500"
-                >
-                  + Add new address
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {addrError && (
-                  <p className="text-sm text-red-400">Could not load addresses: {addrError}</p>
-                )}
-                <button
-                  onClick={() => navigate("/location")}
-                  className="w-full p-3 rounded-lg border border-dashed border-gray-700 text-gray-300 hover:border-gray-500"
-                >
-                  + Add your first address
-                </button>
+{addrError && (
+  <div className="mb-3 flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+    <AlertTriangle size={16} />
+    <span>Addresses failed to load: {addrError}</span>
+  </div>
+)}
+
+{addrLoading ? (
+  <div className="space-y-3">
+    <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
+    <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
+  </div>
+) : addresses.length ? (
+  <>
+    <AnimatedList<Address>
+      items={addresses}
+      selectedIndex={selectedAddress}
+      onSelectedIndexChange={(idx) => setSelectedAddress(idx)}
+      selectOnHover={false}                 // ← click only
+      className="w-full"
+      renderItem={(addr, idx, selected) => (
+        <div className="flex items-start justify-between gap-3">
+          <div className="pr-2">
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-block h-4 w-4 rounded-full border ${
+                  selected ? "border-blue-400 bg-blue-400" : "border-gray-500"
+                }`}
+              />
+              <h3 className="font-medium text-white">
+                {addr.name} {addr.isDefault ? <span className="ml-1 text-xs text-blue-300">(Default)</span> : null}
+              </h3>
+            </div>
+            <p className="mt-2 text-sm text-gray-300 leading-snug">{addr.address}</p>
+            {addr.phone && <p className="text-sm text-gray-400 mt-1">{addr.phone}</p>}
+            {selected && (
+              <div className="mt-2 inline-flex items-center gap-1 text-xs text-blue-300">
+                <CheckCircle size={14} /> Selected
               </div>
             )}
+          </div>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!deletingId) deleteAddress(addr.id);
+            }}
+            className={`shrink-0 rounded-md border border-red-500/40 px-2 py-1 text-xs text-red-300 hover:bg-red-500/10 ${
+              deletingId === addr.id ? "opacity-60 cursor-wait" : ""
+            }`}
+            title="Delete address"
+            disabled={deletingId === addr.id}
+          >
+            <span className="inline-flex items-center gap-1">
+              <Trash2 size={14} /> Delete
+            </span>
+          </button>
+        </div>
+      )}
+    />
+
+    <button
+      onClick={() => navigate("/location")}
+      className="mt-3 w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
+    >
+      + Add new address
+    </button>
+  </>
+) : (
+  <div className="space-y-3">
+    <button
+      onClick={() => navigate("/location")}
+      className="w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
+    >
+      + Add your first address
+    </button>
+  </div>
+)}
+
           </div>
 
           {/* Order Summary */}
@@ -417,7 +520,7 @@ const CheckoutPage: React.FC = () => {
                     alt={item.name}
                     className="w-12 h-12 rounded-lg object-cover"
                     onError={(e) => {
-                      e.currentTarget.src =
+                      (e.currentTarget as HTMLImageElement).src =
                         "https://placehold.co/100x100/1f2937/ffffff?text=Error";
                     }}
                   />
@@ -436,18 +539,14 @@ const CheckoutPage: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => {
-                      handleQuantity(item.id, item.selectedSize, -1);
-                    }}
+                    onClick={() => handleQuantity(item.id, item.selectedSize, -1)}
                     className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
                   >
                     <Minus size={14} />
                   </button>
                   <span className="w-8 text-center text-white">{item.quantity}</span>
                   <button
-                    onClick={() => {
-                      handleQuantity(item.id, item.selectedSize, 1);
-                    }}
+                    onClick={() => handleQuantity(item.id, item.selectedSize, 1)}
                     className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-gray-600"
                   >
                     <Plus size={14} />
@@ -514,7 +613,7 @@ const CheckoutPage: React.FC = () => {
       <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
         <button
           onClick={handlePlaceOrder}
-          disabled={isProcessing || addrLoading || addresses.length === 0}
+          disabled={isProcessing || addrLoading || addresses.length === 0 || selectedAddress < 0}
           className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? "Processing..." : `Pay with Razorpay - ₹${orderTotal}`}

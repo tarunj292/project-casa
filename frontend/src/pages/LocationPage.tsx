@@ -1,54 +1,49 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* global google */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-/* ---------------- Config ---------------- */
+/* -------------------------------- Config -------------------------------- */
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 
-/* ---------------- Google Maps Places loader (bullet-proof) ---------------- */
-function loadGoogleMaps(apiKey: string): Promise<void> {
+/* -------- Google Maps: robust loader (base + places via importLibrary) --- */
+let mapsBasePromise: Promise<void> | null = null;
+
+function ensureMapsBase(apiKey: string): Promise<void> {
   const w = window as any;
-  if (w.google?.maps?.places?.Autocomplete) return Promise.resolve();
-
-  return new Promise((resolve, reject) => {
-    const existing = document.getElementById("google-maps-script") as HTMLScriptElement | null;
-
-    const onReady = () => {
-      // Ensure Places is actually loaded (some keys/projects load Maps without Places)
-      if (w.google?.maps?.places?.Autocomplete) {
-        resolve();
-      } else {
-        reject(
-          new Error(
-            "Google Maps loaded but Places library (Autocomplete) is missing. Enable Places API for your key."
-          )
-        );
-      }
-    };
-
-    if (existing) {
-      existing.onload = onReady;
-      existing.onerror = () => reject(new Error("Failed to load Google Maps script."));
-      return;
-    }
-
-    if (!apiKey) {
-      reject(new Error("Google Maps API key missing."));
-      return;
-    }
-
-    const s = document.createElement("script");
-    s.id = "google-maps-script";
-    s.async = true;
-    s.defer = true;
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places&loading=async`;
-    s.onload = onReady;
-    s.onerror = () => reject(new Error("Failed to load Google Maps script."));
-    document.head.appendChild(s);
-  });
+  if (w.google?.maps) return Promise.resolve();
+  if (!mapsBasePromise) {
+    mapsBasePromise = new Promise((resolve, reject) => {
+      if (!apiKey) return reject(new Error("Google Maps API key missing."));
+      const s = document.createElement("script");
+      s.id = "google-maps-script";
+      s.async = true;
+      s.defer = true;
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error("Failed to load Google Maps script."));
+      document.head.appendChild(s);
+    });
+  }
+  return mapsBasePromise;
 }
 
-/* ---------------- Place parsing helpers ---------------- */
+async function loadGoogleMaps(apiKey: string): Promise<void> {
+  const w = window as any;
+  await ensureMapsBase(apiKey);
+  try {
+    if (!w.google?.maps?.places) {
+      // loads Places on demand (prevents “Places missing”)
+      // @ts-ignore
+      await w.google.maps.importLibrary("places");
+    }
+  } catch {
+    throw new Error("Places library isn’t available. Enable the Places API for your key.");
+  }
+}
+
+/* ----------------------------- Helpers/Types ----------------------------- */
 type AddressComponents = google.maps.GeocoderAddressComponent[];
 const getComp = (comps: AddressComponents, type: string) =>
   comps.find((c) => c.types.includes(type));
@@ -83,18 +78,16 @@ function parseAddressComponents(place: google.maps.places.PlaceResult) {
   return { city, state, pincode, country, formatted };
 }
 
-/* ---------------- Validators ---------------- */
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 const isIndianPhone = (v: string) => /^(?:\+?91[-\s]?)?[6-9]\d{9}$/.test(v.replace(/\s/g, ""));
 const isPincode = (v: string) => /^\d{6}$/.test(v.trim());
 
-/* ---------------- Types ---------------- */
 interface DeliveryAddress {
   fullName: string;
   phone: string;
   email: string;
-  addressSearch: string;
-  addressLine: string;
+  addressSearch: string; // what user picked/typed
+  addressLine: string;   // formatted details
   flatNumber: string;
   wingBuilding: string;
   city: string;
@@ -119,20 +112,30 @@ const defaults: DeliveryAddress = {
 
 type Step = 1 | 2 | 3 | 4;
 
+/* =============================== Component =============================== */
 const LocationPage: React.FC = () => {
   const navigate = useNavigate();
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
   const [loadingMaps, setLoadingMaps] = useState(true);
   const [mapsError, setMapsError] = useState<string | null>(null);
+
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<DeliveryAddress>(defaults);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const autocompleteRef = useRef<any>(null);
+  // custom big prediction list
+  const [query, setQuery] = useState("");
+  const [preds, setPreds] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [showList, setShowList] = useState(false);
+  const [highlight, setHighlight] = useState<number>(-1);
 
-  /* Build final one-line address safely */
+  const serviceRef = useRef<google.maps.places.AutocompleteService | null>(null);
+  const detailsRef = useRef<google.maps.places.PlacesService | null>(null);
+  const tokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+  const debounceRef = useRef<number | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const finalAddress = useMemo(() => {
     return [
       form.flatNumber && form.wingBuilding
@@ -147,10 +150,9 @@ const LocationPage: React.FC = () => {
       .join(", ");
   }, [form]);
 
-  /* Load Google Maps + Places */
+  /* ------------------------------- Load Maps ------------------------------ */
   useEffect(() => {
     let mounted = true;
-
     loadGoogleMaps(apiKey)
       .then(() => {
         if (!mounted) return;
@@ -165,59 +167,88 @@ const LocationPage: React.FC = () => {
         );
         setLoadingMaps(false);
       });
-
     return () => {
       mounted = false;
     };
   }, [apiKey]);
 
-  /* Init Autocomplete (guarded) */
+  // init Places services once loaded
   useEffect(() => {
-    const w = window as any;
     if (loadingMaps || mapsError) return;
-    if (!inputRef.current) return;
-    if (autocompleteRef.current) return;
+    const w = window as any;
+    if (!w.google?.maps?.places) return;
 
-    const Places = w.google?.maps?.places;
-    if (!Places || !Places.Autocomplete) {
-      console.warn("Places Autocomplete not available. Falling back to manual input.");
-      setMapsError(
-        "Address suggestions unavailable right now. You can still type your address manually."
-      );
-      return; // do not crash
+    if (!serviceRef.current) {
+      serviceRef.current = new w.google.maps.places.AutocompleteService();
     }
+    if (!detailsRef.current) {
+      detailsRef.current = new w.google.maps.places.PlacesService(document.createElement("div"));
+    }
+    tokenRef.current = new w.google.maps.places.AutocompleteSessionToken();
+  }, [loadingMaps, mapsError]);
 
-    try {
-      const ac = new Places.Autocomplete(inputRef.current as HTMLInputElement, {
-        types: ["geocode"],
-        // componentRestrictions: { country: "in" }, // optional
-      });
+  // query -> predictions (debounced)
+// query -> predictions (debounced)
+useEffect(() => {
+  if (!serviceRef.current) return;
+  if (!query || query.trim().length < 2) {
+    setPreds([]);
+    return;
+  }
+  if (debounceRef.current) window.clearTimeout(debounceRef.current);
+  debounceRef.current = window.setTimeout(() => {
+    serviceRef.current!.getPlacePredictions(
+      {
+        input: query,
+        // ❌ DON'T mix 'geocode' with others. Either use one type or omit entirely.
+        // types: ["address"],      // ✅ option A: only address
+        // or just omit types for broader results:
+        componentRestrictions: { country: ["in"] }, // bias to India (optional)
+        sessionToken: tokenRef.current || undefined,
+      } as google.maps.places.AutocompletionRequest,
+      (results) => {
+        setPreds(results || []);
+        setShowList(true);
+        setHighlight(-1);
+      }
+    );
+  }, 180);
+  return () => {
+    if (debounceRef.current) window.clearTimeout(debounceRef.current);
+  };
+}, [query]);
 
-      ac.addListener("place_changed", () => {
-        const place = ac.getPlace();
-        if (!place || !place.address_components) return;
+
+  const pickPrediction = (p: google.maps.places.AutocompletePrediction) => {
+    if (!detailsRef.current) return;
+    detailsRef.current.getDetails(
+      {
+        placeId: p.place_id!,
+        fields: ["address_components", "formatted_address", "geometry", "name"],
+        sessionToken: tokenRef.current || undefined,
+      },
+      (place, status) => {
+        const ok = (window as any).google.maps.places.PlacesServiceStatus.OK;
+        if (!place || status !== ok) return;
         const parsed = parseAddressComponents(place);
         setForm((f) => ({
           ...f,
-          addressSearch: (inputRef.current?.value || "").trim(),
-          addressLine: parsed.formatted,
+          addressSearch: p.description || place.formatted_address || "",
+          addressLine: parsed.formatted || p.description || "",
           city: parsed.city,
           state: parsed.state,
           pincode: parsed.pincode,
           country: parsed.country || "India",
         }));
-      });
+        setQuery(p.description || "");
+        setShowList(false);
+        setPreds([]);
+        tokenRef.current = new (window as any).google.maps.places.AutocompleteSessionToken();
+      }
+    );
+  };
 
-      autocompleteRef.current = ac;
-    } catch (err) {
-      console.error("Failed to initialize Places Autocomplete:", err);
-      setMapsError(
-        "Address suggestions failed to initialize. You can still type your address manually."
-      );
-    }
-  }, [loadingMaps, mapsError]);
-
-  /* Helpers */
+  /* --------------------------------- Form -------------------------------- */
   const update = (key: keyof DeliveryAddress, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
 
@@ -256,10 +287,9 @@ const LocationPage: React.FC = () => {
     if (!validateStep(step)) return;
     setStep((s) => (s === 4 ? 4 : ((s + 1) as Step)));
   };
-
   const back = () => setStep((s) => (s === 1 ? 1 : ((s - 1) as Step)));
 
-  /* Resolve userId robustly (kept from your version) */
+  /* ------------------------------ Resolve user ---------------------------- */
   const resolveUserId = async (): Promise<string | null> => {
     const keys = ["userData", "user", "currentUser"];
     for (const k of keys) {
@@ -272,11 +302,10 @@ const LocationPage: React.FC = () => {
           localStorage.setItem("userId", String(id));
           return String(id);
         }
-      } catch (err) {
-        console.warn(`Failed to parse ${k}:`, err);
+      } catch {
+        /* ignore */
       }
     }
-
     const directId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
     if (directId) return String(directId);
 
@@ -292,14 +321,13 @@ const LocationPage: React.FC = () => {
           localStorage.setItem("userId", id);
           return id;
         }
-      } catch (e) {
-        console.warn("User lookup by phone failed:", e);
+      } catch {
+        /* ignore */
       }
     }
 
-    // Final fallback: create guest user (optional — remove if you don't want this)
+    // Optional: create guest user
     try {
-      console.warn("No user found — creating guest account...");
       const guest = await axios.post(`${API_BASE}/users`, {
         phone: form.phone,
         email: form.email || `guest_${Date.now()}@example.com`,
@@ -310,14 +338,13 @@ const LocationPage: React.FC = () => {
         localStorage.setItem("userId", id);
         return id;
       }
-    } catch (err) {
-      console.error("Failed to create guest user:", err);
+    } catch {
+      /* ignore */
     }
-
     return null;
   };
 
-  /* Save to backend */
+  /* --------------------------------- Save -------------------------------- */
   const handleSave = async () => {
     if (!canSave) return;
     try {
@@ -326,7 +353,6 @@ const LocationPage: React.FC = () => {
         alert("Please log in again — we couldn't find or create your account.");
         return;
       }
-
       const payload = {
         billing_customer_name: form.fullName,
         billing_phone: form.phone,
@@ -338,14 +364,7 @@ const LocationPage: React.FC = () => {
         billing_state: form.state,
         billing_country: form.country,
       };
-
-      console.log("Saving address for user:", userId, payload);
-      await axios.post(`${API_BASE}/users/${userId}/shipment`, payload, {
-        // match your server CORS if you’re sending cookies
-        withCredentials: false,
-      });
-
-      console.log("✅ Shipment address saved successfully");
+      await axios.post(`${API_BASE}/users/${userId}/shipment`, payload, { withCredentials: false });
       navigate(-1);
     } catch (err) {
       console.error("❌ Could not save address", err);
@@ -353,11 +372,10 @@ const LocationPage: React.FC = () => {
     }
   };
 
-  /* UI */
+  /* ---------------------------------- UI --------------------------------- */
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <div className="max-w-lg mx-auto px-4 py-5">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <button onClick={() => navigate(-1)} className="text-sm opacity-70 hover:opacity-100">
             ← Back
@@ -366,25 +384,66 @@ const LocationPage: React.FC = () => {
           <div className="text-sm opacity-70">Step {step}/4</div>
         </div>
 
-        {/* Step 1: Google Maps location search */}
+        {/* Step 1: Rich search with MANY predictions */}
         {step === 1 && (
-          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
+          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg relative">
             <h2 className="text-base font-medium mb-3 opacity-90">Locate Your Address</h2>
 
             <label className="text-sm opacity-80 mb-2 block">Search Address</label>
             <input
               ref={inputRef}
-              value={form.addressSearch}
-              onChange={(e) => update("addressSearch", e.target.value)}
-              placeholder="Start typing and pick from suggestions"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => preds.length && setShowList(true)}
+              onBlur={() => setTimeout(() => setShowList(false), 120)} // allow click
+              onKeyDown={(e) => {
+                if (!showList || preds.length === 0) return;
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setHighlight((h) => Math.min(h + 1, preds.length - 1));
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  setHighlight((h) => Math.max(h - 1, 0));
+                } else if (e.key === "Enter" && highlight >= 0) {
+                  e.preventDefault();
+                  pickPrediction(preds[highlight]);
+                }
+              }}
+              placeholder="Type your location (e.g., Andheri East)…"
               disabled={loadingMaps || !!mapsError}
-              className="flex-1 h-10 rounded-full bg-gradient-to-br from-[#DAE8F7] to-[#D6E5F7] text-gray-900 placeholder-gray-500 px-3 outline-none text-[15px]"
+              className="flex-1 h-10 w-full rounded-full bg-gradient-to-br from-[#DAE8F7] to-[#D6E5F7] text-gray-900 placeholder-gray-500 px-3 outline-none text-[15px]"
             />
-            {errors.addressSearch && (
-              <p className="text-xs text-red-400 mt-2">{errors.addressSearch}</p>
-            )}
             {loadingMaps && <p className="text-xs mt-2 opacity-70">Loading maps…</p>}
-            {mapsError && <p className="text-xs mt-2 text-red-400">{mapsError}</p>}
+            {mapsError && (
+              <p className="text-xs mt-2 text-red-400">
+                {mapsError} You can still type your address manually in the next step.
+              </p>
+            )}
+
+            {/* Big suggestion list */}
+            {showList && preds.length > 0 && (
+              <div className="absolute z-20 mt-2 w-[calc(100%-2rem)] max-h-72 overflow-y-auto rounded-xl bg-gray-800/95 backdrop-blur border border-gray-700 shadow-xl">
+                {preds.map((p, i) => (
+                  <button
+                    key={p.place_id}
+                    type="button"
+                    onMouseEnter={() => setHighlight(i)}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => pickPrediction(p)}
+                    className={`block w-full text-left px-3 py-2 hover:bg-gray-700 ${
+                      i === highlight ? "bg-gray-700" : ""
+                    }`}
+                  >
+                    <div className="text-sm text-white">{p.structured_formatting.main_text}</div>
+                    <div className="text-xs text-gray-400">
+                      {p.structured_formatting.secondary_text || p.description}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Preview picked address */}
             {form.addressLine && (
               <p className="text-sm opacity-80 mt-3">
                 <span className="opacity-60">Detected:</span> {form.addressLine}
@@ -393,7 +452,11 @@ const LocationPage: React.FC = () => {
 
             <div className="flex gap-3 mt-5">
               <button
-                onClick={next}
+                onClick={() => {
+                  // If nothing picked from list, still keep typed query
+                  setForm((f) => ({ ...f, addressSearch: query || f.addressSearch }));
+                  setStep(2);
+                }}
                 className="flex-1 rounded-xl px-4 py-3 font-semibold bg-indigo-600 hover:bg-indigo-500"
               >
                 Next: Address Fields
@@ -402,12 +465,11 @@ const LocationPage: React.FC = () => {
           </div>
         )}
 
-        {/* Step 2: Address fields (Flat/Wing + City/State/Pincode/Country) */}
+        {/* Step 2: Address fields */}
         {step === 2 && (
           <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
             <h2 className="text-base font-medium mb-3 opacity-90">Address Details</h2>
 
-            {/* Flat + Wing */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
               <div>
                 <label className="text-sm opacity-80">Flat / House No.</label>
@@ -417,9 +479,7 @@ const LocationPage: React.FC = () => {
                   placeholder="eg: 705"
                   className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
                 />
-                {errors.flatNumber && (
-                  <p className="text-xs text-red-400 mt-1">{errors.flatNumber}</p>
-                )}
+                {errors.flatNumber && <p className="text-xs text-red-400 mt-1">{errors.flatNumber}</p>}
               </div>
               <div>
                 <label className="text-sm opacity-80">Wing / Building</label>
@@ -435,7 +495,6 @@ const LocationPage: React.FC = () => {
               </div>
             </div>
 
-            {/* City/State */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="text-sm opacity-80">City</label>
@@ -457,7 +516,6 @@ const LocationPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Pincode/Country */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
               <div>
                 <label className="text-sm opacity-80">Pincode</label>
@@ -491,7 +549,7 @@ const LocationPage: React.FC = () => {
           </div>
         )}
 
-        {/* Step 3: Contact Info */}
+        {/* Step 3: Contact */}
         {step === 3 && (
           <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
             <h2 className="text-base font-medium mb-3 opacity-90">Contact Information</h2>
@@ -543,18 +601,16 @@ const LocationPage: React.FC = () => {
           </div>
         )}
 
-        {/* Step 4: Review & Confirm */}
+        {/* Step 4: Review */}
         {step === 4 && (
           <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
             <h2 className="text-base font-medium mb-4 opacity-90">Review Address</h2>
 
-            {/* Final one-line preview */}
             <div className="mb-4">
               <div className="opacity-70 text-sm mb-1">Final Address</div>
               <div className="bg-gray-800 rounded-xl p-3 text-sm">{finalAddress}</div>
             </div>
 
-            {/* Detailed breakdown */}
             <div className="space-y-3 text-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -610,10 +666,7 @@ const LocationPage: React.FC = () => {
             </div>
 
             <div className="flex gap-3 mt-6">
-              <button
-                onClick={back}
-                className="flex-1 rounded-xl px-4 py-3 font-semibold bg-gray-800 hover:bg-gray-700"
-              >
+              <button onClick={back} className="flex-1 rounded-xl px-4 py-3 font-semibold bg-gray-800 hover:bg-gray-700">
                 Back
               </button>
               <button
