@@ -77,18 +77,79 @@ const CuratedListPage: React.FC = () => {
   }
 };
 
+// const handleCuratedToggle = async (productId: string) => {
+//   console.log('💖 Heart clicked! Product ID:', productId);
+//   console.log('👤 User logged in:', userData.isLoggedIn);
+//   console.log('📋 Current curated items:', Array.from(curatedItems));
+
+//   if (!userData.isLoggedIn) {
+//     console.log('❌ User not logged in, redirecting to profile');
+//     navigate('/profile');
+//     return;
+//   }
+
+//   try {
+//     const userId = userData._id;
+//     const isCurrentlyInList = curatedItems.has(productId);
+
+//     // Immediate UI update
+//     if (!isCurrentlyInList) {
+//       setCuratedItems(prev => new Set(prev).add(productId));
+//     }
+
+//     if (isCurrentlyInList) {
+//       const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ userId, productId }),
+//       });
+
+//       if (response.ok) {
+//         window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+//         console.log('✅ Removed from curated list');
+//         setCuratedItems(prev => {
+//           const newSet = new Set(prev);
+//           newSet.delete(productId);
+//           return newSet;
+//         });
+//       } else {
+//         console.error('❌ Failed to remove');
+//         setCuratedItems(prev => new Set(prev).add(productId));
+//       }
+//     } else {
+//       const response = await fetch('http://localhost:5002/api/curatedlist/add', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ userId, productId }),
+//       });
+
+//       if (response.ok) {
+//         window.dispatchEvent(new CustomEvent('curatedListUpdated'));
+//         console.log('✅ Added to curated list');
+//       } else {
+//         console.error('❌ Failed to add');
+//         setCuratedItems(prev => {
+//           const newSet = new Set(prev);
+//           newSet.delete(productId);
+//           return newSet;
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     console.error('❌ Error in curated toggle:', error);
+//   }
+// };
 
   const removeFromCuratedList = async (productId: string) => {
     try {
-       console.log('Sending userId:', userData._id); // <-- Add this line
-    console.log('Sending productId:', productId); // <-- Add this line
+      const userId = userData._id
       const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer dummy-token', // Dummy token for backend
         },
-        body: JSON.stringify({ userId: userData._id, productId }),
+        body: JSON.stringify({ productId }),
       });
 
       if (!response.ok) {

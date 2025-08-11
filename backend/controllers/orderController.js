@@ -89,7 +89,7 @@ const updateOrder = async (req, res) => {
       { new: true, runValidators: true }
     );
     if (!updated) return res.status(404).json({ error: 'Order not found' });
-    res.json(updated);
+    res.json({success: true, updated});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

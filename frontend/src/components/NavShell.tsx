@@ -1,38 +1,27 @@
-import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import TopBar from './TopBar';
-import BottomNav from './BottomNav';
-import LocationPopup from './LocationPopup';
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import TopBar from "./TopBar";
+import BottomNav from "./BottomNav";
 
 const NavShell: React.FC = () => {
   const location = useLocation();
-  const hideTopBarRoutes = ['/collection', '/trends', '/bag'];
+
+  // routes where you don't want the TopBar
+  const hideTopBarRoutes = ["/collection", "/trends", "/bag"];
   const hideTopBar = hideTopBarRoutes.includes(location.pathname);
 
-  const [showLocationPopup, setShowLocationPopup] = useState(false);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  // when TopBar is visible, offset the fixed header height (≈56px + safe-area)
+  const mainTopPadding = hideTopBar
+    ? ""
+    : "pt-[calc(56px+env(safe-area-inset-top))]";
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900 relative">
-      {!hideTopBar && (
-        <TopBar
-          setShowLocationPopup={setShowLocationPopup}
-          setUserLocation={setUserLocation}
-        />
-      )}
-
-      <main className="flex-1 pb-20">
+    <div className="flex flex-col min-h-screen bg-gray-900">
+      {!hideTopBar && <TopBar />}
+      <main className={`flex-1 pb-20 ${mainTopPadding}`}>
         <Outlet />
       </main>
-
       <BottomNav />
-
-      {showLocationPopup && userLocation && (
-        <LocationPopup
-          location={userLocation}
-          onClose={() => setShowLocationPopup(false)}
-        />
-      )}
     </div>
   );
 };

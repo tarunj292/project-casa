@@ -156,7 +156,7 @@ const HomePage: React.FC = () => {
 
         setTrendingBrands(activeAllBrands.slice(0, 4));
       } catch (err) {
-        console.error("Error fetching brands:", err);
+        // console.error("Error fetching brands:", err);
       } finally {
         setLoadingBrands(false);
       }
@@ -170,7 +170,7 @@ const HomePage: React.FC = () => {
       try {
         const response = await axios.get('http://localhost:5002/api/categories');
         const data = response.data;
-        console.log('Fetched categories:', data);
+        // console.log('Fetched categories:', data);
 
         const menNames = [
           "Oversized T-shirt", "Shirt", "Jeans", "Cargos & Parachutes", "sunglasses", "watches", "bracelets", "necklace"
@@ -182,13 +182,13 @@ const HomePage: React.FC = () => {
         const filteredMenCategories = data.filter((cat: Category) => menNames.includes(cat.name));
         const filteredWomenCategories = data.filter((cat: Category) => womenNames.includes(cat.name));
 
-        console.log('Filtered men categories:', filteredMenCategories);
-        console.log('Filtered women categories:', filteredWomenCategories);
+        // console.log('Filtered men categories:', filteredMenCategories);
+        // console.log('Filtered women categories:', filteredWomenCategories);
 
         setMenCategories(filteredMenCategories);
         setWomenCategories(filteredWomenCategories);
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
+        // console.error("Failed to fetch categories:", error);
       } finally {
         setLoadingCategories(false);
       }
@@ -219,7 +219,7 @@ const HomePage: React.FC = () => {
       products = products.map((p: any) => ({ ...p, id: p._id }));
       setProducts(products);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      // console.error('Error fetching products:', error);
     }
   };
 
@@ -253,14 +253,13 @@ const HomePage: React.FC = () => {
     }))
     .filter((cat) => cat.name && cat.image && cat.image !== 'https://via.placeholder.com/150');
 
-  console.log('Current gender:', selectedGender);
-  console.log('Current categories:', currentCategories);
-  console.log('Merged categories:', mergedCategories);
+  // console.log('Current gender:', selectedGender);
+  // console.log('Current categories:', currentCategories);
+  // console.log('Merged categories:', mergedCategories);
 
   return (
     
-    <div className="bg-gray-900 text-white min-h-screen pb-32">
-<div className="h2 md:h-20" /> 
+    <div className="bg-gray-900 text-white min-h-screen">
       {/* <div className="px-4 py-3 border-b border-gray-800">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-1">
@@ -647,7 +646,7 @@ const HomePage: React.FC = () => {
               directBuy: true
             }
           })}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition-colors"
+          className="w-full bg-green-400 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition-colors"
         >
           🛒 Test Checkout (Quick Access)
         </button>

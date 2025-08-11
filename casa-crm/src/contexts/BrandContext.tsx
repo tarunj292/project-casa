@@ -25,6 +25,7 @@ interface BankDetails {
 }
 
 export interface BrandData {
+  _id: string,
   name: string;
   logo_url: string;
   description?: string;
