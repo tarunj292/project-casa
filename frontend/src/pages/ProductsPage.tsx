@@ -27,21 +27,29 @@ const ProductsPage: React.FC = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
   const brandId = searchParams.get('brand');
+  const offer = searchParams.get('offer'); // detect offer from query
 
   useEffect(() => {
-    if (categoryId) {
+    if (offer === 'mens499') {
+      fetchProductsByPrice(499);
+    } else if (offer === 'womens399') {
+      fetchProductsByPrice(399);
+    } else if (categoryId) {
       fetchProductsByCategory(categoryId);
     } else if (brandId) {
       fetchProductsByBrand(brandId);
     } else {
       setLoading(false);
     }
-  }, [categoryId, brandId]);
+  }, [offer, categoryId, brandId]);
 
   const fetchProductsByCategory = async (categoryId: string) => {
     try {
-      const response = await fetch(`http://localhost:5002/api/products/category?category=${categoryId}`);
+      const response = await fetch(
+        `http://localhost:5002/api/products/category?category=${categoryId}`
+      );
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -53,7 +61,9 @@ const ProductsPage: React.FC = () => {
 
   const fetchProductsByBrand = async (brandId: string) => {
     try {
-      const response = await fetch(`http://localhost:5002/api/products/brand?id=${brandId}`);
+      const response = await fetch(
+        `http://localhost:5002/api/products/brand?id=${brandId}`
+      );
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -63,8 +73,24 @@ const ProductsPage: React.FC = () => {
     }
   };
 
+  const fetchProductsByPrice = async (minPrice: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5002/api/products/price?min=${minPrice}`
+    );
+    const data = await response.json();
+    setProducts(data);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {/* Header */}
       <div className="sticky top-0 bg-gray-900 z-10 p-4 border-b border-gray-800">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate(-1)}>
@@ -74,11 +100,12 @@ const ProductsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Products Grid */}
       <div className="p-4">
         {loading ? (
           <p>Loading products...</p>
         ) : products.length === 0 ? (
-          <p>No products found for this category.</p>
+          <p>No products found.</p>
         ) : (
           <div className="grid grid-cols-2 gap-4">
             {products.map((product) => (
@@ -96,12 +123,11 @@ const ProductsPage: React.FC = () => {
                   <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
                   <p className="text-xs text-gray-400 mb-2">{product.brand.name}</p>
                   <p className="font-bold">
-                  {product.currency}
-{typeof product.price === 'object'
-  ? Number(product.price.$numberDecimal).toFixed(2)
-  : Number(product.price).toFixed(2)}
-</p>
-
+                    {product.currency}
+                    {typeof product.price === 'object'
+                      ? Number(product.price.$numberDecimal).toFixed(2)
+                      : Number(product.price).toFixed(2)}
+                  </p>
                 </div>
               </div>
             ))}

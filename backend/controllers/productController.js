@@ -106,19 +106,34 @@ const getAllProductsByBrand = async (req, res) => {
 
 // GET products by price range
 const getAllProductsByPrice = async (req, res) => {
-  const { min, max } = req.query;
   try {
-    const products = await Product.find({
+    // If no min passed, just return all products
+    if (!req.query.min) {
+      const products = await Product.find({})
+        .populate('brand category')
+        .sort({ price: 1 });
+      return res.json(products);
+    }
+
+    const { min, max } = req.query;
+    const query = {
       price: {
-        $gte: min ? parseFloat(min) : 0,
+        $gte: parseFloat(min) || 0,
         $lte: max ? parseFloat(max) : Infinity
       }
-    });
+    };
+
+    const products = await Product.find(query)
+      .populate('brand category')
+      .sort({ price: 1 });
+
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 // GET products by gender
 const getProductsByGender = async (req, res) => {

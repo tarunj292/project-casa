@@ -9,9 +9,9 @@ import TrendsPage from "./pages/TrendsPage";
 import BagPage from "./pages/BagPage";
 import ProductPage from "./pages/ProductPage";
 import ProfilePage from "./pages/ProfilePage";
-import ManageAccountPage from "./pages/ManageAccountPage"; // NEW: Manage Account page
+import ManageAccountPage from "./pages/ManageAccountPage";
 import SearchPage from "./pages/SearchPage";
-import ChatPage from "./pages/ChatPage"; // ✅ make sure it's imported
+import ChatPage from "./pages/ChatPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import SwipeProductsPage from "./pages/SwipeProductsPage";
@@ -44,6 +44,10 @@ function App() {
                 <Route path="/brands/:brandId" element={<BrandPage />} />
                 <Route path="/location" element={<LocationPage />} />
                 <Route path="/products" element={<ProductList />} />
+                
+                {/* 👇 FINAL FIX: Add this line */}
+                <Route path="/product-list" element={<ProductList />} />
+
                 <Route
                   path="/products/:categoryId"
                   element={<ProductsPage />}
@@ -55,14 +59,12 @@ function App() {
                 <Route
                   path="/manage-account"
                   element={<ManageAccountPage />}
-                />{" "}
-                {/* NEW: Manage Account route */}
+                />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/order-success" element={<OrderSuccessPage />} />
                 <Route path="/onboarding" element={<OnboardingPage />} />
-                <Route path="/chat" element={<ChatPage />} />{" "}
-                {/* ✅ Add this line */}
+                <Route path="/chat" element={<ChatPage />} />
               </Routes>
             </div>
           </Router>

@@ -46,6 +46,7 @@ function AppRoutes() {
           <Route path="/brands" element={<AllBrandsPage />} />
           <Route path="/brands/:brandId" element={<BrandPage />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/product-list" element={<ProductList />} />
           <Route path="/products/:categoryId" element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Route>

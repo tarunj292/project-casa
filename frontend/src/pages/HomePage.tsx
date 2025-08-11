@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
   const currentIconicLooks = selectedGender === 'MAN' ? menIconicLooks : womenIconicLooks;
 
   const menOffers = [
-    { id: 'starting', title: 'STARTING', price: '₹499', color: 'bg-green-600', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
+    { id: 'mens499', title: 'STARTING', price: '₹499', color: 'bg-green-600', image: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'flat30', title: 'FLAT', discount: '30%', subtitle: 'OFF', color: 'bg-blue-600', image: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'buy2get1', title: 'BUY 2 GET 1', subtitle: 'FREE', color: 'bg-red-600', image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400' },
     { id: 'under1299', title: 'EVERYTHING UNDER', price: '₹1,299', color: 'bg-purple-600', image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400' },
@@ -138,6 +138,7 @@ const HomePage: React.FC = () => {
   const handleMouseUp = () => { if (!isDragging) return; setIsDragging(false); if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; const isLeftSwipe = distance > 50; const isRightSwipe = distance < -50; if (isLeftSwipe) { nextSlide(); } else if (isRightSwipe) { prevSlide(); } };
   const handleMouseLeave = () => setIsDragging(false);
 
+  
   useEffect(() => {
     const fetchBrands = async () => {
       setLoadingBrands(true);
@@ -170,7 +171,6 @@ const HomePage: React.FC = () => {
       try {
         const response = await axios.get('http://localhost:5002/api/categories');
         const data = response.data;
-        // console.log('Fetched categories:', data);
 
         const menNames = [
           "Oversized T-shirt", "Shirt", "Jeans", "Cargos & Parachutes", "sunglasses", "watches", "bracelets", "necklace"
@@ -181,9 +181,6 @@ const HomePage: React.FC = () => {
 
         const filteredMenCategories = data.filter((cat: Category) => menNames.includes(cat.name));
         const filteredWomenCategories = data.filter((cat: Category) => womenNames.includes(cat.name));
-
-        // console.log('Filtered men categories:', filteredMenCategories);
-        // console.log('Filtered women categories:', filteredWomenCategories);
 
         setMenCategories(filteredMenCategories);
         setWomenCategories(filteredWomenCategories);
@@ -210,7 +207,7 @@ const HomePage: React.FC = () => {
   };
 
   const currentLatestDropsDynamic = getLatestDropsByGender(selectedGender);
-
+  
   const handleCategoryClick = async (categoryId: string) => {
     try {
       const res = await fetch(`http://localhost:5002/api/products/category?category=${categoryId}`);
@@ -227,8 +224,17 @@ const HomePage: React.FC = () => {
     navigate(`/brands/${brandId}`);
   };
 
+  // UPDATED: Added logic for the 'under1299' offer
   const handleOfferClick = (offerId: string) => {
-    navigate(`/collection?offer=${offerId}`);
+    if (offerId === 'mens499') {
+      navigate('/product-list?minPrice=499');
+    } else if (offerId === 'under1299') {
+      navigate('/product-list?maxPrice=1299');
+    } else if (offerId === 'starting-women') {
+      navigate('/product-list?minPrice=399');
+    } else {
+      navigate('/product-list');
+    }
   };
 
   const handleSearchSuggestion = (suggestion: string) => {
@@ -253,33 +259,8 @@ const HomePage: React.FC = () => {
     }))
     .filter((cat) => cat.name && cat.image && cat.image !== 'https://via.placeholder.com/150');
 
-  // console.log('Current gender:', selectedGender);
-  // console.log('Current categories:', currentCategories);
-  // console.log('Merged categories:', mergedCategories);
-
   return (
-    
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* <div className="px-4 py-3 border-b border-gray-800">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-1">
-            <MapPin size={16} className="text-blue-400" />
-            <span className="text-sm">Delivery in <span className="text-blue-400 font-semibold">60 minutes</span></span>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button onClick={() => navigate('/search')} className="p-1">
-              <Search size={20} className="text-white hover:text-blue-400 transition-colors" />
-            </button>
-            <button onClick={() => navigate('/curatedList')} className="p-1">
-              <Heart size={20} className="text-white hover:text-red-400 transition-colors" />
-            </button>
-            <button onClick={() => navigate('/profile')} className="p-1">
-              <User size={20} className="text-white hover:text-blue-400 transition-colors" />
-            </button>
-          </div>
-        </div>
-      </div> */}
-
       {/* User Selection */}
       <div className="flex items-center justify-center space-x-4 px-4 py-4">
         <button
@@ -313,6 +294,9 @@ const HomePage: React.FC = () => {
           />
         </button>
       </div>
+
+
+      {/* Categories Section */}
       <div className="text-center py-4">
         <div className="flex items-center justify-center space-x-2">
           <div className="flex space-x-1">
@@ -443,6 +427,8 @@ const HomePage: React.FC = () => {
           <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
         </div>
       </div>
+
+      {/* Offers Section */}
       {products.length > 0 && (
         <div className="px-4 mb-8">
           <h2 className="text-xl font-bold mb-4">Products</h2>
@@ -542,6 +528,8 @@ const HomePage: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* All other sections... */}
       <div className="px-4 mb-8">
         <h2 className="text-xl font-bold mb-4">Trending Brands</h2>
         {loadingBrands ? (
