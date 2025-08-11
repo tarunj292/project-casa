@@ -227,7 +227,7 @@ const HomePage: React.FC = () => {
   // UPDATED: Added logic for the 'under1299' offer
   const handleOfferClick = (offerId: string) => {
     if (offerId === 'mens499') {
-      navigate('/product-list?minPrice=499');
+      navigate('/product-list?minPrice=499&gender=male');
     } else if (offerId === 'under1299') {
       navigate('/product-list?maxPrice=1299');
     } else if (offerId === 'starting-women') {

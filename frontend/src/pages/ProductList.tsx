@@ -31,6 +31,8 @@ const ProductList: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const minPrice = params.get('minPrice');
     const maxPrice = params.get('maxPrice');
+    const gender = params.get('gender'); // 1. Read the gender parameter
+
 
     const fetchProducts = async () => {
       setLoading(true);
@@ -41,6 +43,9 @@ const ProductList: React.FC = () => {
       }
       if (maxPrice) {
         queryParams.append('max', maxPrice);
+      }
+      if (gender) {
+        queryParams.append('gender', gender); // 2. Add gender to the API call
       }
 
       try {

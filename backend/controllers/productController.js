@@ -105,23 +105,35 @@ const getAllProductsByBrand = async (req, res) => {
 };
 
 // GET products by price range
+// In your backend product controller file (e.g., productController.js)
+
 const getAllProductsByPrice = async (req, res) => {
   try {
-    // If no min passed, just return all products
-    if (!req.query.min) {
+    // CORRECTED LOGIC: Only return all products if NO price filters are given
+    if (!req.query.min && !req.query.max) {
+      console.log("No price filters found, returning all products.");
       const products = await Product.find({})
         .populate('brand category')
         .sort({ price: 1 });
       return res.json(products);
     }
 
-    const { min, max } = req.query;
+    // 1. Get gender from the request query
+
+    // This part now runs correctly for min, max, or both
+    const { min, max, gender } = req.query;
     const query = {
       price: {
         $gte: parseFloat(min) || 0,
         $lte: max ? parseFloat(max) : Infinity
       }
     };
+
+    // 2. Add gender to the database query if it exists
+    if (gender) {
+      // Use a case-insensitive regex to match "male", "Male", etc.
+      query.gender = new RegExp(`^${gender}$`, 'i');
+    }
 
     const products = await Product.find(query)
       .populate('brand category')

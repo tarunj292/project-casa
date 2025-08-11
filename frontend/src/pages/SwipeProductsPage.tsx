@@ -24,7 +24,13 @@ import { useCart } from "../contexts/CartContext";
 import { useUser } from "../contexts/UserContext";
 import fetchProducts from "../utils/fetchProductforSwipe";
 
-// Product interface to match backend data
+// 1. UPDATED: Added 'brand' to the Product interface
+interface Brand {
+  _id: string;
+  name: string;
+  logo_url?: string;
+}
+
 interface Product {
   _id: string;
   name: string;
@@ -35,7 +41,7 @@ interface Product {
   };
   currency: string;
   tags: string[];
-  // Adding exitDirection for framer-motion exit animation
+  brand: Brand; // Brand is now part of the product
   exitDirection?: "left" | "right";
 }
 
@@ -69,12 +75,11 @@ function SwipeableCard({
     const offsetX = info.offset.x;
     const velocityX = info.velocity.x;
 
-    if (offsetX > 150 || velocityX > 500) { 
+    if (offsetX > 150 || velocityX > 500) {
       onSwipe(product._id, "right");
-    } else if (offsetX < -150 || velocityX < -500) {  
+    } else if (offsetX < -150 || velocityX < -500) {
       onSwipe(product._id, "left");
     } else {
-      // Animate back to center with a tween animation for a direct feel
       animate(x, 0, { type: "tween", duration: 0.2 });
     }
   };
@@ -130,6 +135,20 @@ function SwipeableCard({
           />
 
           <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 text-white select-none">
+            
+            {/* 2. ADDED: Brand logo and name section */}
+            {product.brand && (
+              <div className="flex items-center mb-2">
+                <img
+                  src={product.brand.logo_url || 'https://placehold.co/40x40/333/fff?text=B'}
+                  alt={`${product.brand.name} logo`}
+                  className="w-10 h-10 rounded-full bg-gray-700 border-2 border-white object-contain mr-3"
+                  onError={(e) => { e.currentTarget.src = 'https://placehold.co/40x40/333/fff?text=B'; }}
+                />
+                <span className="font-semibold text-sm">{product.brand.name}</span>
+              </div>
+            )}
+
             <div className="flex items-baseline space-x-2">
               <p className="text-2xl font-bold">
                 ₹
@@ -216,16 +235,17 @@ function SwipeableCard({
   );
 }
 
+// The Deck and SwipeProductsPage components remain the same
 function Deck() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { userData } = useUser();
 
-  // State for products, loading, and pagination
   const [cards, setCards] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
+
   const [curatedItems, setCuratedItems] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreProducts, setHasMoreProducts] = useState(true);
@@ -268,31 +288,30 @@ function Deck() {
       console.log(`✅ Loaded new batch: ${newProducts.length} unique products`);
     }
 
+
     setLoadingMore(false);
   };
 
-  // Initial product load
   useEffect(() => {
     const loadInitialProducts = async () => {
       setLoading(true);
       console.log("🚀 Loading initial products...");
-      const initialProducts = await fetchProducts(1, PRODUCTS_PER_BATCH, []);
 
+      const initialProducts = await fetchProducts(1, PRODUCTS_PER_BATCH, []);
       if (initialProducts.length > 0) {
         const initialProductIds = initialProducts.map((product) => product._id);
         setSeenProductIds(new Set(initialProductIds));
         currentBatchSize.current = initialProducts.length;
-      }
 
+      }
       setCards(initialProducts);
       setCurrentPage(1);
       setHasMoreProducts(initialProducts.length === PRODUCTS_PER_BATCH);
       setLoading(false);
     };
-
     loadInitialProducts();
   }, []);
-
+   
   const loadCuratedList = async () => {
     try {
       if (!userData._id) return; // or navigate('/profile');
@@ -326,9 +345,9 @@ function Deck() {
     }
   };
 
-  // Load user's curated list when component mounts
   useEffect(() => {
-    console.log("🔄 SwipeProductsPage: User data changed:", userData);
+        console.log("🔄 SwipeProductsPage: User data changed:", userData);
+
     if (userData.isLoggedIn) {
       console.log("✅ User is logged in, loading curated list...");
       loadCuratedList();
@@ -338,7 +357,7 @@ function Deck() {
     }
   }, [userData.isLoggedIn]);
 
-  // Effect to load more products when the current batch is finished
+   // Effect to load more products when the current batch is finished
   useEffect(() => {
     // Trigger when cards array is empty, but it's not the initial load
     if (!loading && cards.length === 0 && hasMoreProducts && !loadingMore) {
@@ -348,8 +367,8 @@ function Deck() {
   }, [cards.length, loading, hasMoreProducts, loadingMore]);
 
   // Handle the swipe action from the card component
+  
   const handleSwipe = (productId: string, direction: "left" | "right") => {
-    // If swiped right, add to cart
     if (userData.isLoggedIn === false) {
       navigate("/profile");
     }
@@ -369,22 +388,19 @@ function Deck() {
       setCards((prev) => prev.filter((c) => c._id !== productId));
     }, 350);
   };
-
-  // const handleBack = () => navigate('/');
-  // const handleViewBag = () => navigate('/bag');
-
-  // Handle curated list toggle
   const handleCuratedToggle = async (productId: string) => {
     console.log("💖 Heart clicked! Product ID:", productId);
     console.log("👤 User logged in:", userData.isLoggedIn);
     console.log("📋 Current curated items:", Array.from(curatedItems));
 
+
     if (!userData.isLoggedIn) {
-      console.log("❌ User not logged in, redirecting to profile");
+            console.log("❌ User not logged in, redirecting to profile");
+
       navigate("/profile");
       return;
     }
-
+    // Logic to toggle curated items
     try {
       const userId = userData._id;
       const isCurrentlyInList = curatedItems.has(productId);
@@ -459,7 +475,6 @@ function Deck() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [cards]);
 
-  // const swipedInBatch = useMemo(() => currentBatchSize.current - cards.length, [cards.length]);
 
   if (loading) {
     return (
@@ -492,63 +507,29 @@ function Deck() {
       </div>
     );
   }
-
+  
+  
   return (
     <div className="bg-gray-900 text-white flex flex-col overflow-y-auto">
-      {/* Header
-      <div className="absolute top-0 left-0 right-0 z-20 px-4 py-4 bg-gradient-to-b from-black/50 to-transparent">
-        <div className="flex items-center justify-between">
-          <button onClick={handleBack} className="p-2 bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-gray-700 transition-colors">
-            <ArrowLeft size={20} />
-          </button>
-          <div className="text-center">
-            <p className="text-sm opacity-80">{cards.length} remaining</p>
-            <p className="text-xs opacity-60">Batch {currentPage} • {seenProductIds.size} seen</p>
-          </div>
-          <button onClick={handleViewBag} className="p-2 bg-gray-800/80 backdrop-blur-sm rounded-full relative hover:bg-gray-700 transition-colors">
-            <ShoppingBag size={20} />
-            {addedToCart.size > 0 && (
-              <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {addedToCart.size}
-              </span>
-            )}
-          </button>
-        </div>
-      </div> */}
+            <div className="py-4 flex items-center justify-center w-full overflow-hidden px-4 select-none">
 
-      {/* Progress Bar
-      <div className="absolute top-16 left-4 right-4 z-20">
-        <div className="bg-gray-700 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-2 transition-all duration-300"
-            style={{ width: `${currentBatchSize.current > 0 ? (swipedInBatch / currentBatchSize.current) * 100 : 0}%` }}
-          />
-        </div>
-        <div className="flex justify-between items-center mt-1">
-          <span className="text-xs text-gray-400">Batch {currentPage}</span>
-          <span className="text-xs text-gray-400">{swipedInBatch}/{currentBatchSize.current} swiped</span>
-        </div>
-      </div> */}
+      <div className="w-full max-w-sm h-[600px] relative">
+        <AnimatePresence>
+          {cards.map((product, index) => (
+            <SwipeableCard
+              key={product._id}
+              product={product}
+              onSwipe={handleSwipe}
+              index={index}
+              total={cards.length}
+              curatedItems={curatedItems}
+              onCuratedToggle={handleCuratedToggle}
+              addToCart={addToCart}
+            />
+          ))}
+        </AnimatePresence>
 
-      {/* Card Deck */}
-      <div className="py-4 flex items-center justify-center w-full overflow-hidden px-4 select-none">
-        <div className="w-full max-w-sm h-[600px] relative">
-          <AnimatePresence>
-            {cards.map((product, index) => (
-              <SwipeableCard
-                key={product._id}
-                product={product}
-                onSwipe={handleSwipe}
-                index={index}
-                total={cards.length}
-                curatedItems={curatedItems}
-                onCuratedToggle={handleCuratedToggle}
-                addToCart={addToCart}
-              />
-            ))}
-          </AnimatePresence>
-
-          {/* Loading indicator for next batch */}
+        {/* Loading indicator for next batch */}
           {loadingMore && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 rounded-2xl">
               <div className="text-center text-white bg-black/50 backdrop-blur-md p-4 rounded-lg">
