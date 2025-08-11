@@ -147,9 +147,9 @@ const CuratedListPage: React.FC = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer dummy-token', // Dummy token for backend
+          // 'Authorization': 'Bearer dummy-token', // Dummy token for backend
         },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({ userId, productId }),
       });
 
       if (!response.ok) {
