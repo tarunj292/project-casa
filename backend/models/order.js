@@ -49,13 +49,17 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['Pending', 'Paid', 'Failed', "UPI", "Card"],
+    enum: ['Pending', 'Paid', 'Failed', "Razorpay"],
     default: 'Pending',
     required: true
   },
   totalAmount: {
     type: Number,
     required: true
+  },
+  paymentId: {
+    type: String,
+    default: null
   },
   createdAt: {
     type: Date,

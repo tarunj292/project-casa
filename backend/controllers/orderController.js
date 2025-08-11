@@ -9,7 +9,8 @@ const createOrder = async (req, res) => {
       address,
       estimatedDelivery,
       paymentStatus,
-      totalAmount
+      totalAmount,
+      paymentId
     } = req.body;
 
     if (!user || !products || products.length === 0 || !address || !estimatedDelivery || !paymentStatus) {
@@ -44,7 +45,8 @@ const createOrder = async (req, res) => {
       address,
       estimatedDelivery,
       paymentStatus,
-      totalAmount
+      totalAmount,
+      paymentId: paymentId || null
     });
 
     const saved = await newOrder.save();
@@ -80,6 +82,26 @@ const getOrderById = async (req, res) => {
   }
 };
 
+// GET orders by user ID
+const getOrdersByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const orders = await Order.find({ user: userId })
+      .populate('user', 'display_name email phone')
+      .populate('products.product', 'name price images')
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    res.json({ success: true, orders });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // UPDATE order status (delivery or payment)
 const updateOrder = async (req, res) => {
   try {
@@ -110,6 +132,7 @@ module.exports = {
   createOrder,
   getAllOrders,
   getOrderById,
+  getOrdersByUserId,
   updateOrder,
   deleteOrder
 };
