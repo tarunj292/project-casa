@@ -55,9 +55,9 @@ const CollectionPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen pb-20">
-      <div className="px-4 py-4 border-b border-gray-800">
-        <div className="flex items-center justify-between mb-4">
+    <div className="bg-gray-900 text-white min-h-screen pt-5">
+      <div className="px-5 border-b border-gray-800">
+        <div className="flex items-center justify-between mb-5">
           <div className="flex items-center space-x-3">
             <button onClick={() => navigate('/')} className="p-1">
               <ArrowLeft size={24} className="text-white hover:text-blue-400 transition-colors" />
