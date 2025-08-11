@@ -14,7 +14,7 @@ interface Brand {
 const CollectionPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState('MAN');
+  const [activeTab, setActiveTab] = useState('ALL BRANDS');
   const [activeCategory, setActiveCategory] = useState('Brands');
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loadingBrands, setLoadingBrands] = useState(true);
