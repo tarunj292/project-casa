@@ -21,6 +21,7 @@ import OnboardingPage from "./pages/OnboardingPage";
 import ProductList from "./pages/ProductList";
 import ProductsPage from "./pages/ProductsPage";
 import CuratedListPage from "./pages/CuratedListPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 import "./index.css";
 import LocationPage from "./pages/LocationPage";
 
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/product/:id" element={<ProductPage />} />
                 <Route path="/curatedList" element={<CuratedListPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/my-orders" element={<MyOrdersPage />} />
                 <Route
                   path="/manage-account"
                   element={<ManageAccountPage />}

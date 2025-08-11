@@ -145,7 +145,10 @@ const CuratedListPage: React.FC = () => {
       const userId = userData._id
       const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          // 'Authorization': 'Bearer dummy-token', // Dummy token for backend
+        },
         body: JSON.stringify({ userId, productId }),
       });
 

@@ -11,6 +11,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const curatedListRoutes = require('./routes/curatedList');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/curatedlist', curatedListRoutes); // ✅ no hyphen
+app.use('/api/payments', paymentRoutes);
 
 
 // Default route

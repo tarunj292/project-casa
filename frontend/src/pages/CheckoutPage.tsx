@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, CreditCard, Truck, CheckCircle, Minus, Plus } from '
 import { CartData, useCart } from '../contexts/CartContext';
 import axios from "axios";
 import { useUser } from '../contexts/UserContext';
+import { useRazorpay } from '@razorpay/checkout';
 
 // Type definitions
 interface Product {
@@ -92,32 +93,23 @@ const CheckoutPage: React.FC = () => {
   ];
 
   const paymentMethods: PaymentMethod[] = [
-    { id: 1, type: 'UPI', name: 'PhonePe / Google Pay / Paytm', icon: '📱' },
-    { id: 2, type: 'Card', name: 'Credit / Debit Card', icon: '💳' }
+    { id: 1, type: 'Razorpay', name: 'Pay with Razorpay', icon: '💳' }
   ];
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    setTimeout(async () => {
+    
+    try {
+      // Handle Razorpay payment
+      await handleRazorpayPayment();
+    } catch (error) {
+      console.error('Payment error:', error);
       setIsProcessing(false);
-      const response = await createOrder(cart, addresses[selectedAddress].address, paymentMethods[selectedPayment].type)
-      if (response.success){
-        await deleteCart()
-        navigate('/order-success', {
-          state: {
-            orderId: 'ORD' + Date.now(),
-            items: orderItems,
-            total: orderTotal,
-            address: addresses[selectedAddress]
-          }
-        });
-      } else {
-        //implement else part, if cart does not create order
-      }
-    }, 2000);
+      alert('Payment failed. Please try again.');
+    }
   };
 
-  const createOrder = async (cart: CartData, deliveryAddress: string, paymentStatus: string) => {
+  const createOrder = async (cart: CartData, deliveryAddress: string, paymentStatus: string, paymentId?: string) => {
     try {
       const response = await axios.post("http://localhost:5002/api/orders/create", {
         user: userData._id,
@@ -126,7 +118,8 @@ const CheckoutPage: React.FC = () => {
         estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
         paymentStatus: paymentStatus,
         deliveryStatus: "pending",
-        totalAmount: orderTotal
+        totalAmount: orderTotal,
+        paymentId: paymentId
       });
       return response.data
     } catch (error: any){
@@ -162,6 +155,82 @@ const CheckoutPage: React.FC = () => {
       console.error('Failed to update quantity:', error);
     }
   }
+
+  const handleRazorpayPayment = async () => {
+    try {
+      // Create Razorpay order
+      const paymentOrderResponse = await axios.post('http://localhost:5002/api/payments/create-order', {
+        amount: orderTotal,
+        currency: 'INR',
+        receipt: 'order_' + Date.now()
+      });
+
+      if (!paymentOrderResponse.data.success) {
+        throw new Error('Failed to create payment order');
+      }
+
+      const { order } = paymentOrderResponse.data;
+
+      // Initialize Razorpay
+      const options = {
+        key: 'rzp_live_NSJ391QbwVovIS', // LIVE KEY
+        amount: order.amount,
+        currency: order.currency,
+        name: 'CASA',
+        description: 'Payment for your order',
+        order_id: order.id,
+        handler: async function (response: any) {
+          try {
+            // Verify payment
+            const verifyResponse = await axios.post('http://localhost:5002/api/payments/verify', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            });
+
+            if (verifyResponse.data.success) {
+              // Payment successful, create order
+              const orderResponse = await createOrder(cart, addresses[selectedAddress].address, 'Paid', response.razorpay_payment_id);
+              if (orderResponse.success) {
+                await deleteCart();
+                setIsProcessing(false);
+                navigate('/order-success', {
+                  state: {
+                    orderId: 'ORD' + Date.now(),
+                    items: orderItems,
+                    total: orderTotal,
+                    address: addresses[selectedAddress],
+                    paymentId: response.razorpay_payment_id
+                  }
+                });
+              }
+            } else {
+              throw new Error('Payment verification failed');
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            setIsProcessing(false);
+            alert('Payment verification failed. Please try again.');
+          }
+        },
+        prefill: {
+          name: userData?.name || '',
+          email: userData?.email || '',
+          contact: userData?.phoneNumber || ''
+        },
+        theme: {
+          color: '#10B981'
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error('Razorpay payment error:', error);
+      setIsProcessing(false);
+      alert('Failed to initialize payment. Please try again.');
+    }
+  };
 
   return (
     <div className="relative max-w-md mx-auto min-h-screen bg-gray-900 text-white overflow-x-hidden">
@@ -308,19 +377,18 @@ const CheckoutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Place Order */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
-        <button
-          onClick={handlePlaceOrder}
-          disabled={isProcessing}
-          className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isProcessing ? 'Processing...' : `Place Order - ₹${orderTotal}`}
-        </button>
-      </div>
+             {/* Place Order */}
+       <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-4">
+         <button
+           onClick={handlePlaceOrder}
+           disabled={isProcessing}
+           className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+         >
+           {isProcessing ? 'Processing...' : `Pay with Razorpay - ₹${orderTotal}`}
+         </button>
+       </div>
     </div>
   );
 };
 
 export default CheckoutPage;
-
