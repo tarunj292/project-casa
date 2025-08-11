@@ -602,7 +602,7 @@ function Deck() {
           </button>
           {writtenPolicyOpen && (
             <p className="text-gray-300 text-base leading-relaxed mt-4">
-              This is written policy
+              This is Return policy
             </p>
           )}
         </div>

@@ -4,6 +4,7 @@ const {
   createOrder,
   getAllOrders,
   getOrderById,
+  getOrdersByUserId,
   updateOrder,
   deleteOrder
 } = require('../controllers/orderController');
@@ -16,6 +17,9 @@ router.get('/', getAllOrders);
 
 // Get a specific order by ID
 router.get('/id/:id', getOrderById);
+
+// Get orders by user ID
+router.get('/user/:userId', getOrdersByUserId);
 
 // Update an order (e.g., deliveryStatus or paymentStatus)
 router.put('/update/:id', updateOrder);

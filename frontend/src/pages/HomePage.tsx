@@ -197,7 +197,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   const getLatestDropsByGender = (gender: 'MAN' | 'WOMAN') => {
-    return latestBrands.map(brand => {
+    return latestBrands.slice(0, 4).map(brand => {
       const colors = ['bg-yellow-600', 'bg-gray-800', 'bg-purple-400', 'bg-blue-600', 'bg-pink-500', 'bg-red-500', 'bg-green-600'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       return {
@@ -576,8 +576,8 @@ const HomePage: React.FC = () => {
         ) : allBrands.length === 0 ? (
           <p className="text-gray-400">No brands found.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {allBrands.map((brand) => (
+                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+             {allBrands.slice(0, 8).map((brand) => (
               <button
                 key={brand._id}
                 onClick={() => handleBrandClick(brand._id)}
