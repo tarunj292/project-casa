@@ -80,13 +80,15 @@ const CuratedListPage: React.FC = () => {
 
   const removeFromCuratedList = async (productId: string) => {
     try {
+       console.log('Sending userId:', userData._id); // <-- Add this line
+    console.log('Sending productId:', productId); // <-- Add this line
       const response = await fetch('http://localhost:5002/api/curatedlist/remove', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer dummy-token', // Dummy token for backend
         },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({ userId: userData._id, productId }),
       });
 
       if (!response.ok) {

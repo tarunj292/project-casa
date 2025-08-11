@@ -58,11 +58,29 @@ const getProductById = async (req, res) => {
   }
 };
 
-// GET products by category (using tag field)
+// GET products by category (using category field)
 const getProductByCategory = async (req, res) => {
   try {
     const { category } = req.query;
-    const products = await Product.find({ tags: category });
+
+    // Find products by category ID or category name
+    let query;
+    if (mongoose.Types.ObjectId.isValid(category)) {
+      // If category is a valid ObjectId, search by category ID
+      query = { category: category };
+    } else {
+      // If category is a string, find the category by name first
+      const categoryDoc = await Category.findOne({ name: category });
+      if (!categoryDoc) {
+        return res.status(404).json({ error: 'Category not found' });
+      }
+      query = { category: categoryDoc._id };
+    }
+
+    const products = await Product.find(query)
+      .populate('brand', 'name logo_url')
+      .populate('category', 'name');
+
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
