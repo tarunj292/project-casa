@@ -35,7 +35,7 @@ interface Product {
 }
 
 const ProductPage: React.FC = () => {
-  const { productId } = useParams<{ productId: string }>(); // Specify type for useParams
+  const { id } = useParams<{ id: string }>(); // Specify type for useParams
   const navigate = useNavigate();
   // Removed wishlist context and hooks
   const { addToCart } = useCart();
@@ -53,14 +53,14 @@ const ProductPage: React.FC = () => {
 
 
   useEffect(() => {
-    if (productId) {
-      fetchProduct(productId);
+    if (id) {
+      fetchProduct(id);
     }
-  }, [productId]);
+  }, [id]);
 
   const fetchProduct = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5002/api/products/${id}`);
+      const response = await fetch(`http://localhost:5002/api/products/id/${id}`);
       const data: Product = await response.json(); // Explicitly type data
       setProduct(data);
       // Set a default selected size if product has sizes and no size is pre-selected
@@ -88,10 +88,20 @@ const ProductPage: React.FC = () => {
       console.error('Product not loaded');
       return;
     }
-    console.log('Buy Now clicked for product:', product._id, { size: selectedSize });
+    console.log('Buy Now clicked for product:', product, { size: selectedSize });
     navigate('/checkout', {
       state: {
-        product: { ...product, selectedSize },
+        product: {
+          id: product._id,
+          name: product.name,
+          brand: product.brand.name,
+          price: typeof product.price === 'object' && product.price !== null && '$numberDecimal' in product.price
+          ? product.price.$numberDecimal
+          : product.price,
+          images: product.images[0],
+          selectedSize: selectedSize,
+          quantity: 1
+        },
         directBuy: true
       }
     });
