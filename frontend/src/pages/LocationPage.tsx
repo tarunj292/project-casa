@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// --- small loader for Google Maps JS API (Places) ---
+/* ---------------- Config ---------------- */
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
+
+/* ---------------- Google Maps Places loader ---------------- */
 function loadGoogleMaps(apiKey: string): Promise<void> {
   if ((window as any).google?.maps?.places) return Promise.resolve();
-
   return new Promise((resolve, reject) => {
     const existing = document.getElementById("google-maps-script");
     if (existing) {
@@ -16,16 +19,15 @@ function loadGoogleMaps(apiKey: string): Promise<void> {
     s.id = "google-maps-script";
     s.async = true;
     s.defer = true;
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
     s.onload = () => resolve();
     s.onerror = reject;
     document.head.appendChild(s);
   });
 }
 
-// --- helpers to pull components safely from a Place result ---
+/* ---------------- Place parsing helpers ---------------- */
 type AddressComponents = google.maps.GeocoderAddressComponent[];
-
 const getComp = (comps: AddressComponents, type: string) =>
   comps.find((c) => c.types.includes(type));
 
@@ -38,17 +40,13 @@ function parseAddressComponents(place: google.maps.places.PlaceResult) {
     getComp(comps, "administrative_area_level_2")?.long_name ||
     "";
 
-  const state =
-    getComp(comps, "administrative_area_level_1")?.long_name || "";
-
+  const state = getComp(comps, "administrative_area_level_1")?.long_name || "";
   const pincode = getComp(comps, "postal_code")?.long_name || "";
-
   const country =
     getComp(comps, "country")?.long_name ||
     getComp(comps, "country")?.short_name ||
     "India";
 
-  // A simple line for address (street + number if present)
   const route = getComp(comps, "route")?.long_name || "";
   const streetNumber = getComp(comps, "street_number")?.long_name || "";
   const sublocality =
@@ -64,26 +62,25 @@ function parseAddressComponents(place: google.maps.places.PlaceResult) {
   return { city, state, pincode, country, formatted };
 }
 
-// --- validators (simple/for India) ---
-const isEmail = (v: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-
+/* ---------------- Validators ---------------- */
+const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 const isIndianPhone = (v: string) =>
   /^(?:\+?91[-\s]?)?[6-9]\d{9}$/.test(v.replace(/\s/g, ""));
-
 const isPincode = (v: string) => /^\d{6}$/.test(v.trim());
 
-// --- types we’ll store ---
+/* ---------------- Types ---------------- */
 interface DeliveryAddress {
   fullName: string;
   phone: string;
   email: string;
-  addressSearch: string; // what user typed/selected
-  addressLine: string;   // formatted street line
+  addressSearch: string;
+  addressLine: string;
+  flatNumber: string;
+  wingBuilding: string;
   city: string;
   state: string;
   pincode: string;
-  country: string;       // default "India"
+  country: string;
 }
 
 const defaults: DeliveryAddress = {
@@ -92,44 +89,72 @@ const defaults: DeliveryAddress = {
   email: "",
   addressSearch: "",
   addressLine: "",
+  flatNumber: "",
+  wingBuilding: "",
   city: "",
   state: "",
   pincode: "",
   country: "India",
 };
 
+type Step = 1 | 2 | 3 | 4;
+
 const LocationPage: React.FC = () => {
   const navigate = useNavigate();
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+
   const [loadingMaps, setLoadingMaps] = useState(true);
-
-  const [form, setForm] = useState<DeliveryAddress>(() => {
-    const cached = localStorage.getItem("deliveryAddress");
-    return cached ? JSON.parse(cached) : defaults;
-  });
-
+  const [mapsError, setMapsError] = useState<string | null>(null);
+  const [step, setStep] = useState<Step>(1);
+  const [form, setForm] = useState<DeliveryAddress>(defaults);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
 
-  // load maps
+  /* Build final one-line address safely */
+  const finalAddress = useMemo(() => {
+    return [
+      form.flatNumber && form.wingBuilding
+        ? `${form.flatNumber} ${form.wingBuilding}`
+        : form.flatNumber || form.wingBuilding || "",
+      form.addressLine || form.addressSearch,
+      [form.city, form.state].filter(Boolean).join(", "),
+      form.pincode,
+      form.country,
+    ]
+      .filter(Boolean)
+      .join(", ");
+  }, [form]);
+
+  /* Load maps */
   useEffect(() => {
     let mounted = true;
+    if (!apiKey) {
+      setMapsError("Google Maps API key missing.");
+      setLoadingMaps(false);
+      return;
+    }
     loadGoogleMaps(apiKey)
       .then(() => mounted && setLoadingMaps(false))
-      .catch(() => mounted && setLoadingMaps(false));
+      .catch(() => {
+        if (mounted) {
+          setMapsError("Failed to load Google Maps.");
+          setLoadingMaps(false);
+        }
+      });
     return () => {
       mounted = false;
     };
   }, [apiKey]);
 
-  // init autocomplete
+  /* Init autocomplete */
   useEffect(() => {
-    if (loadingMaps || !inputRef.current || autocompleteRef.current) return;
+    if (loadingMaps || !inputRef.current || autocompleteRef.current || mapsError) return;
 
+    // NOTE: Autocomplete is legacy for new projects post-2025; if needed, switch to PlaceAutocompleteElement.
     const ac = new google.maps.places.Autocomplete(inputRef.current as HTMLInputElement, {
       types: ["geocode"],
-      // componentRestrictions: { country: "in" } // lock to India if you want
     });
     ac.addListener("place_changed", () => {
       const place = ac.getPlace();
@@ -148,24 +173,26 @@ const LocationPage: React.FC = () => {
     });
 
     autocompleteRef.current = ac;
-  }, [loadingMaps]);
+  }, [loadingMaps, mapsError]);
 
-  // handle inputs
-  const update = (key: keyof DeliveryAddress, value: string) => {
+  /* Helpers */
+  const update = (key: keyof DeliveryAddress, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
-  };
 
-  // validate
-  const validate = (): boolean => {
+  const validateStep = (s: Step): boolean => {
     const e: Record<string, string> = {};
-    if (!form.fullName.trim()) e.fullName = "Required";
-    if (!isIndianPhone(form.phone)) e.phone = "Invalid Indian number";
-    if (!isEmail(form.email)) e.email = "Invalid email";
-    if (!form.addressSearch.trim()) e.addressSearch = "Pick an address";
-    if (!form.city.trim()) e.city = "City required";
-    if (!form.state.trim()) e.state = "State required";
-    if (!isPincode(form.pincode)) e.pincode = "6-digit pincode";
-    if (!form.country.trim()) e.country = "Required";
+    if (s === 1 && !form.addressSearch.trim()) e.addressSearch = "Pick an address";
+    if (s === 2) {
+      if (!form.city.trim()) e.city = "City required";
+      if (!form.state.trim()) e.state = "State required";
+      if (!isPincode(form.pincode)) e.pincode = "6-digit pincode";
+      if (!form.country.trim()) e.country = "Required";
+    }
+    if (s === 3) {
+      if (!form.fullName.trim()) e.fullName = "Required";
+      if (!isIndianPhone(form.phone)) e.phone = "Invalid number";
+      if (!isEmail(form.email)) e.email = "Invalid email";
+    }
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -183,169 +210,356 @@ const LocationPage: React.FC = () => {
     );
   }, [form]);
 
-  const handleSave = () => {
-    if (!validate()) return;
-
-    localStorage.setItem("deliveryAddress", JSON.stringify(form));
-    // if you have a backend, POST it here too.
-    // await fetch('/api/users/address', { method:'POST', body: JSON.stringify(form) })
-    navigate(-1); // go back to previous page
+  const next = () => {
+    if (!validateStep(step)) return;
+    setStep((s) => (s === 4 ? 4 : ((s + 1) as Step)));
   };
 
+  const back = () => setStep((s) => (s === 1 ? 1 : ((s - 1) as Step)));
+
+  /* Resolve userId robustly */
+  const resolveUserId = async (): Promise<string | null> => {
+    // 1) Try common keys in local/session storage
+    const keys = ["userData", "user", "currentUser"];
+    for (const k of keys) {
+      const raw = localStorage.getItem(k) || sessionStorage.getItem(k);
+      if (!raw) continue;
+      try {
+        const obj = JSON.parse(raw);
+        const id = obj?._id || obj?.id || obj?.user?._id || obj?.user?.id;
+        if (id) return String(id);
+      } catch {}
+    }
+    const directId = localStorage.getItem("userId") || sessionStorage.getItem("userId");
+    if (directId) return String(directId);
+
+    // 2) Fallback: if we have a phone, look up user by phone via your GET /api/users?phone=...
+    const phone =
+      localStorage.getItem("phone") ||
+      sessionStorage.getItem("phone") ||
+      (form.phone?.trim() || "");
+    if (phone) {
+      try {
+        const res = await axios.get(`${API_BASE}/users`, { params: { phone } });
+        if (Array.isArray(res.data) && res.data.length > 0) {
+          return String(res.data[0]._id);
+        }
+      } catch (e) {
+        console.warn("User lookup by phone failed:", e);
+      }
+    }
+    return null;
+  };
+
+  /* Save to backend */
+  const handleSave = async () => {
+    if (!canSave) return;
+
+    try {
+      const userId = await resolveUserId();
+      if (!userId) {
+        console.error("❌ Could not resolve user ID from storage or phone lookup.");
+        alert("Please log in again — we couldn't find your account.");
+        return;
+      }
+
+      const payload = {
+        billing_customer_name: form.fullName,
+        billing_phone: form.phone,
+        billing_email: form.email,
+        billing_address: `${form.flatNumber} ${form.wingBuilding}`.trim(),
+        billing_address_2: form.addressLine || form.addressSearch,
+        billing_city: form.city,
+        billing_pincode: String(form.pincode), // send as string
+        billing_state: form.state,
+        billing_country: form.country,
+      };
+console.log("Saving address for user:", userId, payload);
+      await axios.post(`${API_BASE}/users/${userId}/shipment`, payload);
+
+      console.log("✅ Shipment address saved successfully");
+      navigate(-1);
+    } catch (err) {
+      console.error("❌ Failed to save address", err);
+      alert("Could not save address. Please try again.");
+    }
+  };
+
+  /* UI */
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <div className="max-w-lg mx-auto px-4 py-5">
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="text-sm opacity-70 hover:opacity-100"
-          >
+          <button onClick={() => navigate(-1)} className="text-sm opacity-70 hover:opacity-100">
             ← Back
           </button>
           <h1 className="text-xl font-semibold">Delivery Details</h1>
-          <div className="w-8" />
+          <div className="text-sm opacity-70">Step {step}/4</div>
         </div>
 
-        {/* Contact */}
-        <div className="bg-gray-900 rounded-2xl p-4 shadow-lg mb-4">
-          <h2 className="text-base font-medium mb-3 opacity-90">Contact</h2>
-          <div className="grid gap-3">
-            <div>
-              <label className="text-sm opacity-80">Full Name</label>
-              <input
-                value={form.fullName}
-                onChange={(e) => update("fullName", e.target.value)}
-                placeholder="E.g., Jay Lulia"
-                className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.fullName && (
-                <p className="text-xs text-red-400 mt-1">{errors.fullName}</p>
-              )}
-            </div>
+        {/* Step 1: Google Maps location search */}
+        {step === 1 && (
+          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
+            <h2 className="text-base font-medium mb-3 opacity-90">Locate Your Address</h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm opacity-80">Phone</label>
-                <input
-                  value={form.phone}
-                  onChange={(e) => update("phone", e.target.value)}
-                  placeholder="+91 98XXXXXXXX"
-                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                {errors.phone && (
-                  <p className="text-xs text-red-400 mt-1">{errors.phone}</p>
-                )}
-              </div>
-              <div>
-                <label className="text-sm opacity-80">Email</label>
-                <input
-                  value={form.email}
-                  onChange={(e) => update("email", e.target.value)}
-                  placeholder="you@example.com"
-                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                {errors.email && (
-                  <p className="text-xs text-red-400 mt-1">{errors.email}</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Address */}
-        <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
-          <h2 className="text-base font-medium mb-3 opacity-90">Address</h2>
-
-          <div className="mb-3">
-            <label className="text-sm opacity-80">Search Address</label>
+            <label className="text-sm opacity-80 mb-2 block">Search Address</label>
             <input
               ref={inputRef}
               value={form.addressSearch}
               onChange={(e) => update("addressSearch", e.target.value)}
               placeholder="Start typing and pick from suggestions"
-              className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              disabled={loadingMaps}
+              disabled={loadingMaps || !!mapsError}
+              className="flex-1 h-10 rounded-full bg-gradient-to-br from-[#DAE8F7] to-[#D6E5F7] text-gray-900 placeholder-gray-500 px-3 outline-none text-[15px]"
             />
             {errors.addressSearch && (
-              <p className="text-xs text-red-400 mt-1">
-                {errors.addressSearch}
+              <p className="text-xs text-red-400 mt-2">{errors.addressSearch}</p>
+            )}
+            {loadingMaps && <p className="text-xs mt-2 opacity-70">Loading maps…</p>}
+            {mapsError && <p className="text-xs mt-2 text-red-400">{mapsError}</p>}
+            {form.addressLine && (
+              <p className="text-sm opacity-80 mt-3">
+                <span className="opacity-60">Detected:</span> {form.addressLine}
               </p>
             )}
-            {loadingMaps && (
-              <p className="text-xs mt-1 opacity-70">Loading maps…</p>
-            )}
-          </div>
 
-          <div className="mb-3">
-            <label className="text-sm opacity-80">Address Line</label>
-            <input
-              value={form.addressLine}
-              onChange={(e) => update("addressLine", e.target.value)}
-              placeholder="Flat / House / Street"
-              className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="text-sm opacity-80">City</label>
-              <input
-                value={form.city}
-                onChange={(e) => update("city", e.target.value)}
-                className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.city && (
-                <p className="text-xs text-red-400 mt-1">{errors.city}</p>
-              )}
-            </div>
-            <div>
-              <label className="text-sm opacity-80">State</label>
-              <input
-                value={form.state}
-                onChange={(e) => update("state", e.target.value)}
-                className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.state && (
-                <p className="text-xs text-red-400 mt-1">{errors.state}</p>
-              )}
+            <div className="flex gap-3 mt-5">
+              <button
+                onClick={next}
+                className="flex-1 rounded-xl px-4 py-3 font-semibold bg-indigo-600 hover:bg-indigo-500"
+              >
+                Next: Address Fields
+              </button>
             </div>
           </div>
+        )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-            <div>
-              <label className="text-sm opacity-80">Pincode</label>
-              <input
-                value={form.pincode}
-                onChange={(e) => update("pincode", e.target.value)}
-                inputMode="numeric"
-                className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.pincode && (
-                <p className="text-xs text-red-400 mt-1">{errors.pincode}</p>
-              )}
+        {/* Step 2: Address fields (Flat/Wing + City/State/Pincode/Country) */}
+        {step === 2 && (
+          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
+            <h2 className="text-base font-medium mb-3 opacity-90">Address Details</h2>
+
+            {/* Flat + Wing */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="text-sm opacity-80">Flat / House No.</label>
+                <input
+                  value={form.flatNumber}
+                  onChange={(e) => update("flatNumber", e.target.value)}
+                  placeholder="eg: 705"
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.flatNumber && (
+                  <p className="text-xs text-red-400 mt-1">{errors.flatNumber}</p>
+                )}
+              </div>
+              <div>
+                <label className="text-sm opacity-80">Wing / Building</label>
+                <input
+                  value={form.wingBuilding}
+                  onChange={(e) => update("wingBuilding", e.target.value)}
+                  placeholder="eg: A Wing"
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.wingBuilding && (
+                  <p className="text-xs text-red-400 mt-1">{errors.wingBuilding}</p>
+                )}
+              </div>
             </div>
-            <div>
-              <label className="text-sm opacity-80">Country</label>
-              <input
-                value={form.country}
-                onChange={(e) => update("country", e.target.value)}
-                className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              {errors.country && (
-                <p className="text-xs text-red-400 mt-1">{errors.country}</p>
-              )}
+
+            {/* City/State */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-sm opacity-80">City</label>
+                <input
+                  value={form.city}
+                  onChange={(e) => update("city", e.target.value)}
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.city && <p className="text-xs text-red-400 mt-1">{errors.city}</p>}
+              </div>
+              <div>
+                <label className="text-sm opacity-80">State</label>
+                <input
+                  value={form.state}
+                  onChange={(e) => update("state", e.target.value)}
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.state && <p className="text-xs text-red-400 mt-1">{errors.state}</p>}
+              </div>
+            </div>
+
+            {/* Pincode/Country */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+              <div>
+                <label className="text-sm opacity-80">Pincode</label>
+                <input
+                  value={form.pincode}
+                  onChange={(e) => update("pincode", e.target.value)}
+                  inputMode="numeric"
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.pincode && <p className="text-xs text-red-400 mt-1">{errors.pincode}</p>}
+              </div>
+              <div>
+                <label className="text-sm opacity-80">Country</label>
+                <input
+                  value={form.country}
+                  onChange={(e) => update("country", e.target.value)}
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.country && <p className="text-xs text-red-400 mt-1">{errors.country}</p>}
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-5">
+              <button onClick={back} className="flex-1 rounded-xl px-4 py-3 font-semibold bg-gray-800 hover:bg-gray-700">
+                Back
+              </button>
+              <button onClick={next} className="flex-1 rounded-xl px-4 py-3 font-semibold bg-indigo-600 hover:bg-indigo-500">
+                Next: Contact Info
+              </button>
             </div>
           </div>
+        )}
 
-          <button
-            onClick={handleSave}
-            disabled={!canSave}
-            className={`mt-5 w-full rounded-xl px-4 py-3 font-semibold transition
-              ${canSave ? "bg-indigo-600 hover:bg-indigo-500" : "bg-gray-700 opacity-60 cursor-not-allowed"}`}
-          >
-            Save & Continue
-          </button>
-        </div>
+        {/* Step 3: Contact Info */}
+        {step === 3 && (
+          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
+            <h2 className="text-base font-medium mb-3 opacity-90">Contact Information</h2>
+
+            <div className="grid gap-3">
+              <div>
+                <label className="text-sm opacity-80">Full Name</label>
+                <input
+                  value={form.fullName}
+                  onChange={(e) => update("fullName", e.target.value)}
+                  placeholder="eg: John Doe"
+                  className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                {errors.fullName && <p className="text-xs text-red-400 mt-1">{errors.fullName}</p>}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm opacity-80">Phone</label>
+                  <input
+                    value={form.phone}
+                    onChange={(e) => update("phone", e.target.value)}
+                    placeholder="+91 98XXXXXXXX"
+                    className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  {errors.phone && <p className="text-xs text-red-400 mt-1">{errors.phone}</p>}
+                </div>
+                <div>
+                  <label className="text-sm opacity-80">Email</label>
+                  <input
+                    value={form.email}
+                    onChange={(e) => update("email", e.target.value)}
+                    placeholder="you@example.com"
+                    className="mt-1 w-full rounded-xl bg-gray-800 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-5">
+              <button onClick={back} className="flex-1 rounded-xl px-4 py-3 font-semibold bg-gray-800 hover:bg-gray-700">
+                Back
+              </button>
+              <button onClick={next} className="flex-1 rounded-xl px-4 py-3 font-semibold bg-indigo-600 hover:bg-indigo-500">
+                Review & Confirm
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 4: Review & Confirm */}
+        {step === 4 && (
+          <div className="bg-gray-900 rounded-2xl p-4 shadow-lg">
+            <h2 className="text-base font-medium mb-4 opacity-90">Review Address</h2>
+
+            {/* Final one-line preview */}
+            <div className="mb-4">
+              <div className="opacity-70 text-sm mb-1">Final Address</div>
+              <div className="bg-gray-800 rounded-xl p-3 text-sm">{finalAddress}</div>
+            </div>
+
+            {/* Detailed breakdown */}
+            <div className="space-y-3 text-sm">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="opacity-70">Flat / House No.</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.flatNumber || "-"}</div>
+                </div>
+                <div>
+                  <div className="opacity-70">Wing / Building</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.wingBuilding || "-"}</div>
+                </div>
+              </div>
+
+              <div>
+                <div className="opacity-70">Searched / Street Address</div>
+                <div className="bg-gray-800 rounded-xl p-3">
+                  {form.addressLine || form.addressSearch || "-"}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="opacity-70">City</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.city}</div>
+                </div>
+                <div>
+                  <div className="opacity-70">State</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.state}</div>
+                </div>
+                <div>
+                  <div className="opacity-70">Pincode</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.pincode}</div>
+                </div>
+                <div>
+                  <div className="opacity-70">Country</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.country}</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="opacity-70">Full Name</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.fullName}</div>
+                </div>
+                <div>
+                  <div className="opacity-70">Phone</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.phone}</div>
+                </div>
+                <div className="col-span-2">
+                  <div className="opacity-70">Email</div>
+                  <div className="bg-gray-800 rounded-xl p-3">{form.email}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={back}
+                className="flex-1 rounded-xl px-4 py-3 font-semibold bg-gray-800 hover:bg-gray-700"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={!canSave}
+                className={`flex-1 rounded-xl px-4 py-3 font-semibold ${
+                  canSave ? "bg-indigo-600 hover:bg-indigo-500" : "bg-gray-700 cursor-not-allowed opacity-60"
+                }`}
+              >
+                Save & Continue
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
