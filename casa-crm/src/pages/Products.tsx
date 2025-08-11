@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Filter, Plus, Star, Edit, ShoppingBag } from 'lucide-react';
 import axios from 'axios'
+import { useBrand } from '../contexts/BrandContext';
 
 const Products = () => {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [show, setShow] = useState(false)
+  const { brand } = useBrand();
 
   const categories = [
     'All',
@@ -61,7 +62,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/api/products/brand/6891d5fd3b095cfe19090dd3');
+        const response = await axios.get(`http://localhost:5002/api/products/brand/${brand?._id}`);
         setProducts(response.data);
         console.log(response.data)
       } catch (error) {

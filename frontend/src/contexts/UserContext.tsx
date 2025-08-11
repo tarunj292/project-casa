@@ -40,7 +40,8 @@ const loadUserDataFromStorage = (): UserData => {
       if (
         typeof parsed === 'object' &&
         parsed !== null &&
-        typeof parsed.isLoggedIn === 'boolean'
+        typeof parsed.isLoggedIn === 'boolean' &&
+        parsed.idLoggedIn === false
       ) {
         // ✅ Allow partially valid data if user is logged in
         return {
@@ -51,7 +52,26 @@ const loadUserDataFromStorage = (): UserData => {
           email: parsed.email || '',
           dateOfBirth: parsed.dateOfBirth || '',
           gender: parsed.gender || '',
-          isLoggedIn: false,
+          isLoggedIn: true,
+          isNewUser: parsed.isNewUser ?? false,
+          onboardingData: parsed.onboardingData || {}
+        };
+      }
+      else if(
+        typeof parsed === 'object' &&
+        parsed !== null &&
+        typeof parsed.isLoggedIn === 'boolean' &&
+        parsed.isLoggedIn === true
+      ) {
+        return {
+          _id: typeof parsed._id === 'string' ? parsed._id : '',
+          role: typeof parsed.role === 'number' ? parsed.role : -1,
+          phoneNumber: parsed.phoneNumber || '',
+          name: parsed.name || '',
+          email: parsed.email || '',
+          dateOfBirth: parsed.dateOfBirth || '',
+          gender: parsed.gender || '',
+          isLoggedIn: true,
           isNewUser: parsed.isNewUser ?? false,
           onboardingData: parsed.onboardingData || {}
         };
