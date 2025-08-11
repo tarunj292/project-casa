@@ -118,7 +118,7 @@ const CheckoutPage: React.FC = () => {
         estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
         paymentStatus: paymentStatus,
         deliveryStatus: "pending",
-        totalAmount: 1,
+        totalAmount: orderTotal,
         paymentId: paymentId
       });
       return response.data
@@ -160,7 +160,7 @@ const CheckoutPage: React.FC = () => {
     try {
       // Create Razorpay order
       const paymentOrderResponse = await axios.post('http://localhost:5002/api/payments/create-order', {
-        amount: 1,
+        amount: orderTotal,
         currency: 'INR',
         receipt: 'order_' + Date.now()
       });
@@ -392,4 +392,3 @@ const CheckoutPage: React.FC = () => {
 };
 
 export default CheckoutPage;
-
