@@ -16,9 +16,9 @@ const TopBar = () => {
         </div>
         
         <div className="flex items-center space-x-3">
-          <button className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-slate-600 transition-colors">
+          {/* <button className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-slate-600 transition-colors">
             <Search className="w-5 h-5 text-white" />
-          </button>
+          </button> */}
           
           <div className="relative group">
             <button className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center hover:bg-slate-600 transition-colors">

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { ArrowLeft } from 'lucide-react';
 
-const libraries = ['places'] as const;
 
 const LocationPage = () => {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ const LocationPage = () => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyAHUYOhT1nlx85i9r4xCZsRUIkKchAxCsk',
-    libraries,
+    libraries: ['places'] 
   });
 
   const getAddressFromCoords = async (lat: number, lng: number) => {

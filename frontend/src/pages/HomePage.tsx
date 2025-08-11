@@ -259,7 +259,7 @@ const HomePage: React.FC = () => {
 
   return (
     
-    <div className="bg-gray-900 text-white min-h-screen pb-32">
+    <div className="bg-gray-900 text-white min-h-screen">
       {/* <div className="px-4 py-3 border-b border-gray-800">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-1">
@@ -646,7 +646,7 @@ const HomePage: React.FC = () => {
               directBuy: true
             }
           })}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition-colors"
+          className="w-full bg-green-400 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-full transition-colors"
         >
           🛒 Test Checkout (Quick Access)
         </button>

@@ -12,6 +12,7 @@ import RegisterBrand from './pages/RegisterBrand';
 import Sales from './pages/Sales';
 import AddProduct from './pages/AddProduct';
 import CreateBrandForm from './pages/CreateBrand'
+import Order from './pages/Order'
 
 function App() {
   return (
@@ -24,10 +25,11 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
               <Route index element={<Dashboard />} />
+              <Route path="orders" element={<Order />} />
               <Route path="products" element={<Products />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="register-brand" element={<RegisterBrand />} />
-              <Route path="sales" element={<Sales />} />
+              {/* <Route path="sales" element={<Sales />} /> */}
               <Route path="create-brand" element={<CreateBrandForm />} />
             </Route>
           </Routes>

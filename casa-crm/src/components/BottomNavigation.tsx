@@ -8,10 +8,8 @@ const BottomNavigation = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/products', icon: Package, label: 'Products' },
-    // { path: '/register-brand', icon: UserPlus, label: 'Register' },
     { path: '/orders', icon: ShoppingCart, label: 'Orders'},
-    { path: '/sales', icon: BarChart3, label: 'Sales' },
-    // { path: '/analytics', icon: TrendingUp, label: 'Analytics' },
+    // { path: '/sales', icon: BarChart3, label: 'Sales' },
   ];
 
   return (

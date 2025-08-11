@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Upload, Camera, Package, DollarSign, Tag, FileText, Layers, AlertCircle, Check, Move } from 'lucide-react';
+import { useBrand } from '../contexts/BrandContext'
 
 interface ProductFormData {
   name: string;
@@ -31,6 +32,7 @@ interface FormErrors {
 }
 
 const AddProduct = () => {
+  const { brand } = useBrand()
   const navigate = useNavigate();
   const [title, setTitle] = useState('Add New')
   const [description, setDescription] = useState('Create a new')
@@ -524,7 +526,7 @@ const AddProduct = () => {
               <input
                 type="text"
                 name="brand"
-                value={formData.brand}
+                value={brand?.name}
                 onChange={handleInputChange}
                 className={`w-full px-4 py-4 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400 ${
                   errors.brand ? 'focus:ring-red-500' : 'focus:ring-blue-500'
