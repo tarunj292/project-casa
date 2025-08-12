@@ -24,9 +24,9 @@ function App() {
             <Route path="/signup" element={<BrandSignup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-              {/* <Route index element={<Dashboard />} /> */}
-              <Route index element={<Products />} />
+              <Route index element={<Dashboard />} />
               <Route path="orders" element={<Order />} />
+              <Route path="products" element={<Products />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="register-brand" element={<RegisterBrand />} />
               {/* <Route path="sales" element={<Sales />} /> */}
