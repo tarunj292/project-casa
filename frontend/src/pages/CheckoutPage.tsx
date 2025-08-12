@@ -633,7 +633,7 @@ const CheckoutPage: React.FC = () => {
 
       {/* Global Confirm Dialog for Delete */}
       <AlertDialog open={!!confirmId} onOpenChange={(open) => !open && setConfirmId(null)}>
-        <AlertDialogContent>
+        <AlertDialogContent>  
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this address?</AlertDialogTitle>
             <AlertDialogDescription>
