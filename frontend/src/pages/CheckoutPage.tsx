@@ -14,7 +14,19 @@ import {
 import axios from "axios";
 import { CartData, useCart } from "../contexts/CartContext";
 import { useUser } from "../contexts/UserContext";
-import AnimatedList from "../components/AnimatedList.tsx";
+import AnimatedList from "../components/AnimatedList"; // ← no .tsx in import
+
+// Radix Alert Dialog (single shared component file)
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "../components/alert-dialog";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
 
@@ -100,10 +112,11 @@ const CheckoutPage: React.FC = () => {
 
   /* ---------------- Address state ---------------- */
   const [addresses, setAddresses] = useState<Address[]>([]);
-  const [selectedAddress, setSelectedAddress] = useState(0);
+  const [selectedAddress, setSelectedAddress] = useState<number>(0);
   const [addrLoading, setAddrLoading] = useState(true);
   const [addrError, setAddrError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null); // ← dialog control
 
   /* ---------------- Payment state ---------------- */
   const [selectedPayment, setSelectedPayment] = useState(0);
@@ -194,7 +207,6 @@ const CheckoutPage: React.FC = () => {
         if (!mounted) return;
         setAddresses(mapped);
 
-        // choose default if available, else first
         const defIndex = mapped.findIndex((a) => a.isDefault);
         setSelectedAddress(defIndex >= 0 ? defIndex : mapped.length ? 0 : -1);
       } catch (err: any) {
@@ -226,21 +238,18 @@ const CheckoutPage: React.FC = () => {
     });
   }, [addresses.length]);
 
-  /* ---------------- Delete address ---------------- */
+  /* ---------------- Delete address (actual call) ---------------- */
   const deleteAddress = async (addressId: string) => {
     const userId = await resolveUserId();
     if (!userId) {
       alert("Please log in again.");
       return;
     }
-    if (!confirm("Delete this address?")) return;
-
     try {
       setDeletingId(addressId);
       await axios.delete(`${API_BASE}/users/${userId}/shipment/${addressId}`, {
         withCredentials: false,
       });
-
       setAddresses((prev) => prev.filter((a) => a.id !== addressId));
     } catch (err: any) {
       console.error("Delete address failed:", err);
@@ -328,7 +337,7 @@ const CheckoutPage: React.FC = () => {
       const { order } = paymentOrderResponse.data;
 
       const options = {
-        key: "rzp_live_NSJ391QbwVovIS", // LIVE KEY
+        key: "rzp_live_NSJ391QbwVovIS",
         amount: order.amount,
         currency: order.currency,
         name: "CASA",
@@ -420,89 +429,91 @@ const CheckoutPage: React.FC = () => {
           {/* Address */}
           <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-  <MapPin size={20} className="text-blue-400" />
-  <span>Delivery Address</span>
-</h2>
+              <MapPin size={20} className="text-blue-400" />
+              <span>Delivery Address</span>
+            </h2>
 
-{addrError && (
-  <div className="mb-3 flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
-    <AlertTriangle size={16} />
-    <span>Addresses failed to load: {addrError}</span>
-  </div>
-)}
-
-{addrLoading ? (
-  <div className="space-y-3">
-    <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
-    <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
-  </div>
-) : addresses.length ? (
-  <>
-    <AnimatedList<Address>
-      items={addresses}
-      selectedIndex={selectedAddress}
-      onSelectedIndexChange={(idx) => setSelectedAddress(idx)}
-      selectOnHover={false}                 // ← click only
-      className="w-full"
-      renderItem={(addr, idx, selected) => (
-        <div className="flex items-start justify-between gap-3">
-          <div className="pr-2">
-            <div className="flex items-center gap-2">
-              <span
-                className={`inline-block h-4 w-4 rounded-full border ${
-                  selected ? "border-blue-400 bg-blue-400" : "border-gray-500"
-                }`}
-              />
-              <h3 className="font-medium text-white">
-                {addr.name} {addr.isDefault ? <span className="ml-1 text-xs text-blue-300">(Default)</span> : null}
-              </h3>
-            </div>
-            <p className="mt-2 text-sm text-gray-300 leading-snug">{addr.address}</p>
-            {addr.phone && <p className="text-sm text-gray-400 mt-1">{addr.phone}</p>}
-            {selected && (
-              <div className="mt-2 inline-flex items-center gap-1 text-xs text-blue-300">
-                <CheckCircle size={14} /> Selected
+            {addrError && (
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+                <AlertTriangle size={16} />
+                <span>Addresses failed to load: {addrError}</span>
               </div>
             )}
-          </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!deletingId) deleteAddress(addr.id);
-            }}
-            className={`shrink-0 rounded-md border border-red-500/40 px-2 py-1 text-xs text-red-300 hover:bg-red-500/10 ${
-              deletingId === addr.id ? "opacity-60 cursor-wait" : ""
-            }`}
-            title="Delete address"
-            disabled={deletingId === addr.id}
-          >
-            <span className="inline-flex items-center gap-1">
-              <Trash2 size={14} /> Delete
-            </span>
-          </button>
-        </div>
-      )}
-    />
+            {addrLoading ? (
+              <div className="space-y-3">
+                <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
+                <div className="h-20 rounded-lg bg-gray-800 animate-pulse" />
+              </div>
+            ) : addresses.length ? (
+              <>
+                <AnimatedList<Address>
+                  items={addresses}
+                  selectedIndex={selectedAddress}
+                  onSelectedIndexChange={(idx) => setSelectedAddress(idx)}
+                  selectOnHover={false}
+                  className="w-full"
+                  renderItem={(addr, idx, selected) => (
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="pr-2">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`inline-block h-4 w-4 rounded-full border ${
+                              selected ? "border-blue-400 bg-blue-400" : "border-gray-500"
+                            }`}
+                          />
+                          <h3 className="font-medium text-white">
+                            {addr.name}{" "}
+                            {addr.isDefault ? (
+                              <span className="ml-1 text-xs text-blue-300">(Default)</span>
+                            ) : null}
+                          </h3>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-300 leading-snug">{addr.address}</p>
+                        {addr.phone && <p className="text-sm text-gray-400 mt-1">{addr.phone}</p>}
+                        {selected && (
+                          <div className="mt-2 inline-flex items-center gap-1 text-xs text-blue-300">
+                            <CheckCircle size={14} /> Selected
+                          </div>
+                        )}
+                      </div>
 
-    <button
-      onClick={() => navigate("/location")}
-      className="mt-3 w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
-    >
-      + Add new address
-    </button>
-  </>
-) : (
-  <div className="space-y-3">
-    <button
-      onClick={() => navigate("/location")}
-      className="w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
-    >
-      + Add your first address
-    </button>
-  </div>
-)}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!deletingId) setConfirmId(addr.id); // open dialog
+                        }}
+                        className={`shrink-0 rounded-md border border-red-500/40 px-2 py-1 text-xs text-red-300 hover:bg-red-500/10 ${
+                          deletingId === addr.id ? "opacity-60 cursor-wait" : ""
+                        }`}
+                        title="Delete address"
+                        disabled={deletingId === addr.id}
+                      >
+                        <span className="inline-flex items-center gap-1">
+                          <Trash2 size={14} /> Delete
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                />
 
+                <button
+                  onClick={() => navigate("/location")}
+                  className="mt-3 w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
+                >
+                  + Add new address
+                </button>
+              </>
+            ) : (
+              <div className="space-y-3">
+                <button
+                  onClick={() => navigate("/location")}
+                  className="w-full rounded-lg border border-dashed border-gray-700 px-4 py-3 text-gray-300 hover:border-gray-500"
+                >
+                  + Add your first address
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Order Summary */}
@@ -575,7 +586,7 @@ const CheckoutPage: React.FC = () => {
                   onClick={() => setSelectedPayment(index)}
                   className={`w-full p-4 rounded-lg border text-left transition-colors ${
                     selectedPayment === index
-                      ? "border-green-500 bg-green-500 bg-opacity-10"
+                      ? "border-green-500 bg-green-500/10"
                       : "border-gray-700 bg-gray-800 hover:border-gray-600"
                   }`}
                 >
@@ -619,6 +630,30 @@ const CheckoutPage: React.FC = () => {
           {isProcessing ? "Processing..." : `Pay with Razorpay - ₹${orderTotal}`}
         </button>
       </div>
+
+      {/* Global Confirm Dialog for Delete */}
+      <AlertDialog open={!!confirmId} onOpenChange={(open) => !open && setConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this address?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone and will remove the address from your saved shipments.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                if (!confirmId) return;
+                await deleteAddress(confirmId);
+                setConfirmId(null);
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
