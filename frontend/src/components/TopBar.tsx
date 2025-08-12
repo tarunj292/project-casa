@@ -37,7 +37,19 @@ const TopBar: React.FC = () => {
   };
 
   useEffect(() => {
-    if (userData?.isLoggedIn) loadCuratedList();
+    if (userData?.isLoggedIn) {
+      loadCuratedList();
+      // ✅ Listen for changes from anywhere in the app
+    const handleUpdate = () => {
+      loadCuratedList();
+    };
+
+    window.addEventListener("curatedListUpdated", handleUpdate);
+
+    return () => {
+      window.removeEventListener("curatedListUpdated", handleUpdate);
+    };
+    }
   }, [userData?.isLoggedIn]);
 
   return (

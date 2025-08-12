@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 interface Product {
   _id: string;
   name: string;
-  price: number;
+  price: number | { $numberDecimal: string };
   currency: string;
   images: string[];
   brand: {
@@ -96,8 +96,12 @@ const ProductsPage: React.FC = () => {
                   <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
                   <p className="text-xs text-gray-400 mb-2">{product.brand.name}</p>
                   <p className="font-bold">
-                    {product.currency}{product.price}
-                  </p>
+                  {product.currency}
+{typeof product.price === 'object'
+  ? Number(product.price.$numberDecimal).toFixed(2)
+  : Number(product.price).toFixed(2)}
+</p>
+
                 </div>
               </div>
             ))}
