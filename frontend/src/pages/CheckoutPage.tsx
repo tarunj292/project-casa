@@ -45,11 +45,18 @@ interface Product {
 }
 
 interface Address {
-  id: string;
-  name: string;
-  address: string;
-  phone: string;
+  _id: string;
+  billing_customer_name: string;
+  billing_phone: string;
+  billing_email: string;
+  billing_address: string;
+  billing_address_2: string;
+  billing_city: string;
+  billing_pincode: string;
+  billing_state: string;
+  billing_country: string;
   isDefault?: boolean;
+  createdAt?: string;
 }
 
 interface PaymentMethod {
@@ -185,24 +192,20 @@ const CheckoutPage: React.FC = () => {
         });
         const list = normalizeShipments(res.data);
 
-        const mapped: Address[] = list.map((s: any, idx: number) => {
-          const line1 = (s.billing_address || "").trim();
-          const line2 = (s.billing_address_2 || "").trim();
-          const cityState = [s.billing_city, s.billing_state]
-            .filter(Boolean)
-            .join(", ");
-          const pin = s.billing_pincode ? ` - ${s.billing_pincode}` : "";
-          const country = s.billing_country ? `, ${s.billing_country}` : "";
-          return {
-            id: s._id || String(idx),
-            name: s.isDefault ? "Home" : s.label || `Address ${idx + 1}`,
-            address: [line1, line2, cityState + pin + country]
-              .filter(Boolean)
-              .join(", "),
-            phone: s.billing_phone || "",
-            isDefault: !!s.isDefault,
-          };
-        });
+        const mapped: Address[] = list.map((s: any) => ({
+          _id: s._id,
+          billing_customer_name: s.billing_customer_name,
+          billing_phone: s.billing_phone,
+          billing_email: s.billing_email,
+          billing_address: s.billing_address,
+          billing_address_2: s.billing_address_2 || "",
+          billing_city: s.billing_city,
+          billing_pincode: s.billing_pincode,
+          billing_state: s.billing_state,
+          billing_country: s.billing_country || "India",
+          isDefault: !!s.isDefault,
+          createdAt: s.createdAt
+        }));
 
         if (!mounted) return;
         setAddresses(mapped);
@@ -250,7 +253,7 @@ const CheckoutPage: React.FC = () => {
       await axios.delete(`${API_BASE}/users/${userId}/shipment/${addressId}`, {
         withCredentials: false,
       });
-      setAddresses((prev) => prev.filter((a) => a.id !== addressId));
+      setAddresses((prev) => prev.filter((a) => a._id !== addressId));
     } catch (err: any) {
       console.error("Delete address failed:", err);
       alert(err?.response?.data?.message || "Failed to delete address.");
@@ -358,13 +361,14 @@ const CheckoutPage: React.FC = () => {
             if (verifyResponse.data.success) {
               const orderResponse = await createOrder(
                 cart,
-                selected.address,
+                selected.billing_address,
                 "Paid",
                 response.razorpay_payment_id
               );
               if (orderResponse.success) {
                 await deleteCart();
                 setIsProcessing(false);
+                createShiprocketOrder()
                 navigate("/order-success", {
                   state: {
                     orderId: "ORD" + Date.now(),
@@ -400,6 +404,61 @@ const CheckoutPage: React.FC = () => {
       alert("Failed to initialize payment. Please try again.");
     }
   };
+
+  async function createShiprocketOrder() {
+    if (!addresses.length || selectedAddress < 0) {
+      alert("Please add a delivery address first.");
+      return;
+    }
+    const addr = addresses[selectedAddress];
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc0ODgwODAsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzU1NzU3Mjc2LCJqdGkiOiJYSEdXOHVHRDF1Sk9jOWw5IiwiaWF0IjoxNzU0ODkzMjc2LCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTc1NDg5MzI3NiwiY2lkIjo3MjUzMzg5LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.2zi8rX322uTX9qFri_JzNoKnTnc8tdKxHuBauEfK5Xc";
+    const today = new Date().toISOString().split("T")[0];
+
+    const orderData = {
+      order_id: "111119",
+      order_date: today,
+      pickup_location: "work",
+      company_name: "Casa",
+      billing_customer_name: addr.billing_customer_name[0],
+      billing_last_name: addr.billing_customer_name[1],
+      billing_address: addr.billing_address,
+      billing_address_2: addr.billing_address_2,
+      billing_isd_code: "+91",
+      billing_city: addr.billing_city,
+      billing_pincode: addr.billing_pincode,
+      billing_state: addr.billing_state,
+      billing_country: addr.billing_country,
+      billing_email: addr.billing_email,
+      billing_phone: addr.billing_phone,
+      shipping_is_billing: "1",
+      order_items: orderItems.map((item) => ({
+        name: item.name,
+        sku: item.id,
+        units: item.quantity.toString(),
+        selling_price: item.price.replace("₹", ""),
+        discount: "0",
+        tax: "0",
+        hsn: "0000"
+      })),
+      payment_method: "prepaid",
+      sub_total: orderTotal.toString(),
+      length: "10",
+      breadth: "10",
+      height: "10",
+      weight: "1"
+    };
+console.log(orderData)
+    try {
+      const res = await axios.post(
+        "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
+        orderData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("✅ Order Created:", res.data);
+    } catch (error) {
+      console.error("❌ Shiprocket Error:", error);
+    }
+  }
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
@@ -463,14 +522,14 @@ const CheckoutPage: React.FC = () => {
                             }`}
                           />
                           <h3 className="font-medium text-white">
-                            {addr.name}{" "}
+                            {addr.billing_customer_name}{" "}
                             {addr.isDefault ? (
                               <span className="ml-1 text-xs text-blue-300">(Default)</span>
                             ) : null}
                           </h3>
                         </div>
-                        <p className="mt-2 text-sm text-gray-300 leading-snug">{addr.address}</p>
-                        {addr.phone && <p className="text-sm text-gray-400 mt-1">{addr.phone}</p>}
+                        <p className="mt-2 text-sm text-gray-300 leading-snug">{addr.billing_address}</p>
+                        {addr.billing_phone && <p className="text-sm text-gray-400 mt-1">{addr.billing_phone}</p>}
                         {selected && (
                           <div className="mt-2 inline-flex items-center gap-1 text-xs text-blue-300">
                             <CheckCircle size={14} /> Selected
@@ -481,13 +540,13 @@ const CheckoutPage: React.FC = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (!deletingId) setConfirmId(addr.id); // open dialog
+                          if (!deletingId) setConfirmId(addr._id); // open dialog
                         }}
                         className={`shrink-0 rounded-md border border-red-500/40 px-2 py-1 text-xs text-red-300 hover:bg-red-500/10 ${
-                          deletingId === addr.id ? "opacity-60 cursor-wait" : ""
+                          deletingId === addr._id ? "opacity-60 cursor-wait" : ""
                         }`}
                         title="Delete address"
-                        disabled={deletingId === addr.id}
+                        disabled={deletingId === addr._id}
                       >
                         <span className="inline-flex items-center gap-1">
                           <Trash2 size={14} /> Delete
