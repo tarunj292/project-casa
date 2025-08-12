@@ -111,8 +111,8 @@ const HomePage: React.FC = () => {
   ];
 
   const searchSuggestions = [
-    'Mini Dress', 'Urban Blazers', 'Tailored trousers',
-    'Street Shorts', 'Chinos', 'Relaxed Joggers'
+    'Mini Dress', 'Oversized Tee', 'Cargo Pants',
+    'Sweat Shorts', 'Hoodie', 'Jacket'
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -238,8 +238,10 @@ const HomePage: React.FC = () => {
   };
 
   const handleSearchSuggestion = (suggestion: string) => {
-    navigate(`/collection?search=${encodeURIComponent(suggestion)}`);
-  };
+  // This navigates to your ProductList page with the search term
+  navigate(`/product-list?search=${encodeURIComponent(suggestion)}`);
+};
+
 
   const handleGenderChange = (gender: 'MAN' | 'WOMAN') => {
     setSelectedGender(gender);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from 'lucide-react';
 
+// Product interface remains the same
 interface Product {
   _id: string;
   name: string;
@@ -25,57 +26,75 @@ const ProductList: React.FC = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [title, setTitle] = useState("Products"); // State for the page title
 
   useEffect(() => {
-    // This hook runs whenever the URL changes (e.g., ?minPrice=499)
     const params = new URLSearchParams(location.search);
     const minPrice = params.get('minPrice');
     const maxPrice = params.get('maxPrice');
-    const gender = params.get('gender'); // 1. Read the gender parameter
-
+    const gender = params.get('gender');
+    // NEW: Read the search query parameter from the URL
+    const searchQuery = params.get('search');
 
     const fetchProducts = async () => {
       setLoading(true);
-      
-      const queryParams = new URLSearchParams();
-      if (minPrice) {
-        queryParams.append('min', minPrice);
-      }
-      if (maxPrice) {
-        queryParams.append('max', maxPrice);
-      }
-      if (gender) {
-        queryParams.append('gender', gender); // 2. Add gender to the API call
-      }
+      let data = [];
 
       try {
-        const res = await fetch(`http://localhost:5002/api/products/price?${queryParams.toString()}`);
-        if (!res.ok) throw new Error('Failed to fetch products');
-        const data = await res.json();
+        // NEW: Conditional logic to decide which API to call
+        if (searchQuery) {
+          // If there's a search query, use the search endpoint
+          setTitle(`Results for "${searchQuery}"`);
+          const res = await fetch(`http://localhost:5002/api/products/search`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: searchQuery }),
+          });
+          if (!res.ok) throw new Error('Search request failed');
+          data = await res.json();
+        } else {
+          // Otherwise, use the existing price/gender filter endpoint
+          setTitle("Filtered Products");
+          const queryParams = new URLSearchParams();
+          if (minPrice) queryParams.append('min', minPrice);
+          if (maxPrice) queryParams.append('max', maxPrice);
+          if (gender) queryParams.append('gender', gender);
+          
+          const res = await fetch(`http://localhost:5002/api/products/price?${queryParams.toString()}`);
+          if (!res.ok) throw new Error('Failed to fetch filtered products');
+          data = await res.json();
+        }
         setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
-        setProducts([]);
+        setProducts([]); // Clear products on error
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [location.search]); // The dependency array ensures this runs on URL changes
+  }, [location.search]); // Re-runs whenever the URL query changes
 
   return (
-    <div className="p-4">
-      <button 
-        onClick={() => navigate(-1)} 
-        className="flex items-center gap-2 mb-4 text-white hover:text-blue-400 transition-colors"
-      >
-        <ArrowLeft size={20} />
-        Back
-      </button>
+    <div className="p-4 bg-gray-900 min-h-screen">
+      <div className="flex items-center mb-4">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          Back
+        </button>
+        <h1 className="text-white text-xl font-bold mx-auto pr-10">
+          {title}
+        </h1>
+      </div>
 
       {loading ? (
-        <h1 className="text-white text-center text-lg mt-32">Loading products...</h1>
+        <p className="text-white text-center text-lg mt-32">Loading products...</p>
       ) : products.length > 0 ? (
         <div className="grid grid-cols-2 gap-4">
           {products.map((product) => (
@@ -101,7 +120,7 @@ const ProductList: React.FC = () => {
           ))}
         </div>
       ) : (
-        <h1 className="text-white text-center text-lg mt-32">No products found.</h1>
+        <p className="text-white text-center text-lg mt-32">No products found.</p>
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+// backend/api/fetchProductforSwipe.ts
 
 interface Product {
   _id: string;
@@ -40,5 +41,32 @@ const fetchProducts = async (page: number = 1, limit: number = 10, excludeIds: s
     return [];
   }
 };
+
+/**
+ * Fetches products filtered by gender.
+ * @param {string} gender - The gender to filter by (e.g., 'male', 'female', 'unisex').
+ * @returns {Promise<Product[]>} A promise that resolves to an array of products.
+ */
+export const fetchProductsByGender = async (gender: string): Promise<Product[]> => {
+  try {
+    const url = `http://localhost:5002/api/products/gender?gender=${gender}`;
+    console.log(`👕 Fetching products for gender: ${gender}`);
+    
+    const response = await fetch(url);
+    const data = await response.json(); // Read the body only ONCE
+
+    if (!response.ok) {
+      // Now you can use 'data' which contains the error details from the server
+      throw new Error(data.error || `Failed to fetch products for gender: ${gender}`);
+    }
+
+    console.log(`✅ Fetched ${data.length} products for gender: ${gender}`);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error(`❌ Error fetching products for gender ${gender}:`, error);
+    return [];
+  }
+};
+
 
 export default fetchProducts;
