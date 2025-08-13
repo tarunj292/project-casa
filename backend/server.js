@@ -27,9 +27,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/curatedlist', curatedListRoutes); // ✅ no hyphen
+app.use('/api/curatedlist', curatedListRoutes);
 app.use('/api/payments', paymentRoutes);
-
 
 // Default route
 app.get("/", (req, res) => {

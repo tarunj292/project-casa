@@ -88,21 +88,31 @@ const getProductByCategory = async (req, res) => {
 };
 
 // GET all products by brand ID
-const getAllProductsByBrand = async (req, res) => {
-  
-  try {
-    const brandId = req.params.id;
-    
-    if (!brandId || !mongoose.Types.ObjectId.isValid(brandId)) {
-      return res.status(400).json({ error: 'Valid brand ID is required in query (?id=...)' });
-    }
+// ... (other functions) ...
 
-    const products = await Product.find({ brand: brandId }).populate('brand category');
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+// GET all products by brand ID
+const getAllProductsByBrand = async (req, res) => {
+      try {
+          const brandId = req.params.id;
+  
+          // Step 1: Validate the ID format.
+          if (!brandId || !mongoose.Types.ObjectId.isValid(brandId)) {
+              return res.status(400).json({ error: 'Valid brand ID is required.' });
+          }
+  
+          // Step 2: Convert the valid string ID into a Mongoose ObjectId object.
+          const validObjectId = new mongoose.Types.ObjectId(brandId);
+  
+          // Step 3: Use the ObjectId object in the query.
+          const products = await Product.find({ brand: validObjectId }).populate('brand category');
+          res.json(products);
+      } catch (err) {
+          console.error('Error in getAllProductsByBrand:', err.message);
+          res.status(500).json({ error: 'Internal server error.' });
+      }
+  };
+  
+  // ... (other functions) ...
 
 // GET products by price range
 const getAllProductsByPrice = async (req, res) => {
