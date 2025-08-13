@@ -164,10 +164,9 @@ router.post('/import', upload.single('file'), async (req, res) => {
 });
 
 router.get('/brand/:id', async (req, res, next) => {
-    console.log(`Attempting to fetch products for brand ID: ${req.params.id}`);
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        console.error(`Invalid brand ID format: ${req.params.id}`);
-        return res.status(400).json({ message: 'Invalid Brand ID' });
+  console.log(`Attempting to fetch products for brand ID: ${req.params.id}`);if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+console.error(`Invalid brand ID format: ${req.params.id}`);
+ return res.status(400).json({ message: 'Invalid Brand ID' });
     }
     next();
 }, getAllProductsByBrand);

@@ -10,12 +10,14 @@ interface FormData {
   social_links: string[];
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface FormErrors {
   name?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
   general?: string;
 }
 
@@ -28,6 +30,7 @@ const BrandSignup = () => {
     social_links: [''],
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -59,15 +62,22 @@ const BrandSignup = () => {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const isFormValid = (): boolean => {
-    return formData.name.trim() !== '' && 
-           formData.email.trim() !== '' && 
-           validateEmail(formData.email) &&
-           formData.password.length >= 6;
+    return formData.name.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      validateEmail(formData.email) &&
+      formData.password.length >= 6 &&
+      formData.password === formData.confirmPassword;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -76,7 +86,7 @@ const BrandSignup = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
@@ -114,7 +124,7 @@ const BrandSignup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -301,6 +311,13 @@ const BrandSignup = () => {
               </div>
             </div>
 
+            {/* Login Details */}
+            <div className="pt-4">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Login Details
+              </label>
+            </div>
+
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -348,6 +365,34 @@ const BrandSignup = () => {
                 </button>
               </div>
               {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password}</p>}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Confirm Password *
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className={`w-full pl-12 pr-12 py-4 bg-slate-50 border-0 rounded-2xl focus:outline-none focus:ring-2 focus:bg-white transition-all shadow-sm text-slate-800 placeholder-slate-400 ${
+                    errors.confirmPassword ? 'focus:ring-red-500' : 'focus:ring-blue-500'
+                  }`}
+                  placeholder="Confirm your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-2">{errors.confirmPassword}</p>}
             </div>
 
             {/* Submit Button */}
