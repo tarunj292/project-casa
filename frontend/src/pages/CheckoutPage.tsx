@@ -415,7 +415,7 @@ const CheckoutPage: React.FC = () => {
     const today = new Date().toISOString().split("T")[0];
 
     const orderData = {
-      order_id: "111119",
+      order_id: Math.floor(1000000 + Math.random() * 9000000).toString(),
       order_date: today,
       pickup_location: "work",
       company_name: "Casa",
